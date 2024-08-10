@@ -1,4 +1,4 @@
-namespace e_commerce_course_api.RequestHelpers
+namespace e_commerce_course_api.Helpers.Requests
 {
     /// <summary>
     /// Represents the parameters for pagination.

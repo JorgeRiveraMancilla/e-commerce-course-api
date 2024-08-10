@@ -1,5 +1,5 @@
 using System.Text.Json;
-using e_commerce_course_api.RequestHelpers;
+using e_commerce_course_api.Helpers.Requests;
 
 namespace e_commerce_course_api.Extensions
 {

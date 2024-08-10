@@ -1,6 +1,6 @@
 using Microsoft.EntityFrameworkCore;
 
-namespace e_commerce_course_api.RequestHelpers
+namespace e_commerce_course_api.Helpers.Requests
 {
     /// <summary>
     /// Represents the metadata for a paged list.

@@ -1,7 +1,7 @@
 using e_commerce_course_api.Data;
 using e_commerce_course_api.Entities;
 using e_commerce_course_api.Extensions;
-using e_commerce_course_api.RequestHelpers;
+using e_commerce_course_api.Helpers.Requests;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
