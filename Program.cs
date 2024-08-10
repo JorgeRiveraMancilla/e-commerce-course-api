@@ -66,7 +66,10 @@ builder
             ValidateLifetime = true,
             ValidateIssuerSigningKey = true,
             IssuerSigningKey = new SymmetricSecurityKey(
-                Encoding.UTF8.GetBytes(builder.Configuration["JWTSettings:TokenKey"] ?? throw new Exception("Token key not found.")
+                Encoding.UTF8.GetBytes(
+                    builder.Configuration["JWTSettings:TokenKey"]
+                        ?? throw new Exception("Token key not found.")
+                )
             )
         };
     });
@@ -80,7 +83,7 @@ app.UseMiddleware<ExceptionMiddleware>();
 if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();
-    app.UseSwaggerUI(c => 
+    app.UseSwaggerUI(c =>
     {
         c.ConfigObject.AdditionalItems.Add("persistAuthorization", "true");
     });
