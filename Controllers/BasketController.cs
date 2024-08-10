@@ -55,7 +55,7 @@ namespace e_commerce_course_api.Controllers
             var product = await _dataContext.Products.FindAsync(productId);
 
             if (product is null)
-                return BadRequest(new ProblemDetails { Title = "Producto no encontrado" });
+                return BadRequest(new ProblemDetails { Title = "Producto no encontrado." });
 
             basket.AddItem(product, quantity);
 
@@ -63,7 +63,7 @@ namespace e_commerce_course_api.Controllers
 
             if (!result)
                 return BadRequest(
-                    new ProblemDetails { Title = "Error al añadir el producto al carrito" }
+                    new ProblemDetails { Title = "Error al añadir el producto al carrito." }
                 );
 
             return CreatedAtRoute("GetBasket", MapBasketToDto(basket));
@@ -95,7 +95,7 @@ namespace e_commerce_course_api.Controllers
 
             if (!result)
                 return BadRequest(
-                    new ProblemDetails { Title = "Error al eliminar el producto del carrito" }
+                    new ProblemDetails { Title = "Error al eliminar el producto del carrito." }
                 );
 
             return Ok();
