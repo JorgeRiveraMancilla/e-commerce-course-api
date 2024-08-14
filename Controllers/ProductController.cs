@@ -1,26 +1,24 @@
-using e_commerce_course_api.Data;
-using e_commerce_course_api.Entities;
+using e_commerce_course_api.DTOs;
 using e_commerce_course_api.Extensions;
 using e_commerce_course_api.Helpers.Requests;
+using e_commerce_course_api.Interfaces;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
 
 namespace e_commerce_course_api.Controllers
 {
     /// <summary>
     /// The controller for the products.
     /// </summary>
-    /// <param name="dataContext">
-    /// The data context to use.
+    /// <param name="productRepository">
+    /// The repository for the products.
     /// </param>
-    public class ProductController(DataContext dataContext) : BaseApiController
+    public class ProductController(IProductRepository productRepository) : BaseApiController
     {
         /// <summary>
         /// The data context to use.
         /// </summary>
-        private readonly DataContext _dataContext = dataContext;
+        private readonly IProductRepository _productRepository = productRepository;
 
-        /// <summary>
         /// Get the products.
         /// </summary>
         /// <param name="productParams">
@@ -30,21 +28,11 @@ namespace e_commerce_course_api.Controllers
         /// The products.
         /// </returns>
         [HttpGet]
-        public async Task<ActionResult<PagedList<Product>>> GetProducts(
+        public async Task<ActionResult<PagedList<ProductDto>>> GetProducts(
             [FromQuery] ProductParams productParams
         )
         {
-            var query = _dataContext
-                .Products.Sort(productParams.OrderBy)
-                .Search(productParams.SearchTerm)
-                .Filter(productParams.Brands, productParams.Types)
-                .AsQueryable();
-
-            var products = await PagedList<Product>.ToPagedList(
-                query,
-                productParams.PageNumber,
-                productParams.PageSize
-            );
+            var products = await _productRepository.GetProductsAsync(productParams);
 
             Response.AddPaginationHeader(products.MetaData);
 
@@ -58,14 +46,14 @@ namespace e_commerce_course_api.Controllers
         /// The id of the product.
         /// </param>
         /// <returns>
-        /// The product.
+        /// The product if exists, otherwise not found.
         /// </returns>
         [HttpGet("{id}")]
-        public async Task<ActionResult<Product>> GetProduct(int id)
+        public async Task<ActionResult<ProductDto>> GetProduct(int id)
         {
-            var product = await _dataContext.Products.FindAsync(id);
+            var product = await _productRepository.GetProductByIdAsync(id);
 
-            if (product == null)
+            if (product is null)
                 return NotFound();
 
             return product;
@@ -80,8 +68,8 @@ namespace e_commerce_course_api.Controllers
         [HttpGet("filters")]
         public async Task<IActionResult> GetFilters()
         {
-            var brands = await _dataContext.Products.Select(p => p.Brand).Distinct().ToListAsync();
-            var types = await _dataContext.Products.Select(p => p.Type).Distinct().ToListAsync();
+            var brands = await _productRepository.GetProductBrandsAsync();
+            var types = await _productRepository.GetProductTypesAsync();
 
             return Ok(new { brands, types });
         }
