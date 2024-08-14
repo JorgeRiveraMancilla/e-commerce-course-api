@@ -43,6 +43,7 @@ namespace e_commerce_course_api.Services
 
             var claims = new List<Claim>
             {
+                new(ClaimTypes.NameIdentifier, user.Id.ToString()),
                 new(ClaimTypes.Email, email),
                 new(ClaimTypes.Name, userName)
             };
