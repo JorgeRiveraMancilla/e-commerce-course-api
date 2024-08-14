@@ -1,5 +1,6 @@
 using System.Text;
 using e_commerce_course_api.Data;
+using e_commerce_course_api.Data.Repositories;
 using e_commerce_course_api.Entities;
 using e_commerce_course_api.Interfaces;
 using e_commerce_course_api.Middleware;
@@ -53,7 +54,7 @@ builder
     {
         opt.User.RequireUniqueEmail = true;
     })
-    .AddRoles<IdentityRole>()
+    .AddRoles<Role>()
     .AddEntityFrameworkStores<DataContext>();
 builder
     .Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
@@ -74,7 +75,10 @@ builder
         };
     });
 builder.Services.AddAuthorization();
+builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
 builder.Services.AddScoped<ITokenService, TokenService>();
+builder.Services.AddScoped<IBasketRepository, BasketRepository>();
+builder.Services.AddScoped<IProductRepository, ProductRepository>();
 
 var app = builder.Build();
 
