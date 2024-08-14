@@ -6,14 +6,19 @@ namespace e_commerce_course_api.DTOs
     public class UserDto
     {
         /// <summary>
+        /// Unique identifier.
+        /// </summary>
+        public int Id { get; set; }
+
+        /// <summary>
+        /// Name.
+        /// </summary>
+        public required string Name { get; set; }
+
+        /// <summary>
         /// Username.
         /// </summary>
         public required string Email { get; set; }
-
-        /// <summary>
-        /// Token.
-        /// </summary>
-        public required string Token { get; set; }
 
         /// <summary>
         /// Basket.

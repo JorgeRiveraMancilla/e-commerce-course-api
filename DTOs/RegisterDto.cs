@@ -11,7 +11,7 @@ namespace e_commerce_course_api.DTOs
         /// Username.
         /// </summary>
         [Length(3, 20)]
-        public required string Username { get; set; }
+        public required string Name { get; set; }
 
         /// <summary>
         /// Email.
