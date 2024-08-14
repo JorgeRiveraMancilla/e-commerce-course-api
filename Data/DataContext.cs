@@ -1,15 +1,13 @@
 using e_commerce_course_api.Entities;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 
 namespace e_commerce_course_api.Data
 {
     /// <summary>
-    /// Represents the data context of the application.
+    /// The data context.
     /// </summary>
-    /// <param name="options">
-    /// The options of the data context.
-    /// </param>
-    public class DataContext(DbContextOptions<DataContext> options) : DbContext(options)
+    public class DataContext(DbContextOptions options) : IdentityDbContext<User, Role, int>(options)
     {
         /// <summary>
         /// The products in the data context.
@@ -25,5 +23,33 @@ namespace e_commerce_course_api.Data
         /// The basket items in the data context.
         /// </summary>
         public DbSet<BasketItem> BasketItems { get; set; }
+
+        /// <summary>
+        /// Overrides the method to configure the roles.
+        /// </summary>
+        /// <param name="modelBuilder">
+        /// The model builder.
+        /// </param>
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        {
+            base.OnModelCreating(modelBuilder);
+
+            modelBuilder
+                .Entity<Role>()
+                .HasData(
+                    new Role
+                    {
+                        Id = 1,
+                        Name = "Admin",
+                        NormalizedName = "ADMIN"
+                    },
+                    new Role
+                    {
+                        Id = 2,
+                        Name = "Member",
+                        NormalizedName = "MEMBER"
+                    }
+                );
+        }
     }
 }
