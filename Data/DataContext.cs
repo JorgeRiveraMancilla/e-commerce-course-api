@@ -25,6 +25,11 @@ namespace e_commerce_course_api.Data
         public DbSet<BasketItem> BasketItems { get; set; }
 
         /// <summary>
+        /// The orders in the data context.
+        /// </summary>
+        public DbSet<Order> Orders { get; set; }
+
+        /// <summary>
         /// Overrides the method to configure the roles.
         /// </summary>
         /// <param name="modelBuilder">
@@ -33,6 +38,13 @@ namespace e_commerce_course_api.Data
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
+
+            modelBuilder
+                .Entity<User>()
+                .HasOne(x => x.Address)
+                .WithOne()
+                .HasForeignKey<Address>(x => x.Id)
+                .OnDelete(DeleteBehavior.Cascade);
 
             modelBuilder
                 .Entity<Role>()
