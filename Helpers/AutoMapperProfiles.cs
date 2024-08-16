@@ -18,6 +18,7 @@ namespace e_commerce_course_api.Helpers
                 .ForMember(x => x.Type, o => o.MapFrom(s => s.Product.Type));
             CreateMap<Product, ProductDto>();
             CreateMap<User, UserDto>();
+            CreateMap<Address, AddressDto>();
         }
     }
 }
