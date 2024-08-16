@@ -1,9 +1,7 @@
 using e_commerce_course_api.DTOs;
-using e_commerce_course_api.Entities;
 using e_commerce_course_api.Extensions;
 using e_commerce_course_api.Interfaces;
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 
 namespace e_commerce_course_api.Controllers
@@ -11,30 +9,21 @@ namespace e_commerce_course_api.Controllers
     /// <summary>
     /// The account controller.
     /// </summary>
-    /// <param name="userManager">
-    /// The user manager.
-    /// </param>
-    /// <param name="tokenService">
-    /// The token service.
+    /// <param name="userRepository">
+    /// The user repository.
     /// </param>
     /// <param name="basketRepository">
     /// The basket repository.
     /// </param>
     public class AccountController(
-        UserManager<User> userManager,
-        ITokenService tokenService,
+        IUserRepository userRepository,
         IBasketRepository basketRepository
     ) : BaseApiController
     {
         /// <summary>
-        /// The user manager.
+        /// The user repository.
         /// </summary>
-        private readonly UserManager<User> _userManager = userManager;
-
-        /// <summary>
-        /// The token service.
-        /// </summary>
-        private readonly ITokenService _tokenService = tokenService;
+        private readonly IUserRepository _userRepository = userRepository;
 
         /// <summary>
         /// The basket repository.
@@ -53,17 +42,11 @@ namespace e_commerce_course_api.Controllers
         [HttpPost("register")]
         public async Task<ActionResult> Register(RegisterDto registerDto)
         {
-            var user = new User { UserName = registerDto.Name, Email = registerDto.Email, };
-            var result = await _userManager.CreateAsync(user, registerDto.Password);
-
-            if (!result.Succeeded)
-            {
-                foreach (var error in result.Errors)
-                    ModelState.AddModelError(error.Code, error.Description);
-                return ValidationProblem();
-            }
-
-            result = await _userManager.AddToRoleAsync(user, "Member");
+            var result = await _userRepository.CreateUserAsync(
+                registerDto.Name,
+                registerDto.Email,
+                registerDto.Password
+            );
 
             if (!result.Succeeded)
             {
@@ -87,72 +70,74 @@ namespace e_commerce_course_api.Controllers
         [HttpPost("login")]
         public async Task<ActionResult<AuthDto>> Login(LoginDto loginDto)
         {
-            var user = await _userManager.FindByEmailAsync(loginDto.Email);
-
-            if (
-                user is null
-                || user.UserName is null
-                || user.Email is null
-                || !await _userManager.CheckPasswordAsync(user, loginDto.Password)
-            )
+            if (!await _userRepository.CheckLogin(loginDto))
                 return Unauthorized();
 
+            var user = await _userRepository.GetUserByEmailAsync(loginDto.Email);
             var buyerId = Request.Cookies["buyerId"];
-            var userBasket = await _basketRepository.GetBasketByBuyerIdAsync(user.Id.ToString());
-            var anonymousBasket = buyerId is not null
-                ? await _basketRepository.GetBasketByBuyerIdAsync(buyerId)
-                : null;
 
-            if (userBasket is null)
-                if (anonymousBasket is null)
+            var userBasket = await _basketRepository.GetBasketByBuyerIdAsync(user.Id.ToString());
+            var anonymousBasket = buyerId is null
+                ? null
+                : await _basketRepository.GetBasketByBuyerIdAsync(buyerId);
+
+            switch (userBasket, anonymousBasket)
+            {
+                case (null, null):
                     userBasket = await _basketRepository.CreateBasketAsync(user.Id.ToString());
-                else
-                {
-                    await _basketRepository.UpdateBuyerIdAsync(buyerId!, user.Id.ToString());
-                    userBasket = anonymousBasket;
-                    userBasket.BuyerId = user.Id.ToString();
-                }
-            else if (anonymousBasket is not null)
-                await _basketRepository.RemoveBasketAsync(anonymousBasket.Id);
+                    break;
+                case (null, not null):
+                    userBasket = await _basketRepository.UpdateBuyerIdAsync(
+                        buyerId!,
+                        user.Id.ToString()
+                    );
+                    break;
+                case (not null, null):
+                    break;
+                case (not null, not null):
+                    await _basketRepository.RemoveBasketAsync(anonymousBasket.Id);
+                    break;
+            }
 
             Response.Cookies.Delete("buyerId");
 
-            return new AuthDto
-            {
-                Name = user.UserName,
-                Email = user.Email,
-                Roles = await _userManager.GetRolesAsync(user),
-                Token = await _tokenService.GenerateTokenAsync(user),
-                Basket = userBasket,
-            };
+            return Ok(await _userRepository.GetAuthByIdAsync(user.Id, userBasket));
         }
 
+        /// <summary>
+        /// Gets the current user.
+        /// </summary>
+        /// <returns>
+        /// The authentication data transfer object.
+        /// </returns>
         [Authorize]
         [HttpGet("current-user")]
         public async Task<ActionResult<AuthDto>> GetCurrentUser()
         {
-            var userId = User.GetUserId().ToString();
-
-            if (userId is null)
-                return Unauthorized();
-
-            var user = await _userManager.FindByIdAsync(userId);
-
-            if (user is null || user.UserName is null || user.Email is null)
-                return Unauthorized();
+            int id = (int)User.GetUserId()!;
+            var user = await _userRepository.GetUserByIdAsync(id);
 
             var userBasket =
                 await _basketRepository.GetBasketByBuyerIdAsync(user.Id.ToString())
                 ?? await _basketRepository.CreateBasketAsync(user.Id.ToString());
 
-            return new AuthDto
-            {
-                Name = user.UserName,
-                Email = user.Email,
-                Roles = await _userManager.GetRolesAsync(user),
-                Token = await _tokenService.GenerateTokenAsync(user),
-                Basket = userBasket,
-            };
+            return Ok(await _userRepository.GetAuthByIdAsync(user.Id, userBasket));
+        }
+
+        /// <summary>
+        /// Gets the saved address.
+        /// </summary>
+        /// <returns>
+        /// The address data transfer object if found; otherwise, null.
+        /// </returns>
+        [Authorize]
+        [HttpGet("saved-address")]
+        public async Task<ActionResult<AddressDto?>> GetSavedAddress()
+        {
+            int id = (int)User.GetUserId()!;
+            var user = await _userRepository.GetUserByIdAsync(id);
+
+            return Ok(await _userRepository.GetAddressByIdAsync(user.Id));
         }
     }
 }
