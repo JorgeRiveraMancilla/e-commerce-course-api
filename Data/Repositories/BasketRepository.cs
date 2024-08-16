@@ -98,7 +98,7 @@ namespace e_commerce_course_api.Data.Repositories
         public async Task<BasketDto> CreateBasketAsync(string buyerId)
         {
             if (string.IsNullOrWhiteSpace(buyerId))
-                throw new Exception("Buyer ID is required.");
+                throw new Exception("El ID del comprador es requerido.");
 
             var basket = new Basket { BuyerId = buyerId };
             await _dataContext.Baskets.AddAsync(basket);
@@ -141,7 +141,7 @@ namespace e_commerce_course_api.Data.Repositories
                 await _dataContext
                     .Baskets.Include(x => x.Items)
                     .FirstOrDefaultAsync(x => x.Id == id)
-                ?? throw new Exception("Basket not found.");
+                ?? throw new Exception("Carrito no encontrado.");
 
             _dataContext.Baskets.Remove(basket);
         }
@@ -170,14 +170,14 @@ namespace e_commerce_course_api.Data.Repositories
                 await _dataContext
                     .Baskets.Include(x => x.Items)
                     .FirstOrDefaultAsync(x => x.Id == basketId)
-                ?? throw new Exception("Basket not found.");
+                ?? throw new Exception("Carrito no encontrado.");
 
             var item =
                 basket.Items.FirstOrDefault(x => x.ProductId == productId)
-                ?? throw new Exception("Item not found.");
+                ?? throw new Exception("Producto no encontrado.");
 
             if (item.Quantity < quantity)
-                throw new Exception("The quantity to be removed exceeds the quantity of the item.");
+                throw new Exception("La cantidad a eliminar excede la cantidad del producto.");
 
             item.Quantity -= quantity;
 
@@ -211,12 +211,14 @@ namespace e_commerce_course_api.Data.Repositories
         /// <exception cref="Exception">
         /// Thrown when the basket is not found.
         /// </exception>
-        public async Task UpdateBuyerIdAsync(string oldBuyerId, string newBuyerId)
+        public async Task<BasketDto> UpdateBuyerIdAsync(string oldBuyerId, string newBuyerId)
         {
             var basket =
                 await _dataContext.Baskets.FirstOrDefaultAsync(x => x.BuyerId == oldBuyerId)
-                ?? throw new Exception("Basket not found.");
+                ?? throw new Exception("Carrito no encontrado.");
+
             basket.BuyerId = newBuyerId;
+            return _mapper.Map<BasketDto>(basket);
         }
     }
 }
