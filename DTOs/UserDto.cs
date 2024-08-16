@@ -19,10 +19,5 @@ namespace e_commerce_course_api.DTOs
         /// Username.
         /// </summary>
         public required string Email { get; set; }
-
-        /// <summary>
-        /// Basket.
-        /// </summary>
-        public required BasketDto Basket { get; set; }
     }
 }
