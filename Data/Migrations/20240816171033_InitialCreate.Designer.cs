@@ -11,7 +11,7 @@ using e_commerce_course_api.Data;
 namespace e_commerce_course_api.Data.Migrations
 {
     [DbContext(typeof(DataContext))]
-    [Migration("20240811030842_InitialCreate")]
+    [Migration("20240816171033_InitialCreate")]
     partial class InitialCreate
     {
         /// <inheritdoc />
@@ -119,6 +119,44 @@ namespace e_commerce_course_api.Data.Migrations
                     b.ToTable("AspNetUserTokens", (string)null);
                 });
 
+            modelBuilder.Entity("e_commerce_course_api.Entities.Address", b =>
+                {
+                    b.Property<int>("Id")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<string>("Address1")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("Address2")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("City")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("Country")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("FullName")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("PostalCode")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("State")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Address");
+                });
+
             modelBuilder.Entity("e_commerce_course_api.Entities.Basket", b =>
                 {
                     b.Property<int>("Id")
@@ -156,6 +194,29 @@ namespace e_commerce_course_api.Data.Migrations
                     b.HasIndex("ProductId");
 
                     b.ToTable("BasketItems");
+                });
+
+            modelBuilder.Entity("e_commerce_course_api.Entities.Order", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("INTEGER");
+
+                    b.Property<int>("AddressId")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<string>("BuyerId")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
+
+                    b.Property<DateTime>("OrderDate")
+                        .HasColumnType("TEXT");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("AddressId");
+
+                    b.ToTable("Orders");
                 });
 
             modelBuilder.Entity("e_commerce_course_api.Entities.Product", b =>
@@ -357,6 +418,15 @@ namespace e_commerce_course_api.Data.Migrations
                         .IsRequired();
                 });
 
+            modelBuilder.Entity("e_commerce_course_api.Entities.Address", b =>
+                {
+                    b.HasOne("e_commerce_course_api.Entities.User", null)
+                        .WithOne("Address")
+                        .HasForeignKey("e_commerce_course_api.Entities.Address", "Id")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
             modelBuilder.Entity("e_commerce_course_api.Entities.BasketItem", b =>
                 {
                     b.HasOne("e_commerce_course_api.Entities.Basket", "Basket")
@@ -376,6 +446,17 @@ namespace e_commerce_course_api.Data.Migrations
                     b.Navigation("Product");
                 });
 
+            modelBuilder.Entity("e_commerce_course_api.Entities.Order", b =>
+                {
+                    b.HasOne("e_commerce_course_api.Entities.Address", "Address")
+                        .WithMany()
+                        .HasForeignKey("AddressId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Address");
+                });
+
             modelBuilder.Entity("e_commerce_course_api.Entities.User", b =>
                 {
                     b.HasOne("e_commerce_course_api.Entities.Basket", "Basket")
@@ -388,6 +469,11 @@ namespace e_commerce_course_api.Data.Migrations
             modelBuilder.Entity("e_commerce_course_api.Entities.Basket", b =>
                 {
                     b.Navigation("Items");
+                });
+
+            modelBuilder.Entity("e_commerce_course_api.Entities.User", b =>
+                {
+                    b.Navigation("Address");
                 });
 #pragma warning restore 612, 618
         }

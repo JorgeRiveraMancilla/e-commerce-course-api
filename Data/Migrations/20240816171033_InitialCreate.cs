@@ -1,5 +1,4 @@
-﻿using System;
-using Microsoft.EntityFrameworkCore.Migrations;
+﻿using Microsoft.EntityFrameworkCore.Migrations;
 
 #nullable disable
 
@@ -87,10 +86,10 @@ namespace e_commerce_course_api.Data.Migrations
                 {
                     Id = table.Column<int>(type: "INTEGER", nullable: false)
                         .Annotation("Sqlite:Autoincrement", true),
-                    Email = table.Column<string>(type: "TEXT", maxLength: 256, nullable: true),
                     BasketId = table.Column<int>(type: "INTEGER", nullable: true),
                     UserName = table.Column<string>(type: "TEXT", maxLength: 256, nullable: true),
                     NormalizedUserName = table.Column<string>(type: "TEXT", maxLength: 256, nullable: true),
+                    Email = table.Column<string>(type: "TEXT", maxLength: 256, nullable: true),
                     NormalizedEmail = table.Column<string>(type: "TEXT", maxLength: 256, nullable: true),
                     EmailConfirmed = table.Column<bool>(type: "INTEGER", nullable: false),
                     PasswordHash = table.Column<string>(type: "TEXT", nullable: true),
@@ -136,6 +135,30 @@ namespace e_commerce_course_api.Data.Migrations
                         name: "FK_BasketItems_Products_ProductId",
                         column: x => x.ProductId,
                         principalTable: "Products",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Address",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "INTEGER", nullable: false),
+                    FullName = table.Column<string>(type: "TEXT", nullable: false),
+                    Address1 = table.Column<string>(type: "TEXT", nullable: false),
+                    Address2 = table.Column<string>(type: "TEXT", nullable: false),
+                    City = table.Column<string>(type: "TEXT", nullable: false),
+                    State = table.Column<string>(type: "TEXT", nullable: false),
+                    PostalCode = table.Column<string>(type: "TEXT", nullable: false),
+                    Country = table.Column<string>(type: "TEXT", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Address", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Address_AspNetUsers_Id",
+                        column: x => x.Id,
+                        principalTable: "AspNetUsers",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
@@ -225,6 +248,27 @@ namespace e_commerce_course_api.Data.Migrations
                         onDelete: ReferentialAction.Cascade);
                 });
 
+            migrationBuilder.CreateTable(
+                name: "Orders",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "INTEGER", nullable: false)
+                        .Annotation("Sqlite:Autoincrement", true),
+                    BuyerId = table.Column<string>(type: "TEXT", nullable: false),
+                    AddressId = table.Column<int>(type: "INTEGER", nullable: false),
+                    OrderDate = table.Column<DateTime>(type: "TEXT", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Orders", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Orders_Address_AddressId",
+                        column: x => x.AddressId,
+                        principalTable: "Address",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
             migrationBuilder.InsertData(
                 table: "AspNetRoles",
                 columns: new[] { "Id", "ConcurrencyStamp", "Name", "NormalizedName" },
@@ -285,6 +329,11 @@ namespace e_commerce_course_api.Data.Migrations
                 name: "IX_BasketItems_ProductId",
                 table: "BasketItems",
                 column: "ProductId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Orders_AddressId",
+                table: "Orders",
+                column: "AddressId");
         }
 
         /// <inheritdoc />
@@ -309,13 +358,19 @@ namespace e_commerce_course_api.Data.Migrations
                 name: "BasketItems");
 
             migrationBuilder.DropTable(
+                name: "Orders");
+
+            migrationBuilder.DropTable(
                 name: "AspNetRoles");
 
             migrationBuilder.DropTable(
-                name: "AspNetUsers");
+                name: "Products");
 
             migrationBuilder.DropTable(
-                name: "Products");
+                name: "Address");
+
+            migrationBuilder.DropTable(
+                name: "AspNetUsers");
 
             migrationBuilder.DropTable(
                 name: "Baskets");
