@@ -8,31 +8,6 @@ namespace e_commerce_course_api.Interfaces
     public interface IBasketRepository
     {
         /// <summary>
-        /// Gets a basket by the buyer id.
-        /// </summary>
-        /// <param name="buyerId">
-        /// The unique identifier of the buyer.
-        /// </param>
-        /// <returns>
-        /// The basket.
-        /// </returns>
-        Task<BasketDto?> GetBasketByBuyerIdAsync(string buyerId);
-
-        /// <summary>
-        /// Creates a basket.
-        /// </summary>
-        /// <param name="buyerId">
-        /// The unique identifier of the buyer.
-        /// </param>
-        /// <returns>
-        /// The created basket.
-        /// </returns>
-        /// <exception cref="Exception">
-        /// Thrown when the buyer id is null or empty.
-        /// </exception>
-        Task<BasketDto> CreateBasketAsync(string buyerId);
-
-        /// <summary>
         /// Adds an item to the basket.
         /// </summary>
         /// <param name="buyerId">
@@ -51,6 +26,31 @@ namespace e_commerce_course_api.Interfaces
         /// Thrown when the basket is not found or the product is not found.
         /// </exception>
         Task<BasketDto> AddItemToBasketAsync(string buyerId, int productId, int quantity = 1);
+
+        /// <summary>
+        /// Creates a basket.
+        /// </summary>
+        /// <param name="buyerId">
+        /// The unique identifier of the buyer.
+        /// </param>
+        /// <returns>
+        /// The created basket.
+        /// </returns>
+        /// <exception cref="Exception">
+        /// Thrown when the buyer id is null or empty.
+        /// </exception>
+        Task<BasketDto> CreateBasketAsync(string buyerId);
+
+        /// <summary>
+        /// Gets a basket by the buyer id.
+        /// </summary>
+        /// <param name="buyerId">
+        /// The unique identifier of the buyer.
+        /// </param>
+        /// <returns>
+        /// The basket.
+        /// </returns>
+        Task<BasketDto?> GetBasketByBuyerIdAsync(string buyerId);
 
         /// <summary>
         /// Removes a basket.
@@ -109,6 +109,6 @@ namespace e_commerce_course_api.Interfaces
         /// <exception cref="Exception">
         /// Thrown when the basket is not found.
         /// </exception>
-        Task UpdateBuyerIdAsync(string oldBuyerId, string newBuyerId);
+        Task<BasketDto> UpdateBuyerIdAsync(string oldBuyerId, string newBuyerId);
     }
 }
