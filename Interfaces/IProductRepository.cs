@@ -9,15 +9,12 @@ namespace e_commerce_course_api.Interfaces
     public interface IProductRepository
     {
         /// <summary>
-        /// Get the products.
+        /// Get the product brands.
         /// </summary>
-        /// <param name="productParams">
-        /// The parameters to use.
-        /// </param>
         /// <returns>
-        /// The products.
+        /// The product brands.
         /// </returns>
-        Task<PagedList<ProductDto>> GetProductsAsync(ProductParams productParams);
+        Task<string[]> GetProductBrandsAsync();
 
         /// <summary>
         /// Get a product by id.
@@ -31,12 +28,15 @@ namespace e_commerce_course_api.Interfaces
         Task<ProductDto?> GetProductByIdAsync(int id);
 
         /// <summary>
-        /// Get the product brands.
+        /// Get the products.
         /// </summary>
+        /// <param name="productParams">
+        /// The parameters to use.
+        /// </param>
         /// <returns>
-        /// The product brands.
+        /// The products.
         /// </returns>
-        Task<string[]> GetProductBrandsAsync();
+        Task<PagedList<ProductDto>> GetProductsAsync(ProductParams productParams);
 
         /// <summary>
         /// Get the product types.
