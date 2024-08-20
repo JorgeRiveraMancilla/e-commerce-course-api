@@ -174,7 +174,7 @@ namespace e_commerce_course_api.Controllers
                     );
             }
 
-            return CreatedAtRoute("GetOrder", new { id = order.Id }, order.Id);
+            return CreatedAtRoute("GetOrder", order);
         }
     }
 }
