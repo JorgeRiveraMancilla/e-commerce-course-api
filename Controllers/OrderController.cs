@@ -174,7 +174,9 @@ namespace e_commerce_course_api.Controllers
                     );
             }
 
-            return CreatedAtRoute("GetOrder", order);
+            order = await _orderRepository.GetLastOrderByIdAsync(userId);
+
+            return CreatedAtRoute("GetOrder", new { id = order.Id }, order.Id);
         }
     }
 }

@@ -75,6 +75,27 @@ namespace e_commerce_course_api.Data.Repositories
         }
 
         /// <summary>
+        /// Get the last order by user identifier.
+        /// </summary>
+        /// <param name="userId">
+        /// The user identifier.
+        /// </param>
+        /// <returns>
+        /// The order data transfer object.
+        /// </returns>
+        public async Task<OrderDto> GetLastOrderByIdAsync(int userId)
+        {
+            var order = await _dataContext
+                .Orders.Include(x => x.Address)
+                .Include(x => x.OrderItems)
+                .Where(x => x.User.Id == userId)
+                .OrderByDescending(x => x.Id)
+                .FirstOrDefaultAsync();
+
+            return _mapper.Map<OrderDto>(order);
+        }
+
+        /// <summary>
         /// Get an order by its identifier.
         /// </summary>
         /// <param name="id">

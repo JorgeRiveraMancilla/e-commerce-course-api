@@ -25,6 +25,17 @@ namespace e_commerce_course_api.Interfaces
         Task<OrderDto> CreateOrderAsync(OrderDto orderDto, int userId);
 
         /// <summary>
+        /// Get the last order by user identifier.
+        /// </summary>
+        /// <param name="userId">
+        /// The user identifier.
+        /// </param>
+        /// <returns>
+        /// The order data transfer object.
+        /// </returns>
+        Task<OrderDto> GetLastOrderByIdAsync(int userId);
+
+        /// <summary>
         /// Get an order by its identifier.
         /// </summary>
         /// <param name="id">
