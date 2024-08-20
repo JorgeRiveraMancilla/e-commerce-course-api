@@ -1,4 +1,4 @@
-using e_commerce_course_api.DTOs;
+using e_commerce_course_api.DTOs.Baskets;
 
 namespace e_commerce_course_api.Interfaces
 {
@@ -64,7 +64,7 @@ namespace e_commerce_course_api.Interfaces
         /// <exception cref="Exception">
         /// Thrown when the basket is not found.
         /// </exception>
-        public Task RemoveBasketAsync(int id);
+        Task<BasketDto> RemoveBasketAsync(int id);
 
         /// <summary>
         /// Removes an item from the basket.
@@ -84,7 +84,7 @@ namespace e_commerce_course_api.Interfaces
         /// <exception cref="Exception">
         /// Thrown when the basket is not found, the item is not found, or the quantity to be removed exceeds the quantity of the item.
         /// </exception>
-        Task RemoveItemFromBasketAsync(int basketId, int productId, int quantity = 1);
+        Task<BasketDto> RemoveItemFromBasketAsync(int basketId, int productId, int quantity = 1);
 
         /// <summary>
         /// Saves the changes.

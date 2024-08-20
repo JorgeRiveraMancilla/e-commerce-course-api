@@ -118,5 +118,42 @@ namespace e_commerce_course_api.Data.Repositories
         {
             return await _dataContext.Products.Select(x => x.Type).Distinct().ToArrayAsync();
         }
+
+        /// <summary>
+        /// Save the changes.
+        /// </summary>
+        /// <returns>
+        /// A boolean indicating whether the changes were saved.
+        /// </returns>
+        public async Task<bool> SaveChangesAsync()
+        {
+            return 0 < await _dataContext.SaveChangesAsync();
+        }
+
+        /// <summary>
+        /// Update the stock of a product.
+        /// </summary>
+        /// <param name="productId">
+        /// The product identifier.
+        /// </param>
+        /// <param name="quantity">
+        /// The quantity to update the stock by.
+        /// </param>
+        /// <returns>
+        /// The task.
+        /// </returns>
+        /// <exception cref="Exception">
+        /// Thrown when the product is not found.
+        /// </exception>
+        public async Task<ProductDto> UpdateStockAsync(int productId, int quantity)
+        {
+            var product =
+                await _dataContext.Products.FindAsync(productId)
+                ?? throw new Exception("Producto no encontrado.");
+
+            product.Stock += quantity;
+
+            return _mapper.Map<ProductDto>(product);
+        }
     }
 }

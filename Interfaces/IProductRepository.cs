@@ -45,5 +45,30 @@ namespace e_commerce_course_api.Interfaces
         /// The product types.
         /// </returns>
         Task<string[]> GetProductTypesAsync();
+
+        /// <summary>
+        /// Save the changes.
+        /// </summary>
+        /// <returns>
+        /// A boolean indicating whether the changes were saved.
+        /// </returns>
+        Task<bool> SaveChangesAsync();
+
+        /// <summary>
+        /// Update the stock of a product.
+        /// </summary>
+        /// <param name="productId">
+        /// The product identifier.
+        /// </param>
+        /// <param name="quantity">
+        /// The quantity to update the stock by.
+        /// </param>
+        /// <returns>
+        /// The task.
+        /// </returns>
+        /// <exception cref="Exception">
+        /// Thrown when the product is not found.
+        /// </exception>
+        Task<ProductDto> UpdateStockAsync(int productId, int quantity);
     }
 }

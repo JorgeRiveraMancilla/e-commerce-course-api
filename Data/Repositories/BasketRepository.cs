@@ -1,7 +1,7 @@
 using AutoMapper;
 using AutoMapper.QueryableExtensions;
-using e_commerce_course_api.DTOs;
-using e_commerce_course_api.Entities;
+using e_commerce_course_api.DTOs.Baskets;
+using e_commerce_course_api.Entities.Baskets;
 using e_commerce_course_api.Interfaces;
 using Microsoft.EntityFrameworkCore;
 
@@ -49,16 +49,17 @@ namespace e_commerce_course_api.Data.Repositories
         public async Task<BasketDto> AddItemToBasketAsync(
             string buyerId,
             int productId,
-            int quantity = 1
+            int quantity
         )
         {
             var basket =
                 await _dataContext
                     .Baskets.Include(x => x.Items)
+                    .ThenInclude(x => x.Product)
                     .FirstOrDefaultAsync(x => x.BuyerId == buyerId)
                 ?? throw new Exception("Carrito no encontrado.");
 
-            var item = basket.Items.FirstOrDefault(x => x.ProductId == productId);
+            var item = basket.Items.FirstOrDefault(x => x.Product.Id == productId);
 
             if (item is null)
             {
@@ -92,14 +93,8 @@ namespace e_commerce_course_api.Data.Repositories
         /// <returns>
         /// The created basket.
         /// </returns>
-        /// <exception cref="Exception">
-        /// Thrown when the buyer id is null or empty.
-        /// </exception>
         public async Task<BasketDto> CreateBasketAsync(string buyerId)
         {
-            if (string.IsNullOrWhiteSpace(buyerId))
-                throw new Exception("El ID del comprador es requerido.");
-
             var basket = new Basket { BuyerId = buyerId };
             await _dataContext.Baskets.AddAsync(basket);
             return _mapper.Map<BasketDto>(basket);
@@ -135,15 +130,15 @@ namespace e_commerce_course_api.Data.Repositories
         /// <exception cref="Exception">
         /// Thrown when the basket is not found.
         /// </exception>
-        public async Task RemoveBasketAsync(int id)
+        public async Task<BasketDto> RemoveBasketAsync(int id)
         {
             var basket =
-                await _dataContext
-                    .Baskets.Include(x => x.Items)
-                    .FirstOrDefaultAsync(x => x.Id == id)
+                await _dataContext.Baskets.FindAsync(id)
                 ?? throw new Exception("Carrito no encontrado.");
 
             _dataContext.Baskets.Remove(basket);
+
+            return _mapper.Map<BasketDto>(basket);
         }
 
         /// <summary>
@@ -164,25 +159,29 @@ namespace e_commerce_course_api.Data.Repositories
         /// <exception cref="Exception">
         /// Thrown when the basket is not found, the item is not found, or the quantity to be removed exceeds the quantity of the item.
         /// </exception>
-        public async Task RemoveItemFromBasketAsync(int basketId, int productId, int quantity = 1)
+        public async Task<BasketDto> RemoveItemFromBasketAsync(
+            int basketId,
+            int productId,
+            int quantity
+        )
         {
             var basket =
                 await _dataContext
                     .Baskets.Include(x => x.Items)
+                    .ThenInclude(x => x.Product)
                     .FirstOrDefaultAsync(x => x.Id == basketId)
                 ?? throw new Exception("Carrito no encontrado.");
 
             var item =
-                basket.Items.FirstOrDefault(x => x.ProductId == productId)
+                basket.Items.FirstOrDefault(x => x.Product.Id == productId)
                 ?? throw new Exception("Producto no encontrado.");
-
-            if (item.Quantity < quantity)
-                throw new Exception("La cantidad a eliminar excede la cantidad del producto.");
 
             item.Quantity -= quantity;
 
             if (item.Quantity == 0)
                 _dataContext.BasketItems.Remove(item);
+
+            return _mapper.Map<BasketDto>(basket);
         }
 
         /// <summary>

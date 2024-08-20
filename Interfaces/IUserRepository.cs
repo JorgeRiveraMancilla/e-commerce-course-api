@@ -1,4 +1,5 @@
 using e_commerce_course_api.DTOs;
+using e_commerce_course_api.DTOs.Baskets;
 using Microsoft.AspNetCore.Identity;
 
 namespace e_commerce_course_api.Interfaces
@@ -15,40 +16,20 @@ namespace e_commerce_course_api.Interfaces
         /// The login data transfer object.
         /// </param>
         /// <returns>
-        /// True if the login is successful; otherwise, false.
+        /// The user data transfer object if login is successful; otherwise, null.
         /// </returns>
-        Task<bool> CheckLogin(LoginDto loginDto);
+        Task<UserDto?> LoginAsync(LoginDto loginDto);
 
         /// <summary>
         /// Creates a user.
         /// </summary>
-        /// <param name="name">
-        /// The name.
-        /// </param>
-        /// <param name="email">
-        /// The email.
-        /// </param>
-        /// <param name="password">
-        /// The password.
+        /// <param name="registerDto">
+        /// The register data transfer object.
         /// </param>
         /// <returns>
         /// The identity result.
         /// </returns>
-        Task<IdentityResult> CreateUserAsync(string name, string email, string password);
-
-        /// <summary>
-        /// Gets the address by identifier.
-        /// </summary>
-        /// <param name="id">
-        /// The identifier.
-        /// </param>
-        /// <returns>
-        /// The address data transfer object if found; otherwise, null.
-        /// </returns>
-        /// <exception cref="Exception">
-        /// The user is not found.
-        /// </exception>
-        Task<AddressDto?> GetAddressByIdAsync(int id);
+        Task<IdentityResult> CreateUserAsync(RegisterDto registerDto);
 
         /// <summary>
         /// Gets the authentication by identifier.
@@ -94,5 +75,22 @@ namespace e_commerce_course_api.Interfaces
         /// The user is not found.
         /// </exception>
         Task<UserDto> GetUserByIdAsync(int id);
+
+        /// <summary>
+        /// Updates the address.
+        /// </summary>
+        /// <param name="addressDto">
+        /// The address data transfer object.
+        /// </param>
+        /// <param name="userId">
+        /// The user identifier.
+        /// </param>
+        /// <returns>
+        /// The identity result.
+        /// </returns>
+        /// <exception cref="Exception">
+        /// The user is not found.
+        /// </exception>
+        Task<IdentityResult> UpdateAddressAsync(AddressDto addressDto, int userId);
     }
 }
