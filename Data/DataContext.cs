@@ -1,4 +1,6 @@
 using e_commerce_course_api.Entities;
+using e_commerce_course_api.Entities.Baskets;
+using e_commerce_course_api.Entities.Orders;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 
@@ -30,6 +32,11 @@ namespace e_commerce_course_api.Data
         public DbSet<Order> Orders { get; set; }
 
         /// <summary>
+        /// The addresses in the data context.
+        /// </summary>
+        public DbSet<Address> Addresses { get; set; }
+
+        /// <summary>
         /// Overrides the method to configure the roles.
         /// </summary>
         /// <param name="modelBuilder">
@@ -38,13 +45,6 @@ namespace e_commerce_course_api.Data
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
-
-            modelBuilder
-                .Entity<User>()
-                .HasOne(x => x.Address)
-                .WithOne()
-                .HasForeignKey<Address>(x => x.Id)
-                .OnDelete(DeleteBehavior.Cascade);
 
             modelBuilder
                 .Entity<Role>()
