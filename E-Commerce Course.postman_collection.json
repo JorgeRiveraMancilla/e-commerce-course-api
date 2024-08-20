@@ -7,333 +7,475 @@
 	},
 	"item": [
 		{
-			"name": "Account",
+			"name": "Auth",
 			"item": [
 				{
-					"name": "Register",
-					"request": {
-						"auth": {
-							"type": "noauth"
-						},
-						"method": "POST",
-						"header": [],
-						"body": {
-							"mode": "raw",
-							"raw": "{\r\n    \"name\": \"jorge\",\r\n    \"email\": \"jorge@gmail.com\",\r\n    \"password\": \"Password1!\"\r\n}",
-							"options": {
-								"raw": {
-									"language": "json"
+					"name": "Account",
+					"item": [
+						{
+							"name": "Register",
+							"request": {
+								"auth": {
+									"type": "noauth"
+								},
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"name\": \"Alexia\",\r\n    \"email\": \"alexia@gmail.com\",\r\n    \"password\": \"Password1!\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{api}}/account/register",
+									"host": [
+										"{{api}}"
+									],
+									"path": [
+										"account",
+										"register"
+									]
 								}
-							}
+							},
+							"response": []
 						},
-						"url": {
-							"raw": "{{api}}/account/register",
-							"host": [
-								"{{api}}"
+						{
+							"name": "Login",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"const dataResponse = JSON.parse(pm.response.text());\r",
+											"const jwt = dataResponse[\"token\"];\r",
+											"pm.collectionVariables.set(\"token\", jwt);"
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								}
 							],
-							"path": [
-								"account",
-								"register"
-							]
+							"request": {
+								"auth": {
+									"type": "noauth"
+								},
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"email\": \"alexia@gmail.com\",\r\n    \"password\": \"Password1!\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{api}}/account/login",
+									"host": [
+										"{{api}}"
+									],
+									"path": [
+										"account",
+										"login"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Get Current User (Auth)",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{token}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{api}}/account/current-user",
+									"host": [
+										"{{api}}"
+									],
+									"path": [
+										"account",
+										"current-user"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Get Saved Address (Auth)",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{token}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{api}}/account/saved-address",
+									"host": [
+										"{{api}}"
+									],
+									"path": [
+										"account",
+										"saved-address"
+									]
+								}
+							},
+							"response": []
 						}
-					},
-					"response": []
+					]
 				},
 				{
-					"name": "Login",
+					"name": "Basket (Auth)",
+					"item": [
+						{
+							"name": "Get Basket",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{token}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{api}}/basket",
+									"host": [
+										"{{api}}"
+									],
+									"path": [
+										"basket"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Add Item to Basket",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{token}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "POST",
+								"header": [],
+								"url": {
+									"raw": "{{api}}/basket?productId=1&quantity=1",
+									"host": [
+										"{{api}}"
+									],
+									"path": [
+										"basket"
+									],
+									"query": [
+										{
+											"key": "productId",
+											"value": "1"
+										},
+										{
+											"key": "quantity",
+											"value": "1"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Remove Item from Basket",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{token}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "DELETE",
+								"header": [],
+								"url": {
+									"raw": "{{api}}/basket?productId=1&quantity=1",
+									"host": [
+										"{{api}}"
+									],
+									"path": [
+										"basket"
+									],
+									"query": [
+										{
+											"key": "productId",
+											"value": "1"
+										},
+										{
+											"key": "quantity",
+											"value": "1"
+										}
+									]
+								}
+							},
+							"response": []
+						}
+					],
+					"auth": {
+						"type": "bearer",
+						"bearer": [
+							{
+								"key": "token",
+								"value": "{{token}}",
+								"type": "string"
+							}
+						]
+					},
 					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"type": "text/javascript",
+								"packages": {},
+								"exec": [
+									""
+								]
+							}
+						},
 						{
 							"listen": "test",
 							"script": {
-								"exec": [
-									"const dataResponse = JSON.parse(pm.response.text());\r",
-									"const jwt = dataResponse[\"token\"];\r",
-									"pm.collectionVariables.set(\"token\", jwt);"
-								],
 								"type": "text/javascript",
-								"packages": {}
+								"packages": {},
+								"exec": [
+									""
+								]
 							}
+						}
+					]
+				},
+				{
+					"name": "Product",
+					"item": [
+						{
+							"name": "Get Products",
+							"request": {
+								"auth": {
+									"type": "noauth"
+								},
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{api}}/product?orderBy&searchTerm&types&brands&pageNumber=1&pageSize=5",
+									"host": [
+										"{{api}}"
+									],
+									"path": [
+										"product"
+									],
+									"query": [
+										{
+											"key": "orderBy",
+											"value": null
+										},
+										{
+											"key": "searchTerm",
+											"value": null
+										},
+										{
+											"key": "types",
+											"value": null
+										},
+										{
+											"key": "brands",
+											"value": null
+										},
+										{
+											"key": "pageNumber",
+											"value": "1"
+										},
+										{
+											"key": "pageSize",
+											"value": "5"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Get Product Details",
+							"request": {
+								"auth": {
+									"type": "noauth"
+								},
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{api}}/product/1",
+									"host": [
+										"{{api}}"
+									],
+									"path": [
+										"product",
+										"1"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Get Product Filters",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{api}}/product/filters",
+									"host": [
+										"{{api}}"
+									],
+									"path": [
+										"product",
+										"filters"
+									]
+								}
+							},
+							"response": []
 						}
 					],
-					"request": {
-						"auth": {
-							"type": "noauth"
-						},
-						"method": "POST",
-						"header": [],
-						"body": {
-							"mode": "raw",
-							"raw": "{\r\n    \"email\": \"jorge@gmail.com\",\r\n    \"password\": \"Password1!\"\r\n}",
-							"options": {
-								"raw": {
-									"language": "json"
-								}
+					"auth": {
+						"type": "noauth"
+					},
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"type": "text/javascript",
+								"packages": {},
+								"exec": [
+									""
+								]
 							}
 						},
-						"url": {
-							"raw": "{{api}}/account/login",
-							"host": [
-								"{{api}}"
-							],
-							"path": [
-								"account",
-								"login"
-							]
+						{
+							"listen": "test",
+							"script": {
+								"type": "text/javascript",
+								"packages": {},
+								"exec": [
+									""
+								]
+							}
 						}
-					},
-					"response": []
+					]
 				},
 				{
-					"name": "Get Current User",
-					"request": {
-						"auth": {
-							"type": "bearer",
-							"bearer": [
-								{
-									"key": "token",
-									"value": "{{token}}",
-									"type": "string"
+					"name": "Order (Auth)",
+					"item": [
+						{
+							"name": "Get Orders",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{api}}/order",
+									"host": [
+										"{{api}}"
+									],
+									"path": [
+										"order"
+									]
 								}
-							]
+							},
+							"response": []
 						},
-						"method": "GET",
-						"header": [],
-						"url": {
-							"raw": "{{api}}/account/current-user",
-							"host": [
-								"{{api}}"
-							],
-							"path": [
-								"account",
-								"current-user"
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "Get Saved Address",
-					"request": {
-						"auth": {
-							"type": "bearer",
-							"bearer": [
-								{
-									"key": "token",
-									"value": "{{token}}",
-									"type": "string"
+						{
+							"name": "Create Order",
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"saveAddress\": true,\r\n    \"address\": {\r\n        \"fullName\": \"Jorge Rivera\",\r\n        \"address1\": \"Cosca\",\r\n        \"address2\": \"Mario Silva Iriarte\",\r\n        \"city\": \"Antofagasta\",\r\n        \"state\": \"Antofagasta\",\r\n        \"postalCode\": \"1240000\",\r\n        \"country\": \"Chile\"\r\n    }\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{api}}/order",
+									"host": [
+										"{{api}}"
+									],
+									"path": [
+										"order"
+									]
 								}
-							]
+							},
+							"response": []
+						}
+					],
+					"auth": {
+						"type": "bearer",
+						"bearer": [
+							{
+								"key": "token",
+								"value": "{{token}}",
+								"type": "string"
+							}
+						]
+					},
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"type": "text/javascript",
+								"packages": {},
+								"exec": [
+									""
+								]
+							}
 						},
-						"method": "GET",
-						"header": [],
-						"url": {
-							"raw": "{{api}}/account/saved-address",
-							"host": [
-								"{{api}}"
-							],
-							"path": [
-								"account",
-								"saved-address"
-							]
+						{
+							"listen": "test",
+							"script": {
+								"type": "text/javascript",
+								"packages": {},
+								"exec": [
+									""
+								]
+							}
 						}
-					},
-					"response": []
-				}
-			]
-		},
-		{
-			"name": "Basket",
-			"item": [
-				{
-					"name": "Get Basket (Auth)",
-					"request": {
-						"auth": {
-							"type": "bearer",
-							"bearer": [
-								{
-									"key": "token",
-									"value": "{{token}}",
-									"type": "string"
-								}
-							]
-						},
-						"method": "GET",
-						"header": [],
-						"url": {
-							"raw": "{{api}}/basket",
-							"host": [
-								"{{api}}"
-							],
-							"path": [
-								"basket"
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "Add Item to Basket (Auth)",
-					"request": {
-						"auth": {
-							"type": "bearer",
-							"bearer": [
-								{
-									"key": "token",
-									"value": "{{token}}",
-									"type": "string"
-								}
-							]
-						},
-						"method": "POST",
-						"header": [],
-						"url": {
-							"raw": "{{api}}/basket?productId=1&quantity=1",
-							"host": [
-								"{{api}}"
-							],
-							"path": [
-								"basket"
-							],
-							"query": [
-								{
-									"key": "productId",
-									"value": "1"
-								},
-								{
-									"key": "quantity",
-									"value": "1"
-								}
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "Remove Item from Basket (Auth)",
-					"request": {
-						"auth": {
-							"type": "bearer",
-							"bearer": [
-								{
-									"key": "token",
-									"value": "{{token}}",
-									"type": "string"
-								}
-							]
-						},
-						"method": "DELETE",
-						"header": [],
-						"url": {
-							"raw": "{{api}}/basket?productId=1&quantity=1",
-							"host": [
-								"{{api}}"
-							],
-							"path": [
-								"basket"
-							],
-							"query": [
-								{
-									"key": "productId",
-									"value": "1"
-								},
-								{
-									"key": "quantity",
-									"value": "1"
-								}
-							]
-						}
-					},
-					"response": []
-				}
-			]
-		},
-		{
-			"name": "Product",
-			"item": [
-				{
-					"name": "Get Products",
-					"request": {
-						"auth": {
-							"type": "noauth"
-						},
-						"method": "GET",
-						"header": [],
-						"url": {
-							"raw": "{{api}}/product?orderBy&searchTerm&types&brands&pageNumber=1&pageSize=5",
-							"host": [
-								"{{api}}"
-							],
-							"path": [
-								"product"
-							],
-							"query": [
-								{
-									"key": "orderBy",
-									"value": null
-								},
-								{
-									"key": "searchTerm",
-									"value": null
-								},
-								{
-									"key": "types",
-									"value": null
-								},
-								{
-									"key": "brands",
-									"value": null
-								},
-								{
-									"key": "pageNumber",
-									"value": "1"
-								},
-								{
-									"key": "pageSize",
-									"value": "5"
-								}
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "Get Product Details",
-					"request": {
-						"auth": {
-							"type": "noauth"
-						},
-						"method": "GET",
-						"header": [],
-						"url": {
-							"raw": "{{api}}/product/1",
-							"host": [
-								"{{api}}"
-							],
-							"path": [
-								"product",
-								"1"
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "Get Product Filters",
-					"request": {
-						"method": "GET",
-						"header": [],
-						"url": {
-							"raw": "{{api}}/product/filters",
-							"host": [
-								"{{api}}"
-							],
-							"path": [
-								"product",
-								"filters"
-							]
-						}
-					},
-					"response": []
+					]
 				}
 			],
 			"auth": {
@@ -363,82 +505,108 @@
 			]
 		},
 		{
-			"name": "Order",
+			"name": "No Auth",
 			"item": [
 				{
-					"name": "Get Orders",
-					"request": {
-						"method": "GET",
-						"header": [],
-						"url": {
-							"raw": "{{api}}/order",
-							"host": [
-								"{{api}}"
-							],
-							"path": [
-								"order"
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "Create Order",
-					"request": {
-						"method": "POST",
-						"header": [],
-						"body": {
-							"mode": "raw",
-							"raw": "{\r\n    \"saveAddress\": false,\r\n    \"address\": {\r\n        \"fullName\": \"Jorge Rivera\",\r\n        \"address1\": \"Cosca\",\r\n        \"address2\": \"Mario Silva Iriarte\",\r\n        \"city\": \"Antofagasta\",\r\n        \"state\": \"Antofagasta\",\r\n        \"postalCode\": \"1240000\",\r\n        \"country\": \"Chile\"\r\n    }\r\n}",
-							"options": {
-								"raw": {
-									"language": "json"
+					"name": "Basket (Cookies)",
+					"item": [
+						{
+							"name": "Get Basket",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{api}}/basket",
+									"host": [
+										"{{api}}"
+									],
+									"path": [
+										"basket"
+									]
 								}
+							},
+							"response": []
+						},
+						{
+							"name": "Add Item to Basket",
+							"request": {
+								"method": "POST",
+								"header": [],
+								"url": {
+									"raw": "{{api}}/basket?productId=1&quantity=1",
+									"host": [
+										"{{api}}"
+									],
+									"path": [
+										"basket"
+									],
+									"query": [
+										{
+											"key": "productId",
+											"value": "1"
+										},
+										{
+											"key": "quantity",
+											"value": "1"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Remove Item from Basket",
+							"request": {
+								"method": "DELETE",
+								"header": [],
+								"url": {
+									"raw": "{{api}}/basket?productId=1&quantity=1",
+									"host": [
+										"{{api}}"
+									],
+									"path": [
+										"basket"
+									],
+									"query": [
+										{
+											"key": "productId",
+											"value": "1"
+										},
+										{
+											"key": "quantity",
+											"value": "1"
+										}
+									]
+								}
+							},
+							"response": []
+						}
+					],
+					"auth": {
+						"type": "noauth"
+					},
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"type": "text/javascript",
+								"packages": {},
+								"exec": [
+									""
+								]
 							}
 						},
-						"url": {
-							"raw": "{{api}}/order",
-							"host": [
-								"{{api}}"
-							],
-							"path": [
-								"order"
-							]
+						{
+							"listen": "test",
+							"script": {
+								"type": "text/javascript",
+								"packages": {},
+								"exec": [
+									""
+								]
+							}
 						}
-					},
-					"response": []
-				}
-			],
-			"auth": {
-				"type": "bearer",
-				"bearer": [
-					{
-						"key": "token",
-						"value": "{{token}}",
-						"type": "string"
-					}
-				]
-			},
-			"event": [
-				{
-					"listen": "prerequest",
-					"script": {
-						"type": "text/javascript",
-						"packages": {},
-						"exec": [
-							""
-						]
-					}
-				},
-				{
-					"listen": "test",
-					"script": {
-						"type": "text/javascript",
-						"packages": {},
-						"exec": [
-							""
-						]
-					}
+					]
 				}
 			]
 		}
