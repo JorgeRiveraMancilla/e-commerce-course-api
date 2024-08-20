@@ -11,7 +11,7 @@ using e_commerce_course_api.Data;
 namespace e_commerce_course_api.Data.Migrations
 {
     [DbContext(typeof(DataContext))]
-    [Migration("20240816171033_InitialCreate")]
+    [Migration("20240819201100_InitialCreate")]
     partial class InitialCreate
     {
         /// <inheritdoc />
@@ -122,6 +122,7 @@ namespace e_commerce_course_api.Data.Migrations
             modelBuilder.Entity("e_commerce_course_api.Entities.Address", b =>
                 {
                     b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
                         .HasColumnType("INTEGER");
 
                     b.Property<string>("Address1")
@@ -154,10 +155,10 @@ namespace e_commerce_course_api.Data.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Address");
+                    b.ToTable("Addresses");
                 });
 
-            modelBuilder.Entity("e_commerce_course_api.Entities.Basket", b =>
+            modelBuilder.Entity("e_commerce_course_api.Entities.Baskets.Basket", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -172,7 +173,7 @@ namespace e_commerce_course_api.Data.Migrations
                     b.ToTable("Baskets");
                 });
 
-            modelBuilder.Entity("e_commerce_course_api.Entities.BasketItem", b =>
+            modelBuilder.Entity("e_commerce_course_api.Entities.Baskets.BasketItem", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -196,7 +197,7 @@ namespace e_commerce_course_api.Data.Migrations
                     b.ToTable("BasketItems");
                 });
 
-            modelBuilder.Entity("e_commerce_course_api.Entities.Order", b =>
+            modelBuilder.Entity("e_commerce_course_api.Entities.Orders.Order", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -205,18 +206,76 @@ namespace e_commerce_course_api.Data.Migrations
                     b.Property<int>("AddressId")
                         .HasColumnType("INTEGER");
 
-                    b.Property<string>("BuyerId")
-                        .IsRequired()
-                        .HasColumnType("TEXT");
+                    b.Property<long>("DeliveryFee")
+                        .HasColumnType("INTEGER");
 
                     b.Property<DateTime>("OrderDate")
                         .HasColumnType("TEXT");
+
+                    b.Property<int>("OrderStatus")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<long>("Subtotal")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<long>("Total")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<int>("UserId")
+                        .HasColumnType("INTEGER");
 
                     b.HasKey("Id");
 
                     b.HasIndex("AddressId");
 
+                    b.HasIndex("UserId");
+
                     b.ToTable("Orders");
+                });
+
+            modelBuilder.Entity("e_commerce_course_api.Entities.Orders.OrderItem", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("INTEGER");
+
+                    b.Property<string>("Brand")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("Description")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("ImageUrl")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
+
+                    b.Property<int>("OrderId")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<long>("Price")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<int>("ProductId")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<int>("Quantity")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<string>("Type")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("OrderId");
+
+                    b.ToTable("OrderItem");
                 });
 
             modelBuilder.Entity("e_commerce_course_api.Entities.Product", b =>
@@ -306,7 +365,7 @@ namespace e_commerce_course_api.Data.Migrations
                     b.Property<int>("AccessFailedCount")
                         .HasColumnType("INTEGER");
 
-                    b.Property<int?>("BasketId")
+                    b.Property<int?>("AddressId")
                         .HasColumnType("INTEGER");
 
                     b.Property<string>("ConcurrencyStamp")
@@ -355,7 +414,7 @@ namespace e_commerce_course_api.Data.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("BasketId");
+                    b.HasIndex("AddressId");
 
                     b.HasIndex("NormalizedEmail")
                         .HasDatabaseName("EmailIndex");
@@ -418,18 +477,9 @@ namespace e_commerce_course_api.Data.Migrations
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("e_commerce_course_api.Entities.Address", b =>
+            modelBuilder.Entity("e_commerce_course_api.Entities.Baskets.BasketItem", b =>
                 {
-                    b.HasOne("e_commerce_course_api.Entities.User", null)
-                        .WithOne("Address")
-                        .HasForeignKey("e_commerce_course_api.Entities.Address", "Id")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-                });
-
-            modelBuilder.Entity("e_commerce_course_api.Entities.BasketItem", b =>
-                {
-                    b.HasOne("e_commerce_course_api.Entities.Basket", "Basket")
+                    b.HasOne("e_commerce_course_api.Entities.Baskets.Basket", "Basket")
                         .WithMany("Items")
                         .HasForeignKey("BasketId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -446,7 +496,7 @@ namespace e_commerce_course_api.Data.Migrations
                     b.Navigation("Product");
                 });
 
-            modelBuilder.Entity("e_commerce_course_api.Entities.Order", b =>
+            modelBuilder.Entity("e_commerce_course_api.Entities.Orders.Order", b =>
                 {
                     b.HasOne("e_commerce_course_api.Entities.Address", "Address")
                         .WithMany()
@@ -454,26 +504,50 @@ namespace e_commerce_course_api.Data.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
+                    b.HasOne("e_commerce_course_api.Entities.User", "User")
+                        .WithMany("Orders")
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
                     b.Navigation("Address");
+
+                    b.Navigation("User");
+                });
+
+            modelBuilder.Entity("e_commerce_course_api.Entities.Orders.OrderItem", b =>
+                {
+                    b.HasOne("e_commerce_course_api.Entities.Orders.Order", "Order")
+                        .WithMany("OrderItems")
+                        .HasForeignKey("OrderId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Order");
                 });
 
             modelBuilder.Entity("e_commerce_course_api.Entities.User", b =>
                 {
-                    b.HasOne("e_commerce_course_api.Entities.Basket", "Basket")
+                    b.HasOne("e_commerce_course_api.Entities.Address", "Address")
                         .WithMany()
-                        .HasForeignKey("BasketId");
+                        .HasForeignKey("AddressId");
 
-                    b.Navigation("Basket");
+                    b.Navigation("Address");
                 });
 
-            modelBuilder.Entity("e_commerce_course_api.Entities.Basket", b =>
+            modelBuilder.Entity("e_commerce_course_api.Entities.Baskets.Basket", b =>
                 {
                     b.Navigation("Items");
                 });
 
+            modelBuilder.Entity("e_commerce_course_api.Entities.Orders.Order", b =>
+                {
+                    b.Navigation("OrderItems");
+                });
+
             modelBuilder.Entity("e_commerce_course_api.Entities.User", b =>
                 {
-                    b.Navigation("Address");
+                    b.Navigation("Orders");
                 });
 #pragma warning restore 612, 618
         }
