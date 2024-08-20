@@ -151,9 +151,14 @@ namespace e_commerce_course_api.Controllers
         [HttpGet("saved-address")]
         public async Task<ActionResult<AddressDto?>> GetSavedAddress()
         {
-            int userId = User.GetUserId();
+            var userId = User.GetUserId();
 
-            return Ok(await _addressRepository.GetAddressByIdAsync(userId));
+            var address = await _addressRepository.GetAddressByIdAsync(userId);
+
+            if (address is not null)
+                address.Id = 0;
+
+            return Ok(address);
         }
     }
 }
