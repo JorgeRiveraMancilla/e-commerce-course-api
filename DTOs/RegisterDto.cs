@@ -8,19 +8,19 @@ namespace e_commerce_course_api.DTOs
     public class RegisterDto
     {
         /// <summary>
-        /// Username.
+        /// The user's name.
         /// </summary>
         [Length(3, 20)]
         public required string Name { get; set; }
 
         /// <summary>
-        /// Email.
+        /// The user's email.
         /// </summary>
         [EmailAddress]
         public required string Email { get; set; }
 
         /// <summary>
-        /// Password.
+        /// The user's password.
         /// </summary>
         [Length(6, 20)]
         public required string Password { get; set; }

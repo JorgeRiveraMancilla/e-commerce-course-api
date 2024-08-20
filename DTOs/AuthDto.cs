@@ -1,7 +1,9 @@
+using e_commerce_course_api.DTOs.Baskets;
+
 namespace e_commerce_course_api.DTOs
 {
     /// <summary>
-    /// Data transfer object for authentication.
+    /// Data Transfer Object for authentication.
     /// </summary>
     public class AuthDto
     {

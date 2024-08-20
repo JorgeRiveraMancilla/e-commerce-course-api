@@ -1,4 +1,4 @@
-namespace e_commerce_course_api.Entities
+namespace e_commerce_course_api.Entities.Orders
 {
     /// <summary>
     /// Represents the status of an order.

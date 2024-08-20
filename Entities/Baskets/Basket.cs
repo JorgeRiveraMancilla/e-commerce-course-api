@@ -1,4 +1,4 @@
-namespace e_commerce_course_api.Entities
+namespace e_commerce_course_api.Entities.Baskets
 {
     /// <summary>
     /// Represents a basket of products.

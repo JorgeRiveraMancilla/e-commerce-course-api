@@ -1,4 +1,4 @@
-namespace e_commerce_course_api.DTOs
+namespace e_commerce_course_api.DTOs.Baskets
 {
     /// <summary>
     /// Data Transfer Object for Basket.
@@ -6,17 +6,17 @@ namespace e_commerce_course_api.DTOs
     public class BasketDto
     {
         /// <summary>
-        /// Id.
+        /// The basket identifier.
         /// </summary>
         public int Id { get; set; }
 
         /// <summary>
-        /// BuyerId.
+        /// The buyer identifier.
         /// </summary>
         public required string BuyerId { get; set; }
 
         /// <summary>
-        /// Items.
+        /// The items in the basket.
         /// </summary>
         public required List<BasketItemDto> Items { get; set; }
     }

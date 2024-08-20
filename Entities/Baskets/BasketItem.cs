@@ -1,4 +1,4 @@
-namespace e_commerce_course_api.Entities
+namespace e_commerce_course_api.Entities.Baskets
 {
     /// <summary>
     /// Represents an item in a basket.
@@ -24,7 +24,7 @@ namespace e_commerce_course_api.Entities
         /// The product.
         /// </summary>
         public required Product Product { get; set; }
-        
+
         /// <summary>
         /// The unique identifier of the basket.
         /// </summary>

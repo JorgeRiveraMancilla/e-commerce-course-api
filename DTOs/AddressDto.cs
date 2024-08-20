@@ -1,7 +1,7 @@
 namespace e_commerce_course_api.DTOs
 {
     /// <summary>
-    /// Represents an address data transfer object.
+    /// Data Transfer Object for Address.
     /// </summary>
     public class AddressDto
     {

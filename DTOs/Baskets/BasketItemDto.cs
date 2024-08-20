@@ -1,4 +1,4 @@
-namespace e_commerce_course_api.DTOs
+namespace e_commerce_course_api.DTOs.Baskets
 {
     /// <summary>
     /// Data Transfer Object for BasketItem.
@@ -6,37 +6,42 @@ namespace e_commerce_course_api.DTOs
     public class BasketItemDto
     {
         /// <summary>
-        /// ProductId.
+        /// The unique identifier of the product.
         /// </summary>
         public int ProductId { get; set; }
 
         /// <summary>
-        /// Name.
+        /// The name of the product.
         /// </summary>
         public required string Name { get; set; }
 
         /// <summary>
-        /// Price.
+        /// The description of the product.
+        /// </summary>
+        public required string Description { get; set; }
+
+        /// <summary>
+        /// The price of the product.
         /// </summary>
         public long Price { get; set; }
 
         /// <summary>
-        /// URL of the image.
+        /// The URL of the image of the product.
         /// </summary>
         public required string ImageUrl { get; set; }
 
         /// <summary>
-        /// Brand.
-        /// </summary>
-        public required string Brand { get; set; }
-
-        /// <summary>
-        /// Type.
+        /// The type of the product.
         /// </summary>
         public required string Type { get; set; }
 
         /// <summary>
-        /// Quantity.
+        /// The brand of the product.
+        /// </summary>
+        public required string Brand { get; set; }
+
+        /// <summary>
+        /// The quantity of the item.
         /// </summary>
         public int Quantity { get; set; }
     }

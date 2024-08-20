@@ -8,13 +8,13 @@ namespace e_commerce_course_api.DTOs
     public class LoginDto
     {
         /// <summary>
-        /// Email.
+        /// The user's email.
         /// </summary>
         [EmailAddress]
         public required string Email { get; set; }
 
         /// <summary>
-        /// Password.
+        /// The user's password.
         /// </summary>
         [Length(6, 20)]
         public required string Password { get; set; }
