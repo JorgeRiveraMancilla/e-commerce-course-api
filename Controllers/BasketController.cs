@@ -1,4 +1,4 @@
-using e_commerce_course_api.DTOs;
+using e_commerce_course_api.DTOs.Baskets;
 using e_commerce_course_api.Extensions;
 using e_commerce_course_api.Interfaces;
 using Microsoft.AspNetCore.Mvc;
@@ -55,12 +55,12 @@ namespace e_commerce_course_api.Controllers
         [HttpPost]
         public async Task<ActionResult> AddItemToBasket(
             [FromQuery] int productId,
-            [FromQuery] int quantity = 1
+            [FromQuery] int quantity
         )
         {
-            string? buyerId = GetBuyerId();
+            var buyerId = GetBuyerId();
 
-            if (string.IsNullOrWhiteSpace(buyerId))
+            if (buyerId is null)
             {
                 buyerId = Guid.NewGuid().ToString();
                 var cookieOptions = new CookieOptions
@@ -107,7 +107,7 @@ namespace e_commerce_course_api.Controllers
         /// Ok if item is removed, not found if basket does not exist, bad request otherwise.
         /// </returns>
         [HttpDelete]
-        public async Task<ActionResult> RemoveBasketItem(int productId, int quantity = 1)
+        public async Task<ActionResult> RemoveBasketItem(int productId, int quantity)
         {
             var buyerId = GetBuyerId();
 
@@ -139,9 +139,22 @@ namespace e_commerce_course_api.Controllers
             return Ok();
         }
 
+        /// <summary>
+        /// Get the buyer id.
+        /// </summary>
+        /// <returns>
+        /// The buyer id.
+        /// </returns>
         private string? GetBuyerId()
         {
-            return User.GetUserId()?.ToString() ?? Request.Cookies["buyerId"];
+            try
+            {
+                return User.GetUserId().ToString();
+            }
+            catch
+            {
+                return Request.Cookies["buyerId"];
+            }
         }
     }
 }
