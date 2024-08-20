@@ -53,6 +53,8 @@ builder
     .Services.AddIdentityCore<User>(opt =>
     {
         opt.User.RequireUniqueEmail = true;
+        opt.User.AllowedUserNameCharacters =
+            "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ ";
     })
     .AddRoles<Role>()
     .AddEntityFrameworkStores<DataContext>();
