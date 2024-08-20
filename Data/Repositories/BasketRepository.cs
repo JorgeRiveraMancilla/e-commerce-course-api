@@ -213,7 +213,10 @@ namespace e_commerce_course_api.Data.Repositories
         public async Task<BasketDto> UpdateBuyerIdAsync(string oldBuyerId, string newBuyerId)
         {
             var basket =
-                await _dataContext.Baskets.FirstOrDefaultAsync(x => x.BuyerId == oldBuyerId)
+                await _dataContext
+                    .Baskets.Include(x => x.Items)
+                    .ThenInclude(x => x.Product)
+                    .FirstOrDefaultAsync(x => x.BuyerId == oldBuyerId)
                 ?? throw new Exception("Carrito no encontrado.");
 
             basket.BuyerId = newBuyerId;
