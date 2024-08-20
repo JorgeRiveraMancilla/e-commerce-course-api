@@ -14,27 +14,39 @@ namespace e_commerce_course_api.Extensions
         /// The user.
         /// </param>
         /// <returns>
-        /// The user identifier if found; otherwise, null.
+        /// The user identifier.
         /// </returns>
-        public static int? GetUserId(this ClaimsPrincipal user)
+        /// <exception cref="Exception">
+        /// Thrown when the user is not found.
+        /// </exception>
+        public static int GetUserId(this ClaimsPrincipal user)
         {
-            var userId = user.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+            var userId =
+                (user.FindFirst(ClaimTypes.NameIdentifier)?.Value)
+                ?? throw new Exception("Usuario no encontrado.");
 
-            return userId is null ? null : int.Parse(userId);
+            return int.Parse(userId);
         }
 
         /// <summary>
-        /// Get the user email.
+        /// Get the email of the user.
         /// </summary>
         /// <param name="user">
         /// The user.
         /// </param>
         /// <returns>
-        /// The user email if found; otherwise, null.
+        /// The email of the user.
         /// </returns>
-        public static string? GetEmail(this ClaimsPrincipal user)
+        /// <exception cref="Exception">
+        /// Thrown when the user is not found.
+        /// </exception>
+        public static string GetEmail(this ClaimsPrincipal user)
         {
-            return user.FindFirst(ClaimTypes.Email)?.Value;
+            var email =
+                user.FindFirst(ClaimTypes.Email)?.Value
+                ?? throw new Exception("Usuario no encontrado.");
+
+            return email;
         }
     }
 }
