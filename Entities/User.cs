@@ -8,6 +8,9 @@ namespace e_commerce_course_api.Entities
     /// </summary>
     public class User : IdentityUser<int>
     {
+        /// <summary>
+        /// The full name of the user.
+        /// </summary>
         public override string? UserName
         {
             get => base.UserName;
@@ -20,6 +23,10 @@ namespace e_commerce_course_api.Entities
                 base.UserName = value;
             }
         }
+
+        /// <summary>
+        /// The email of the user.
+        /// </summary>
         public override string? Email
         {
             get => base.Email;
