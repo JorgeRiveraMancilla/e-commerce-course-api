@@ -3,21 +3,16 @@ namespace e_commerce_course_api.Entities.Orders
     /// <summary>
     /// Represents the status of an order.
     /// </summary>
-    public enum OrderStatus
+    public class OrderStatus
     {
         /// <summary>
-        /// The order is pending.
+        /// The unique identifier of the status.
         /// </summary>
-        Pending,
+        public int Id { get; set; }
 
         /// <summary>
-        /// The payment has been received.
+        /// The name of the status.
         /// </summary>
-        PaymentReceived,
-
-        /// <summary>
-        /// The payment has failed.
-        /// </summary>
-        PaymentFailed,
+        public required string Name { get; set; }
     }
 }
