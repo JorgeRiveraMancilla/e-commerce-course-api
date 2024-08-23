@@ -1,5 +1,6 @@
 using System.Text.Json;
 using e_commerce_course_api.Entities;
+using e_commerce_course_api.Entities.Orders;
 using Microsoft.AspNetCore.Identity;
 
 namespace e_commerce_course_api.Data
@@ -31,6 +32,7 @@ namespace e_commerce_course_api.Data
         {
             await SeedProductsAsync(dataContext);
             await SeedUsersAsync(userManager);
+            await SeedOrderStatusesAsync(dataContext);
         }
 
         /// <summary>
@@ -80,6 +82,31 @@ namespace e_commerce_course_api.Data
 
             await userManager.CreateAsync(admin, "Pa$$w0rd");
             await userManager.AddToRolesAsync(admin, ["Admin", "Member"]);
+        }
+
+        /// <summary>
+        /// Seeds the order statuses.
+        /// </summary>
+        /// <param name="dataContext">
+        /// The data context.
+        /// </param>
+        /// <returns>
+        /// A <see cref="Task"/> representing the asynchronous operation.
+        /// </returns>
+        public static async Task SeedOrderStatusesAsync(DataContext dataContext)
+        {
+            if (dataContext.OrderStatuses.Any())
+                return;
+
+            var orderStatuses = new List<OrderStatus>
+            {
+                new() { Name = "Pending" },
+                new() { Name = "Payment Received" },
+                new() { Name = "Payment Failed" },
+            };
+
+            await dataContext.AddRangeAsync(orderStatuses);
+            await dataContext.SaveChangesAsync();
         }
     }
 }
