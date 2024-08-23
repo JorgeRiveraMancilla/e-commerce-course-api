@@ -13,27 +13,37 @@ namespace e_commerce_course_api.Entities.Orders
         /// <summary>
         /// The date of the order.
         /// </summary>
-        public DateTime OrderDate { get; set; } = DateTime.UtcNow;
+        public required DateTime OrderDate { get; set; } = DateTime.UtcNow;
 
         /// <summary>
         /// The subtotal of the order.
         /// </summary>
-        public long Subtotal { get; set; }
+        public required long Subtotal { get; set; }
 
         /// <summary>
         /// The delivery fee of the order.
         /// </summary>
-        public long DeliveryFee { get; set; }
+        public required long DeliveryFee { get; set; }
 
         /// <summary>
         /// The total of the order.
         /// </summary>
-        public long Total { get; set; }
+        public required long Total { get; set; }
 
         /// <summary>
-        /// The total of the order.
+        /// The unique identifier of the payment intent.
         /// </summary>
-        public OrderStatus OrderStatus { get; set; } = OrderStatus.Pending;
+        public required string PaymentIntentId { get; set; }
+
+        /// <summary>
+        /// The status identifier.
+        /// </summary>
+        public int StatusId { get; set; }
+
+        /// <summary>
+        /// The status of the order.
+        /// </summary>
+        public required OrderStatus OrderStatus { get; set; }
 
         /// <summary>
         /// The user identifier.
@@ -41,7 +51,7 @@ namespace e_commerce_course_api.Entities.Orders
         public int UserId { get; set; }
 
         /// <summary>
-        /// The user.
+        /// The user who placed the order.
         /// </summary>
         public required User User { get; set; }
 

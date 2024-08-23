@@ -16,6 +16,16 @@ namespace e_commerce_course_api.Entities.Baskets
         public required string BuyerId { get; set; }
 
         /// <summary>
+        /// The unique identifier of the payment intent.
+        /// </summary>
+        public required string PaymentIntentId { get; set; }
+
+        /// <summary>
+        /// The client secret of the payment intent.
+        /// </summary>
+        public required string ClientSecret { get; set; }
+
+        /// <summary>
         /// The items in the basket.
         /// </summary>
         public List<BasketItem> Items { get; set; } = [];
