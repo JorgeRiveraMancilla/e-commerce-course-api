@@ -52,11 +52,26 @@ namespace e_commerce_course_api.Data.Migrations
                 {
                     Id = table.Column<int>(type: "INTEGER", nullable: false)
                         .Annotation("Sqlite:Autoincrement", true),
-                    BuyerId = table.Column<string>(type: "TEXT", nullable: false)
+                    BuyerId = table.Column<string>(type: "TEXT", nullable: false),
+                    PaymentIntentId = table.Column<string>(type: "TEXT", nullable: false),
+                    ClientSecret = table.Column<string>(type: "TEXT", nullable: false)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Baskets", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "OrderStatus",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "INTEGER", nullable: false)
+                        .Annotation("Sqlite:Autoincrement", true),
+                    Name = table.Column<string>(type: "TEXT", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_OrderStatus", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
@@ -253,7 +268,9 @@ namespace e_commerce_course_api.Data.Migrations
                     Subtotal = table.Column<long>(type: "INTEGER", nullable: false),
                     DeliveryFee = table.Column<long>(type: "INTEGER", nullable: false),
                     Total = table.Column<long>(type: "INTEGER", nullable: false),
-                    OrderStatus = table.Column<int>(type: "INTEGER", nullable: false),
+                    PaymentIntentId = table.Column<string>(type: "TEXT", nullable: false),
+                    StatusId = table.Column<int>(type: "INTEGER", nullable: false),
+                    OrderStatusId = table.Column<int>(type: "INTEGER", nullable: false),
                     UserId = table.Column<int>(type: "INTEGER", nullable: false),
                     AddressId = table.Column<int>(type: "INTEGER", nullable: false)
                 },
@@ -270,6 +287,12 @@ namespace e_commerce_course_api.Data.Migrations
                         name: "FK_Orders_AspNetUsers_UserId",
                         column: x => x.UserId,
                         principalTable: "AspNetUsers",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_Orders_OrderStatus_OrderStatusId",
+                        column: x => x.OrderStatusId,
+                        principalTable: "OrderStatus",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
@@ -373,6 +396,11 @@ namespace e_commerce_course_api.Data.Migrations
                 column: "AddressId");
 
             migrationBuilder.CreateIndex(
+                name: "IX_Orders_OrderStatusId",
+                table: "Orders",
+                column: "OrderStatusId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_Orders_UserId",
                 table: "Orders",
                 column: "UserId");
@@ -416,6 +444,9 @@ namespace e_commerce_course_api.Data.Migrations
 
             migrationBuilder.DropTable(
                 name: "AspNetUsers");
+
+            migrationBuilder.DropTable(
+                name: "OrderStatus");
 
             migrationBuilder.DropTable(
                 name: "Addresses");

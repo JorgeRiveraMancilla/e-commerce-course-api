@@ -11,7 +11,7 @@ using e_commerce_course_api.Data;
 namespace e_commerce_course_api.Data.Migrations
 {
     [DbContext(typeof(DataContext))]
-    [Migration("20240819201100_InitialCreate")]
+    [Migration("20240821223623_InitialCreate")]
     partial class InitialCreate
     {
         /// <inheritdoc />
@@ -168,6 +168,14 @@ namespace e_commerce_course_api.Data.Migrations
                         .IsRequired()
                         .HasColumnType("TEXT");
 
+                    b.Property<string>("ClientSecret")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("PaymentIntentId")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
+
                     b.HasKey("Id");
 
                     b.ToTable("Baskets");
@@ -212,7 +220,14 @@ namespace e_commerce_course_api.Data.Migrations
                     b.Property<DateTime>("OrderDate")
                         .HasColumnType("TEXT");
 
-                    b.Property<int>("OrderStatus")
+                    b.Property<int>("OrderStatusId")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<string>("PaymentIntentId")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
+
+                    b.Property<int>("StatusId")
                         .HasColumnType("INTEGER");
 
                     b.Property<long>("Subtotal")
@@ -227,6 +242,8 @@ namespace e_commerce_course_api.Data.Migrations
                     b.HasKey("Id");
 
                     b.HasIndex("AddressId");
+
+                    b.HasIndex("OrderStatusId");
 
                     b.HasIndex("UserId");
 
@@ -276,6 +293,21 @@ namespace e_commerce_course_api.Data.Migrations
                     b.HasIndex("OrderId");
 
                     b.ToTable("OrderItem");
+                });
+
+            modelBuilder.Entity("e_commerce_course_api.Entities.Orders.OrderStatus", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("INTEGER");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("OrderStatus");
                 });
 
             modelBuilder.Entity("e_commerce_course_api.Entities.Product", b =>
@@ -504,6 +536,12 @@ namespace e_commerce_course_api.Data.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
+                    b.HasOne("e_commerce_course_api.Entities.Orders.OrderStatus", "OrderStatus")
+                        .WithMany()
+                        .HasForeignKey("OrderStatusId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
                     b.HasOne("e_commerce_course_api.Entities.User", "User")
                         .WithMany("Orders")
                         .HasForeignKey("UserId")
@@ -511,6 +549,8 @@ namespace e_commerce_course_api.Data.Migrations
                         .IsRequired();
 
                     b.Navigation("Address");
+
+                    b.Navigation("OrderStatus");
 
                     b.Navigation("User");
                 });
