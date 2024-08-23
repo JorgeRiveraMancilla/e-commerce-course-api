@@ -13,7 +13,7 @@ namespace e_commerce_course_api.Entities.Orders
         /// <summary>
         /// The unique identifier of the product.
         /// </summary>
-        public int ProductId { get; set; }
+        public required int ProductId { get; set; }
 
         /// <summary>
         /// The name of the product.
@@ -28,7 +28,7 @@ namespace e_commerce_course_api.Entities.Orders
         /// <summary>
         /// The price of the item.
         /// </summary>
-        public long Price { get; set; }
+        public required long Price { get; set; }
 
         /// <summary>
         /// The image URL of the product.
@@ -48,7 +48,7 @@ namespace e_commerce_course_api.Entities.Orders
         /// <summary>
         /// The quantity of the item.
         /// </summary>
-        public int Quantity { get; set; }
+        public required int Quantity { get; set; }
 
         /// <summary>
         /// The order identifier.

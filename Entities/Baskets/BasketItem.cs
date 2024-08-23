@@ -13,7 +13,7 @@ namespace e_commerce_course_api.Entities.Baskets
         /// <summary>
         /// The quantity of the item.
         /// </summary>
-        public int Quantity { get; set; }
+        public required int Quantity { get; set; }
 
         /// <summary>
         /// The unique identifier of the product.
