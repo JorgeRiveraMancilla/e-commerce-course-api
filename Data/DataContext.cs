@@ -32,6 +32,16 @@ namespace e_commerce_course_api.Data
         public DbSet<Order> Orders { get; set; }
 
         /// <summary>
+        /// The order items in the data context.
+        /// </summary>
+        public DbSet<OrderItem> OrderItems { get; set; }
+
+        /// <summary>
+        /// The order statuses in the data context.
+        /// </summary>
+        public DbSet<OrderStatus> OrderStatuses { get; set; }
+
+        /// <summary>
         /// The addresses in the data context.
         /// </summary>
         public DbSet<Address> Addresses { get; set; }

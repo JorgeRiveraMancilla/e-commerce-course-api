@@ -289,7 +289,7 @@ namespace e_commerce_course_api.Data.Migrations
 
                     b.HasIndex("OrderId");
 
-                    b.ToTable("OrderItem");
+                    b.ToTable("OrderItems");
                 });
 
             modelBuilder.Entity("e_commerce_course_api.Entities.Orders.OrderStatus", b =>
@@ -304,7 +304,7 @@ namespace e_commerce_course_api.Data.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("OrderStatus");
+                    b.ToTable("OrderStatuses");
                 });
 
             modelBuilder.Entity("e_commerce_course_api.Entities.Product", b =>
