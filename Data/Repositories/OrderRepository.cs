@@ -83,7 +83,7 @@ namespace e_commerce_course_api.Data.Repositories
         /// <returns>
         /// The order data transfer object.
         /// </returns>
-        public async Task<OrderDto> GetLastOrderByIdAsync(int userId)
+        public async Task<OrderDto> GetLastOrderAsync(int userId)
         {
             var order = await _dataContext
                 .Orders.Include(x => x.Address)
@@ -136,6 +136,24 @@ namespace e_commerce_course_api.Data.Repositories
         }
 
         /// <summary>
+        /// Get order status by name.
+        /// </summary>
+        /// <param name="name">
+        /// The name.
+        /// </param>
+        /// <returns>
+        /// The order status data transfer object.
+        /// </returns>
+        public async Task<OrderStatusDto?> GetOrderStatusByNameAsync(string name)
+        {
+            var orderStatus = await _dataContext.OrderStatuses.FirstOrDefaultAsync(x =>
+                x.Name == name
+            );
+
+            return _mapper.Map<OrderStatusDto>(orderStatus);
+        }
+
+        /// <summary>
         /// Save changes.
         /// </summary>
         /// <returns>
@@ -144,6 +162,34 @@ namespace e_commerce_course_api.Data.Repositories
         public async Task<bool> SaveChangesAsync()
         {
             return 0 < await _dataContext.SaveChangesAsync();
+        }
+
+        /// <summary>
+        /// Update the order status.
+        /// </summary>
+        /// <param name="paymentIntentId">
+        /// The payment intent identifier.
+        /// </param>
+        /// <param name="orderStatusDto">
+        /// The order status data transfer object.
+        /// </param>
+        /// <returns>
+        /// The task.
+        /// </returns>
+        /// <exception cref="Exception">
+        /// Thrown when the order is not found.
+        /// </exception>
+        public async Task UpdateOrderStatusAsync(
+            string paymentIntentId,
+            OrderStatusDto orderStatusDto
+        )
+        {
+            var order =
+                await _dataContext.Orders.FirstOrDefaultAsync(x =>
+                    x.PaymentIntentId == paymentIntentId
+                ) ?? throw new Exception("Orden no encontrada.");
+
+            order.OrderStatus = _mapper.Map<OrderStatus>(orderStatusDto);
         }
     }
 }

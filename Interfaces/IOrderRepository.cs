@@ -33,7 +33,7 @@ namespace e_commerce_course_api.Interfaces
         /// <returns>
         /// The order data transfer object.
         /// </returns>
-        Task<OrderDto> GetLastOrderByIdAsync(int userId);
+        Task<OrderDto> GetLastOrderAsync(int userId);
 
         /// <summary>
         /// Get an order by its identifier.
@@ -61,11 +61,39 @@ namespace e_commerce_course_api.Interfaces
         Task<List<OrderDto>> GetOrdersAsync(int userId);
 
         /// <summary>
+        /// Get order status by name.
+        /// </summary>
+        /// <param name="name">
+        /// The name.
+        /// </param>
+        /// <returns>
+        /// The order status data transfer object.
+        /// </returns>
+        Task<OrderStatusDto?> GetOrderStatusByNameAsync(string name);
+
+        /// <summary>
         /// Save changes.
         /// </summary>
         /// <returns>
         /// A boolean indicating if the changes were saved.
         /// </returns>
         Task<bool> SaveChangesAsync();
+
+        /// <summary>
+        /// Update the order status.
+        /// </summary>
+        /// <param name="paymentIntentId">
+        /// The payment intent identifier.
+        /// </param>
+        /// <param name="orderStatusDto">
+        /// The order status data transfer object.
+        /// </param>
+        /// <returns>
+        /// The task.
+        /// </returns>
+        /// <exception cref="Exception">
+        /// Thrown when the order is not found.
+        /// </exception>
+        Task UpdateOrderStatusAsync(string paymentIntentId, OrderStatusDto orderStatusDto);
     }
 }
