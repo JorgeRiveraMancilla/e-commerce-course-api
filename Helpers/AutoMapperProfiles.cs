@@ -18,20 +18,24 @@ namespace e_commerce_course_api.Helpers
             // Basket Repository
             CreateMap<Basket, BasketDto>();
             CreateMap<BasketItem, BasketItemDto>()
-                .ForMember(x => x.ProductId, o => o.MapFrom(s => s.Product.Id))
-                .ForMember(x => x.Name, o => o.MapFrom(s => s.Product.Name))
-                .ForMember(x => x.Description, o => o.MapFrom(s => s.Product.Description))
-                .ForMember(x => x.Price, o => o.MapFrom(s => s.Product.Price))
-                .ForMember(x => x.ImageUrl, o => o.MapFrom(s => s.Product.ImageUrl))
-                .ForMember(x => x.Brand, o => o.MapFrom(s => s.Product.Brand))
-                .ForMember(x => x.Type, o => o.MapFrom(s => s.Product.Type));
+                .ForMember(dest => dest.ProductId, opt => opt.MapFrom(src => src.Product.Id))
+                .ForMember(dest => dest.Name, opt => opt.MapFrom(src => src.Product.Name))
+                .ForMember(
+                    dest => dest.Description,
+                    opt => opt.MapFrom(src => src.Product.Description)
+                )
+                .ForMember(dest => dest.Price, opt => opt.MapFrom(src => src.Product.Price))
+                .ForMember(dest => dest.ImageUrl, opt => opt.MapFrom(src => src.Product.ImageUrl))
+                .ForMember(dest => dest.Brand, opt => opt.MapFrom(src => src.Product.Brand))
+                .ForMember(dest => dest.Type, opt => opt.MapFrom(src => src.Product.Type));
 
             // Order Repository
             CreateMap<Order, OrderDto>()
                 .ReverseMap();
             CreateMap<OrderItem, OrderItemDto>().ReverseMap();
             CreateMap<ProductDto, OrderItemDto>()
-                .ForMember(x => x.ProductId, o => o.MapFrom(s => s.Id));
+                .ForMember(dest => dest.ProductId, opt => opt.MapFrom(src => src.Id));
+            CreateMap<OrderStatus, OrderStatusDto>().ReverseMap();
 
             // Product Repository
             CreateMap<Product, ProductDto>();
