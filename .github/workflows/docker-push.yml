@@ -9,9 +9,6 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       -
-        name: Checkout code
-        uses: actions/checkout@v3
-      -
         name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v3
       -
@@ -21,16 +18,8 @@ jobs:
           username: ${{ secrets.DOCKERHUB_USERNAME }}
           password: ${{ secrets.DOCKERHUB_TOKEN }}
       -
-        name: Set working directory
-        run: cd e-commerce-course-api
-      -
-        name: List directory contents
-        run: ls -alh
-      -
         name: Build and push
         uses: docker/build-push-action@v6
         with:
-          context: .
-          file: Dockerfile
           push: true
           tags: jorgeriveramancilla/e-commerce-course-api:latest
