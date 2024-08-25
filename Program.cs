@@ -44,9 +44,32 @@ builder.Services.AddSwaggerGen(c =>
         new OpenApiSecurityRequirement { { jwtSecurityScheme, Array.Empty<string>() } }
     );
 });
-builder.Services.AddDbContext<DataContext>(options =>
+string connection;
+if (builder.Environment.IsDevelopment())
+    connection = builder.Configuration.GetConnectionString("DefaultConnection")!;
+else
 {
-    options.UseSqlite(builder.Configuration.GetConnectionString("DefaultConnection"));
+    // Use connection string provided at runtime by FlyIO.
+    var connectionUrl = Environment.GetEnvironmentVariable("DATABASE_URL")!;
+
+    // Parse connection URL to connection string for Npgsql
+    connectionUrl = connectionUrl.Replace("postgres://", string.Empty);
+    var pgUserAndPassword = connectionUrl.Split("@")[0];
+    var pgHostPortAndDatabase = connectionUrl.Split("@")[1];
+    var pgHostPort = pgHostPortAndDatabase.Split("/")[0];
+    var pgDatabase = pgHostPortAndDatabase.Split("/")[1];
+    var pgUser = pgUserAndPassword.Split(":")[0];
+    var pgPass = pgUserAndPassword.Split(":")[1];
+    var pgHost = pgHostPort.Split(":")[0];
+    var pgPort = pgHostPort.Split(":")[1];
+    var updatedHost = pgHost.Replace("flycast", "internal");
+
+    connection =
+        $"Server={updatedHost};Port={pgPort};User Id={pgUser};Password={pgPass};Database={pgDatabase};";
+}
+builder.Services.AddDbContext<DataContext>(opt =>
+{
+    opt.UseNpgsql(connection);
 });
 builder.Services.AddCors();
 builder
@@ -84,6 +107,7 @@ builder.Services.AddScoped<IOrderRepository, OrderRepository>();
 builder.Services.AddScoped<IProductRepository, ProductRepository>();
 builder.Services.AddScoped<ITokenService, TokenService>();
 builder.Services.AddScoped<IUserRepository, UserRepository>();
+builder.Services.AddScoped<IPaymentService, PaymentService>();
 
 var app = builder.Build();
 
