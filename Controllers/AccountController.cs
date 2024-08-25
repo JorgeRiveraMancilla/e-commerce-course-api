@@ -97,10 +97,8 @@ namespace e_commerce_course_api.Controllers
 
                     break;
                 case (null, not null):
-                    userBasket = await _basketRepository.UpdateBuyerIdAsync(
-                        buyerId!,
-                        user.Id.ToString()
-                    );
+                    anonymousBasket.BuyerId = user.Id.ToString();
+                    await _basketRepository.UpdateBasketAsync(anonymousBasket);
 
                     if (!await _basketRepository.SaveChangesAsync())
                         return BadRequest("Intente de nuevo.");
