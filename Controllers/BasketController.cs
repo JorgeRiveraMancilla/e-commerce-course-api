@@ -66,7 +66,7 @@ namespace e_commerce_course_api.Controllers
                 var cookieOptions = new CookieOptions
                 {
                     IsEssential = true,
-                    Expires = DateTime.Now.AddDays(7)
+                    Expires = DateTime.UtcNow.AddDays(7)
                 };
                 Response.Cookies.Append("buyerId", buyerId, cookieOptions);
             }
