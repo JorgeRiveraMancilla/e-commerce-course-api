@@ -18,10 +18,16 @@ jobs:
           username: ${{ secrets.DOCKERHUB_USERNAME }}
           password: ${{ secrets.DOCKERHUB_TOKEN }}
       -
+        name: Set working directory
+        run: cd e-commerce-course-api
+      -
+        name: List directory contents
+        run: ls -alh
+      -
         name: Build and push
         uses: docker/build-push-action@v6
         with:
           context: .
-          file: ./Dockerfile
+          file: Dockerfile
           push: true
           tags: jorgeriveramancilla/e-commerce-course-api:latest
