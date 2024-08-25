@@ -145,9 +145,11 @@ namespace e_commerce_course_api.Controllers
 
             var order = new OrderDto
             {
+                OrderDate = DateTime.UtcNow,
                 Subtotal = subtotal,
                 DeliveryFee = deliveryFee,
                 Total = subtotal + deliveryFee,
+                OrderStatus = new OrderStatusDto { Name = "Pending" },
                 OrderItems = orderItems,
                 Address = createOrderDto.Address
             };
@@ -174,7 +176,7 @@ namespace e_commerce_course_api.Controllers
                     );
             }
 
-            order = await _orderRepository.GetLastOrderByIdAsync(userId);
+            order = await _orderRepository.GetLastOrderAsync(userId);
 
             return CreatedAtRoute("GetOrder", new { id = order.Id }, order.Id);
         }
