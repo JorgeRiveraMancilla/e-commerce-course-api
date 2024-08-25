@@ -125,7 +125,7 @@ app.UseCors(x =>
     x.AllowAnyHeader()
         .AllowAnyMethod()
         .AllowCredentials()
-        .WithOrigins(Environment.GetEnvironmentVariable("ORIGIN")!)
+        .AllowAnyOrigin()
 );
 app.UseAuthentication();
 app.UseAuthorization();
@@ -144,6 +144,5 @@ catch (Exception exception)
 {
     logger.LogError(exception, "An error occurred during migration.");
 }
-logger.LogInformation("Origin: {origin}", Environment.GetEnvironmentVariable("ORIGIN"));
 
 app.Run();
