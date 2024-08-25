@@ -122,7 +122,7 @@ if (app.Environment.IsDevelopment())
     });
 }
 app.UseCors(x =>
-    x.AllowAnyHeader().AllowAnyMethod().AllowCredentials().WithOrigins(Environment.GetEnvironmentVariable("ORIGIN_URL")!)
+    x.AllowAnyHeader().AllowAnyMethod().AllowCredentials().WithOrigins(Environment.GetEnvironmentVariable("ORIGIN")!)
 );
 app.UseAuthentication();
 app.UseAuthorization();
