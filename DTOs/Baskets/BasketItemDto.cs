@@ -23,7 +23,7 @@ namespace e_commerce_course_api.DTOs.Baskets
         /// <summary>
         /// The price of the product.
         /// </summary>
-        public long Price { get; set; }
+        public required long Price { get; set; }
 
         /// <summary>
         /// The URL of the image of the product.
@@ -43,6 +43,6 @@ namespace e_commerce_course_api.DTOs.Baskets
         /// <summary>
         /// The quantity of the item.
         /// </summary>
-        public int Quantity { get; set; }
+        public required int Quantity { get; set; }
     }
 }

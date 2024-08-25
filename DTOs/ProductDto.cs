@@ -23,7 +23,7 @@ namespace e_commerce_course_api.DTOs
         /// <summary>
         /// The price of the product.
         /// </summary>
-        public long Price { get; set; }
+        public required long Price { get; set; }
 
         /// <summary>
         /// The URL of the image of the product.
@@ -43,6 +43,6 @@ namespace e_commerce_course_api.DTOs
         /// <summary>
         /// The stock of the product.
         /// </summary>
-        public int Stock { get; set; }
+        public required int Stock { get; set; }
     }
 }

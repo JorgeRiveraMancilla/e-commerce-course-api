@@ -13,7 +13,7 @@ namespace e_commerce_course_api.DTOs.Orders
         /// <summary>
         /// The date of the order.
         /// </summary>
-        public DateTime OrderDate { get; set; }
+        public required DateTime OrderDate { get; set; }
 
         /// <summary>
         /// The subtotal of the order.
@@ -33,7 +33,7 @@ namespace e_commerce_course_api.DTOs.Orders
         /// <summary>
         /// The status of the order.
         /// </summary>
-        public string? OrderStatus { get; set; }
+        public required OrderStatusDto OrderStatus { get; set; }
 
         /// <summary>
         /// The address of the order.
