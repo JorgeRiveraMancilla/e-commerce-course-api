@@ -95,6 +95,20 @@ namespace e_commerce_course_api.Interfaces
         Task<bool> SaveChangesAsync();
 
         /// <summary>
+        /// Updates the basket.
+        /// </summary>
+        /// <param name="basketDto">
+        /// The basket data transfer object.
+        /// </param>
+        /// <returns>
+        /// The task.
+        /// </returns>
+        /// <exception cref="Exception">
+        /// Thrown when the basket is not found.
+        /// </exception>
+        Task UpdateBasketAsync(BasketDto basketDto);
+
+        /// <summary>
         /// Updates the buyer id.
         /// </summary>
         /// <param name="oldBuyerId">

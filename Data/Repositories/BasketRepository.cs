@@ -95,7 +95,13 @@ namespace e_commerce_course_api.Data.Repositories
         /// </returns>
         public async Task<BasketDto> CreateBasketAsync(string buyerId)
         {
-            var basket = new Basket { BuyerId = buyerId };
+            var basket = new Basket
+            {
+                BuyerId = buyerId,
+                PaymentIntentId = "",
+                ClientSecret = "",
+            };
+
             await _dataContext.Baskets.AddAsync(basket);
             return _mapper.Map<BasketDto>(basket);
         }
@@ -193,6 +199,29 @@ namespace e_commerce_course_api.Data.Repositories
         public async Task<bool> SaveChangesAsync()
         {
             return 0 < await _dataContext.SaveChangesAsync();
+        }
+
+        /// <summary>
+        /// Updates the basket.
+        /// </summary>
+        /// <param name="basketDto">
+        /// The basket data transfer object.
+        /// </param>
+        /// <returns>
+        /// The task.
+        /// </returns>
+        /// <exception cref="Exception">
+        /// Thrown when the basket is not found.
+        /// </exception>
+        public async Task UpdateBasketAsync(BasketDto basketDto)
+        {
+            var basket =
+                await _dataContext.Baskets.FirstOrDefaultAsync(x => x.Id == basketDto.Id)
+                ?? throw new Exception("Carrito no encontrado.");
+
+            basket.BuyerId = basketDto.BuyerId;
+            basket.PaymentIntentId = basketDto.PaymentIntentId;
+            basket.ClientSecret = basketDto.ClientSecret;
         }
 
         /// <summary>
