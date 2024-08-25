@@ -34,7 +34,7 @@ namespace e_commerce_course_api.Services
             var intent = new PaymentIntent();
 
             var subtotal = basketDto.Items.Sum(i => i.Quantity * i.Price);
-            var deliveryFee = subtotal > 10000 ? 0 : 500;
+            var deliveryFee = 100000 < subtotal ? 0 : 5000;
 
             if (string.IsNullOrEmpty(basketDto.PaymentIntentId))
             {
