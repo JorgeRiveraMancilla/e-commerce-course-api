@@ -21,6 +21,6 @@ jobs:
         name: Build and push
         uses: docker/build-push-action@v6
         with:
-          context: "{{defaultContext}}:e-commerce-course-api"
+          context: .
           push: true
           tags: jorgeriveramancilla/e-commerce-course-api:latest
