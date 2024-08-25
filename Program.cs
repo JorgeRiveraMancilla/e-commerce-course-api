@@ -71,7 +71,17 @@ builder.Services.AddDbContext<DataContext>(opt =>
 {
     opt.UseNpgsql(connection);
 });
-builder.Services.AddCors();
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy("AllowFrontend",
+        policy =>
+        {
+            policy.WithOrigins("https://e-commerce-course-web-client.vercel.app")
+                  .AllowAnyHeader()
+                  .AllowAnyMethod()
+                  .AllowCredentials();
+        });
+});
 builder
     .Services.AddIdentityCore<User>(opt =>
     {
@@ -121,12 +131,7 @@ if (app.Environment.IsDevelopment())
         c.ConfigObject.AdditionalItems.Add("persistAuthorization", "true");
     });
 }
-app.UseCors(x =>
-    x.AllowAnyHeader()
-        .AllowAnyMethod()
-        .AllowCredentials()
-        .AllowAnyOrigin()
-);
+app.UseCors("AllowFrontend");
 app.UseAuthentication();
 app.UseAuthorization();
 app.MapControllers();
