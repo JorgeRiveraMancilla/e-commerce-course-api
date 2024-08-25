@@ -122,7 +122,7 @@ if (app.Environment.IsDevelopment())
     });
 }
 app.UseCors(x =>
-    x.AllowAnyHeader().AllowAnyMethod().AllowCredentials().WithOrigins("http://localhost:3000")
+    x.AllowAnyHeader().AllowAnyMethod().AllowCredentials().WithOrigins(Environment.GetEnvironmentVariable("ORIGIN_URL")!)
 );
 app.UseAuthentication();
 app.UseAuthorization();
