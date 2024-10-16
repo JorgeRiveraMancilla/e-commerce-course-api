@@ -103,6 +103,7 @@ namespace e_commerce_course_api.Controllers
                     if (!await _basketRepository.SaveChangesAsync())
                         return BadRequest("Intente de nuevo.");
 
+                    userBasket = anonymousBasket;
                     break;
                 case (not null, null):
                     break;
