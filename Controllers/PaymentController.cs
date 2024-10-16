@@ -37,8 +37,8 @@ namespace e_commerce_course_api.Controllers
                     new ProblemDetails { Title = "Problema al crear el intento de pago." }
                 );
 
-            basket.PaymentIntentId ??= intent.Id;
-            basket.ClientSecret ??= intent.ClientSecret;
+            basket.PaymentIntentId = intent.Id;
+            basket.ClientSecret = intent.ClientSecret;
 
             await _basketRepository.UpdateBasketAsync(basket);
 
