@@ -10,7 +10,7 @@ namespace e_commerce_course_api.Interfaces
         /// <summary>
         /// Gets the address by identifier.
         /// </summary>
-        /// <param name="id">
+        /// <param name="userId">
         /// The identifier.
         /// </param>
         /// <returns>
@@ -19,6 +19,6 @@ namespace e_commerce_course_api.Interfaces
         /// <exception cref="Exception">
         /// The user is not found.
         /// </exception>
-        Task<AddressDto?> GetAddressByIdAsync(int id);
+        Task<AddressDto?> GetAddressByUserIdAsync(int userId);
     }
 }

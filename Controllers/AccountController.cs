@@ -152,7 +152,7 @@ namespace e_commerce_course_api.Controllers
         {
             var userId = User.GetUserId();
 
-            var address = await _addressRepository.GetAddressByIdAsync(userId);
+            var address = await _addressRepository.GetAddressByUserIdAsync(userId);
 
             if (address is not null)
                 address.Id = 0;

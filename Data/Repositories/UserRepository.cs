@@ -61,27 +61,6 @@ namespace e_commerce_course_api.Data.Repositories
         }
 
         /// <summary>
-        /// Gets the address by identifier.
-        /// </summary>
-        /// <param name="id">
-        /// The identifier.
-        /// </param>
-        /// <returns>
-        /// The address data transfer object if found; otherwise, null.
-        /// </returns>
-        /// <exception cref="Exception">
-        /// The user is not found.
-        /// </exception>
-        public async Task<AddressDto?> GetAddressByIdAsync(int id)
-        {
-            var user =
-                await _userManager.FindByIdAsync(id.ToString())
-                ?? throw new Exception("Usuario no encontrado.");
-
-            return _mapper.Map<AddressDto>(user.Address);
-        }
-
-        /// <summary>
         /// Gets the authentication by identifier.
         /// </summary>
         /// <param name="id">

@@ -19,5 +19,10 @@ namespace e_commerce_course_api.DTOs
         /// The user email.
         /// </summary>
         public required string Email { get; set; }
+
+        /// <summary>
+        /// The unique identifier of the address.
+        /// </summary>
+        public int? AddressId { get; set; }
     }
 }
