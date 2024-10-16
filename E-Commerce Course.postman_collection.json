@@ -3,7 +3,8 @@
 		"_postman_id": "783d2b61-96e5-4955-a0eb-1a2a2e62469c",
 		"name": "E-Commerce Course",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
-		"_exporter_id": "25678350"
+		"_exporter_id": "25678350",
+		"_collection_link": "https://jorgeriveramancilla.postman.co/workspace/E-Commerce-Course~082ae450-9c1d-4b07-9429-1ff886c5c7d6/collection/25678350-783d2b61-96e5-4955-a0eb-1a2a2e62469c?action=share&source=collection_link&creator=25678350"
 	},
 	"item": [
 		{
@@ -22,7 +23,7 @@
 								"header": [],
 								"body": {
 									"mode": "raw",
-									"raw": "{\r\n    \"name\": \"Alexia\",\r\n    \"email\": \"alexia@gmail.com\",\r\n    \"password\": \"Password1!\"\r\n}",
+									"raw": "{\r\n    \"name\": \"Jorge\",\r\n    \"email\": \"jorge@gmail.com\",\r\n    \"password\": \"Password1!\"\r\n}",
 									"options": {
 										"raw": {
 											"language": "json"
@@ -66,7 +67,7 @@
 								"header": [],
 								"body": {
 									"mode": "raw",
-									"raw": "{\r\n    \"email\": \"alexia@gmail.com\",\r\n    \"password\": \"Password1!\"\r\n}",
+									"raw": "{\r\n    \"email\": \"jorge@gmail.com\",\r\n    \"password\": \"Password1!\"\r\n}",
 									"options": {
 										"raw": {
 											"language": "json"
@@ -609,42 +610,6 @@
 					]
 				}
 			]
-		}
-	],
-	"auth": {
-		"type": "inherit"
-	},
-	"event": [
-		{
-			"listen": "prerequest",
-			"script": {
-				"type": "text/javascript",
-				"packages": {},
-				"exec": [
-					""
-				]
-			}
-		},
-		{
-			"listen": "test",
-			"script": {
-				"type": "text/javascript",
-				"packages": {},
-				"exec": [
-					""
-				]
-			}
-		}
-	],
-	"variable": [
-		{
-			"key": "api",
-			"value": "http://localhost:5000/api",
-			"type": "string"
-		},
-		{
-			"key": "token",
-			"value": ""
 		}
 	]
 }
