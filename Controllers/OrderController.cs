@@ -151,7 +151,8 @@ namespace e_commerce_course_api.Controllers
                 Total = subtotal + deliveryFee,
                 OrderStatus = new OrderStatusDto { Name = "Pending" },
                 OrderItems = orderItems,
-                Address = createOrderDto.Address
+                Address = createOrderDto.Address,
+                PaymentIntentId = basket.PaymentIntentId
             };
 
             order = await _orderRepository.CreateOrderAsync(order, userId);

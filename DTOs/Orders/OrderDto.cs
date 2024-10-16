@@ -41,6 +41,11 @@ namespace e_commerce_course_api.DTOs.Orders
         public required AddressDto Address { get; set; }
 
         /// <summary>
+        /// The unique identifier of the payment intent.
+        /// </summary>
+        public required string PaymentIntentId { get; set; }
+
+        /// <summary>
         /// The items in the order.
         /// </summary>
         public required List<OrderItemDto> OrderItems { get; set; }
