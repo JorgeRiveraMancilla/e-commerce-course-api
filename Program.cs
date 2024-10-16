@@ -73,14 +73,20 @@ builder.Services.AddDbContext<DataContext>(opt =>
 });
 builder.Services.AddCors(options =>
 {
-    options.AddPolicy("AllowFrontend",
+    options.AddPolicy(
+        "AllowFrontend",
         policy =>
         {
-            policy.WithOrigins("https://e-commerce-course-web-client.vercel.app")
-                  .AllowAnyHeader()
-                  .AllowAnyMethod()
-                  .AllowCredentials();
-        });
+            policy
+                .WithOrigins(
+                    "http://localhost:5173",
+                    "https://e-commerce-course-web-client.vercel.app"
+                )
+                .AllowAnyHeader()
+                .AllowAnyMethod()
+                .AllowCredentials();
+        }
+    );
 });
 builder
     .Services.AddIdentityCore<User>(opt =>
