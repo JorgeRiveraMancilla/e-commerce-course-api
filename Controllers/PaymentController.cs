@@ -37,15 +37,17 @@ namespace e_commerce_course_api.Controllers
                     new ProblemDetails { Title = "Problema al crear el intento de pago." }
                 );
 
-            basket.PaymentIntentId = intent.Id;
-            basket.ClientSecret = intent.ClientSecret;
+            if (intent.Id is not null && intent.ClientSecret is not null)
+            {
+                basket.PaymentIntentId = intent.Id;
+                basket.ClientSecret = intent.ClientSecret;
+                await _basketRepository.UpdateBasketAsync(basket);
 
-            await _basketRepository.UpdateBasketAsync(basket);
-
-            if (!await _basketRepository.SaveChangesAsync())
-                return BadRequest(
-                    new ProblemDetails { Title = "Problema al guardar el intento de pago." }
-                );
+                if (!await _basketRepository.SaveChangesAsync())
+                    return BadRequest(
+                        new ProblemDetails { Title = "Problema al guardar el intento de pago." }
+                    );
+            }
 
             return Ok(basket);
         }
