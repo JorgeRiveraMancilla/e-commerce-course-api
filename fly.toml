@@ -1,4 +1,4 @@
-# fly.toml app configuration file generated for e-commerce-course-api on 2024-08-24T23:42:07-04:00
+# fly.toml app configuration file generated for e-commerce-course-api on 2024-10-16T18:45:47-03:00
 #
 # See https://fly.io/docs/reference/configuration/ for information about how to use this file.
 #
@@ -10,8 +10,8 @@ primary_region = 'scl'
   image = 'jorgeriveramancilla/e-commerce-course-api:latest'
 
 [env]
-  ASPNETCORE_URLS="http://+:8080"
-  StripeSettings__PublishableKey="pk_test_51PrPxiH6vGETLfN35pfU32vue1Ir7VepGeuicC3BZBTshpjx4KprTjDwbG3ftjWdC5kgvL9wBG8QBTYn58tb0I7N00juOXGghn"
+  ASPNETCORE_URLS = 'http://+:8080'
+  StripeSettings__PublishableKey = 'pk_test_51PrPxiH6vGETLfN35pfU32vue1Ir7VepGeuicC3BZBTshpjx4KprTjDwbG3ftjWdC5kgvL9wBG8QBTYn58tb0I7N00juOXGghn'
 
 [http_service]
   internal_port = 8080
