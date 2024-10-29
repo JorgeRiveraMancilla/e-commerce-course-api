@@ -1,4 +1,4 @@
-using e_commerce_course_api.DTOs;
+using e_commerce_course_api.DTOs.Products;
 using e_commerce_course_api.Helpers.Requests;
 
 namespace e_commerce_course_api.Interfaces

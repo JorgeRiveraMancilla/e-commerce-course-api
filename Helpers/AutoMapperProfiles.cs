@@ -2,6 +2,7 @@ using AutoMapper;
 using e_commerce_course_api.DTOs;
 using e_commerce_course_api.DTOs.Baskets;
 using e_commerce_course_api.DTOs.Orders;
+using e_commerce_course_api.DTOs.Products;
 using e_commerce_course_api.Entities;
 using e_commerce_course_api.Entities.Baskets;
 using e_commerce_course_api.Entities.Orders;

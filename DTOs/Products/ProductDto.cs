@@ -1,4 +1,4 @@
-namespace e_commerce_course_api.DTOs
+namespace e_commerce_course_api.DTOs.Products
 {
     /// <summary>
     /// Data Transfer Object for Product.
