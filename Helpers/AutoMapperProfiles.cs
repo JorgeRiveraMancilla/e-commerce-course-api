@@ -40,6 +40,12 @@ namespace e_commerce_course_api.Helpers
 
             // Product Repository
             CreateMap<Product, ProductDto>();
+            CreateMap<CreateProductDto, Product>()
+                .ForMember(dest => dest.ImageUrl, opt => opt.Ignore())
+                .ForMember(dest => dest.PublicId, opt => opt.Ignore());
+            CreateMap<UpdateProductDto, Product>()
+                .ForMember(dest => dest.ImageUrl, opt => opt.Ignore())
+                .ForMember(dest => dest.PublicId, opt => opt.Ignore());
 
             // User Repository
             CreateMap<User, UserDto>();
