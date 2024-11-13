@@ -1,6 +1,7 @@
 using AutoMapper;
 using AutoMapper.QueryableExtensions;
 using e_commerce_course_api.DTOs.Products;
+using e_commerce_course_api.Entities;
 using e_commerce_course_api.Helpers.Requests;
 using e_commerce_course_api.Interfaces;
 using Microsoft.EntityFrameworkCore;
@@ -16,7 +17,14 @@ namespace e_commerce_course_api.Data.Repositories
     /// <param name="mapper">
     /// The mapper to use.
     /// </param>
-    public class ProductRepository(DataContext dataContext, IMapper mapper) : IProductRepository
+    /// <param name="photoService">
+    /// The photo service to use.
+    /// </param>
+    public class ProductRepository(
+        DataContext dataContext,
+        IMapper mapper,
+        IPhotoService photoService
+    ) : IProductRepository
     {
         /// <summary>
         /// The data context to use.
@@ -27,6 +35,67 @@ namespace e_commerce_course_api.Data.Repositories
         /// The mapper to use.
         /// </summary>
         private readonly IMapper _mapper = mapper;
+
+        /// <summary>
+        /// The photo service to use.
+        /// </summary>
+        private readonly IPhotoService _photoService = photoService;
+
+        /// <summary>
+        /// Create a product.
+        /// </summary>
+        /// <param name="createProductDto">
+        /// The product to create.
+        /// </param>
+        /// <returns>
+        /// The created product.
+        /// </returns>
+        /// <exception cref="Exception">
+        /// Thrown when the image upload fails.
+        /// </exception>
+        public async Task<ProductDto> CreateProductAsync(CreateProductDto createProductDto)
+        {
+            var imageResult = await _photoService.AddImageAsync(createProductDto.File);
+
+            if (imageResult.Error is not null)
+                throw new Exception(imageResult.Error.Message);
+
+            var product = _mapper.Map<Product>(
+                createProductDto,
+                opt =>
+                {
+                    opt.AfterMap((src, dest) => dest.ImageUrl = imageResult.SecureUrl.ToString());
+                    opt.AfterMap((src, dest) => dest.PublicId = imageResult.PublicId);
+                }
+            );
+
+            await _dataContext.Products.AddAsync(product);
+            return _mapper.Map<ProductDto>(product);
+        }
+
+        /// <summary>
+        /// Delete a product by id.
+        /// </summary>
+        /// <param name="id">
+        /// The id of the product.
+        /// </param>
+        /// <returns>
+        /// The task.
+        /// </returns>
+        /// <exception cref="Exception">
+        /// Thrown when the product is not found.
+        /// </exception>
+        public async Task DeleteProductByIdAsync(int id)
+        {
+            var product =
+                await _dataContext.Products.FindAsync(id)
+                ?? throw new Exception("Producto no encontrado.");
+
+            if (!string.IsNullOrEmpty(product.PublicId))
+                await _photoService.DeleteImageAsync(product.PublicId);
+
+            _dataContext.Products.Remove(product);
+        }
 
         /// <summary>
         /// Get the product brands.
@@ -120,6 +189,20 @@ namespace e_commerce_course_api.Data.Repositories
         }
 
         /// <summary>
+        /// Check if a product exists by id.
+        /// </summary>
+        /// <param name="id">
+        /// The id of the product.
+        /// </param>
+        /// <returns>
+        /// A boolean indicating whether the product exists.
+        /// </returns>
+        public async Task<bool> ProductExistsByIdAsync(int id)
+        {
+            return await _dataContext.Products.AnyAsync(x => x.Id == id);
+        }
+
+        /// <summary>
         /// Save the changes.
         /// </summary>
         /// <returns>
@@ -128,6 +211,43 @@ namespace e_commerce_course_api.Data.Repositories
         public async Task<bool> SaveChangesAsync()
         {
             return 0 < await _dataContext.SaveChangesAsync();
+        }
+
+        /// <summary>
+        /// Update a product.
+        /// </summary>
+        /// <param name="updateProductDto">
+        /// The product to update.
+        /// </param>
+        /// <returns>
+        /// The updated product.
+        /// </returns>
+        /// <exception cref="Exception">
+        /// Thrown when the product is not found.
+        /// </exception>
+        public async Task<ProductDto> UpdateProductAsync(UpdateProductDto updateProductDto)
+        {
+            var product =
+                await _dataContext.Products.FindAsync(updateProductDto.Id)
+                ?? throw new Exception("Producto no encontrado.");
+
+            _mapper.Map(updateProductDto, product);
+
+            if (updateProductDto is not null)
+            {
+                var imageResult = await _photoService.AddImageAsync(updateProductDto.File);
+
+                if (imageResult.Error is not null)
+                    throw new Exception(imageResult.Error.Message);
+
+                if (!string.IsNullOrEmpty(product.PublicId))
+                    await _photoService.DeleteImageAsync(product.PublicId);
+
+                product.ImageUrl = imageResult.SecureUrl.ToString();
+                product.PublicId = imageResult.PublicId;
+            }
+
+            return _mapper.Map<ProductDto>(product);
         }
 
         /// <summary>
