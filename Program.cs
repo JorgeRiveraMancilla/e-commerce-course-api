@@ -80,7 +80,7 @@ builder.Services.AddCors(options =>
             _ = policy
                 .WithOrigins(
                     "http://localhost:5173",
-                    "https://e-commerce-course-web-client.vercel.app"
+                    "https://e-commerce-course-client.netlify.app"
                 )
                 .AllowAnyHeader()
                 .AllowAnyMethod()
