@@ -1,4 +1,4 @@
-# fly.toml app configuration file generated for e-commerce-course-api on 2024-10-16T18:45:47-03:00
+# fly.toml app configuration file generated for e-commerce-course-api on 2024-11-16T22:41:48-03:00
 #
 # See https://fly.io/docs/reference/configuration/ for information about how to use this file.
 #
@@ -12,6 +12,8 @@ primary_region = 'scl'
 [env]
   ASPNETCORE_URLS = 'http://+:8080'
   StripeSettings__PublishableKey = 'pk_test_51PrPxiH6vGETLfN35pfU32vue1Ir7VepGeuicC3BZBTshpjx4KprTjDwbG3ftjWdC5kgvL9wBG8QBTYn58tb0I7N00juOXGghn'
+  Cloudinary__CloudName = 'di06rv0hj'
+  Cloudinary__ApiKey = '526587737374245'
 
 [http_service]
   internal_port = 8080
@@ -22,6 +24,4 @@ primary_region = 'scl'
   processes = ['app']
 
 [[vm]]
-  memory = '1gb'
-  cpu_kind = 'shared'
-  cpus = 1
+  size = 'shared-cpu-1x'
