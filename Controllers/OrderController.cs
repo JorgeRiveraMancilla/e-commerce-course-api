@@ -132,7 +132,7 @@ namespace e_commerce_course_api.Controllers
 
                 orderItems.Add(orderItem);
 
-                await _productRepository.UpdateStockAsync(product.Id, -item.Quantity);
+                _ = await _productRepository.UpdateStockAsync(product.Id, -item.Quantity);
 
                 if (!await _productRepository.SaveChangesAsync())
                     return BadRequest(
@@ -160,7 +160,7 @@ namespace e_commerce_course_api.Controllers
             if (!await _productRepository.SaveChangesAsync())
                 return BadRequest(new ProblemDetails { Title = "Error al crear la orden." });
 
-            await _basketRepository.RemoveBasketAsync(basket.Id);
+            _ = await _basketRepository.RemoveBasketAsync(basket.Id);
 
             if (!await _basketRepository.SaveChangesAsync())
                 return BadRequest(new ProblemDetails { Title = "Error al eliminar el carrito." });

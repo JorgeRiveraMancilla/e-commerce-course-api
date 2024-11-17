@@ -56,7 +56,7 @@ namespace e_commerce_course_api.Data
         {
             base.OnModelCreating(modelBuilder);
 
-            modelBuilder
+            _ = modelBuilder
                 .Entity<Role>()
                 .HasData(
                     new Role

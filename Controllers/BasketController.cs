@@ -74,7 +74,7 @@ namespace e_commerce_course_api.Controllers
             _ =
                 await _basketRepository.GetBasketByBuyerIdAsync(buyerId)
                 ?? await _basketRepository.CreateBasketAsync(buyerId);
-            await _basketRepository.SaveChangesAsync();
+            _ = await _basketRepository.SaveChangesAsync();
 
             BasketDto? basket;
             try
@@ -124,7 +124,7 @@ namespace e_commerce_course_api.Controllers
 
             try
             {
-                await _basketRepository.RemoveItemFromBasketAsync(basket.Id, productId, quantity);
+                _ = await _basketRepository.RemoveItemFromBasketAsync(basket.Id, productId, quantity);
             }
             catch (Exception e)
             {

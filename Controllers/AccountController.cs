@@ -108,7 +108,7 @@ namespace e_commerce_course_api.Controllers
                 case (not null, null):
                     break;
                 case (not null, not null):
-                    await _basketRepository.RemoveBasketAsync(anonymousBasket.Id);
+                    _ = await _basketRepository.RemoveBasketAsync(anonymousBasket.Id);
 
                     if (!await _basketRepository.SaveChangesAsync())
                         return BadRequest("Intente de nuevo.");

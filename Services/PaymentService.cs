@@ -50,7 +50,7 @@ namespace e_commerce_course_api.Services
             else
             {
                 var options = new PaymentIntentUpdateOptions { Amount = subtotal + deliveryFee };
-                await service.UpdateAsync(basketDto.PaymentIntentId, options);
+                _ = await service.UpdateAsync(basketDto.PaymentIntentId, options);
             }
 
             return intent;

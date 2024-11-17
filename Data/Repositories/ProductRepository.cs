@@ -69,7 +69,7 @@ namespace e_commerce_course_api.Data.Repositories
                 }
             );
 
-            await _dataContext.Products.AddAsync(product);
+            _ = await _dataContext.Products.AddAsync(product);
             return _mapper.Map<ProductDto>(product);
         }
 
@@ -92,9 +92,9 @@ namespace e_commerce_course_api.Data.Repositories
                 ?? throw new Exception("Producto no encontrado.");
 
             if (!string.IsNullOrEmpty(product.PublicId))
-                await _photoService.DeleteImageAsync(product.PublicId);
+                _ = await _photoService.DeleteImageAsync(product.PublicId);
 
-            _dataContext.Products.Remove(product);
+            _ = _dataContext.Products.Remove(product);
         }
 
         /// <summary>
@@ -231,7 +231,7 @@ namespace e_commerce_course_api.Data.Repositories
                 await _dataContext.Products.FindAsync(updateProductDto.Id)
                 ?? throw new Exception("Producto no encontrado.");
 
-            _mapper.Map(updateProductDto, product);
+            _ = _mapper.Map(updateProductDto, product);
 
             if (updateProductDto is not null)
             {
@@ -241,7 +241,7 @@ namespace e_commerce_course_api.Data.Repositories
                     throw new Exception(imageResult.Error.Message);
 
                 if (!string.IsNullOrEmpty(product.PublicId))
-                    await _photoService.DeleteImageAsync(product.PublicId);
+                    _ = await _photoService.DeleteImageAsync(product.PublicId);
 
                 product.ImageUrl = imageResult.SecureUrl.ToString();
                 product.PublicId = imageResult.PublicId;
