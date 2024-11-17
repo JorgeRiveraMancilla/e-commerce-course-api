@@ -1,10 +1,10 @@
 {
 	"info": {
-		"_postman_id": "783d2b61-96e5-4955-a0eb-1a2a2e62469c",
+		"_postman_id": "dff44e41-59a4-45cf-b77e-fb2100b0e2fe",
 		"name": "E-Commerce Course",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
 		"_exporter_id": "25678350",
-		"_collection_link": "https://jorgeriveramancilla.postman.co/workspace/E-Commerce-Course~082ae450-9c1d-4b07-9429-1ff886c5c7d6/collection/25678350-783d2b61-96e5-4955-a0eb-1a2a2e62469c?action=share&source=collection_link&creator=25678350"
+		"_collection_link": "https://jorgeriveramancilla.postman.co/workspace/E-Commerce-Course~082ae450-9c1d-4b07-9429-1ff886c5c7d6/collection/25678350-dff44e41-59a4-45cf-b77e-fb2100b0e2fe?action=share&source=collection_link&creator=25678350"
 	},
 	"item": [
 		{
@@ -23,7 +23,7 @@
 								"header": [],
 								"body": {
 									"mode": "raw",
-									"raw": "{\r\n    \"name\": \"Jorge\",\r\n    \"email\": \"jorge@gmail.com\",\r\n    \"password\": \"Password1!\"\r\n}",
+									"raw": "{\r\n    \"name\": \"Alexia\",\r\n    \"email\": \"alexia@gmail.com\",\r\n    \"password\": \"Alexia#123\"\r\n}",
 									"options": {
 										"raw": {
 											"language": "json"
@@ -67,7 +67,7 @@
 								"header": [],
 								"body": {
 									"mode": "raw",
-									"raw": "{\r\n    \"email\": \"jorge@gmail.com\",\r\n    \"password\": \"Password1!\"\r\n}",
+									"raw": "{\r\n    \"email\": \"alexia@gmail.com\",\r\n    \"password\": \"Alexia#123\"\r\n}",
 									"options": {
 										"raw": {
 											"language": "json"
@@ -259,29 +259,7 @@
 								"type": "string"
 							}
 						]
-					},
-					"event": [
-						{
-							"listen": "prerequest",
-							"script": {
-								"type": "text/javascript",
-								"packages": {},
-								"exec": [
-									""
-								]
-							}
-						},
-						{
-							"listen": "test",
-							"script": {
-								"type": "text/javascript",
-								"packages": {},
-								"exec": [
-									""
-								]
-							}
-						}
-					]
+					}
 				},
 				{
 					"name": "Product",
@@ -370,33 +348,178 @@
 								}
 							},
 							"response": []
+						},
+						{
+							"name": "Create Product",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{token}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "formdata",
+									"formdata": [
+										{
+											"key": "name",
+											"value": "New Product",
+											"type": "text"
+										},
+										{
+											"key": "description",
+											"value": "Description of the new product",
+											"type": "text"
+										},
+										{
+											"key": "price",
+											"value": "100",
+											"type": "text"
+										},
+										{
+											"key": "file",
+											"type": "file",
+											"src": []
+										},
+										{
+											"key": "brand",
+											"value": "Brand Name",
+											"type": "text"
+										},
+										{
+											"key": "type",
+											"value": "Product Type",
+											"type": "text"
+										},
+										{
+											"key": "stock",
+											"value": "100",
+											"type": "text"
+										}
+									]
+								},
+								"url": {
+									"raw": "{{api}}/product",
+									"host": [
+										"{{api}}"
+									],
+									"path": [
+										"product"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Update Product",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{token}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "PUT",
+								"header": [],
+								"body": {
+									"mode": "formdata",
+									"formdata": [
+										{
+											"key": "id",
+											"value": "1",
+											"type": "text"
+										},
+										{
+											"key": "name",
+											"value": "Updated Product Name",
+											"type": "text"
+										},
+										{
+											"key": "description",
+											"value": "Updated description",
+											"type": "text"
+										},
+										{
+											"key": "price",
+											"value": "100",
+											"type": "text"
+										},
+										{
+											"key": "file",
+											"type": "file",
+											"src": []
+										},
+										{
+											"key": "brand",
+											"value": "Updated Brand",
+											"type": "text"
+										},
+										{
+											"key": "type",
+											"value": "Updated Type",
+											"type": "text"
+										},
+										{
+											"key": "stock",
+											"value": "150",
+											"type": "text"
+										}
+									]
+								},
+								"url": {
+									"raw": "{{api}}/product",
+									"host": [
+										"{{api}}"
+									],
+									"path": [
+										"product"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Delete Product",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{token}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "DELETE",
+								"header": [],
+								"url": {
+									"raw": "{{api}}/product/1",
+									"host": [
+										"{{api}}"
+									],
+									"path": [
+										"product",
+										"1"
+									]
+								}
+							},
+							"response": []
 						}
 					],
 					"auth": {
 						"type": "noauth"
-					},
-					"event": [
-						{
-							"listen": "prerequest",
-							"script": {
-								"type": "text/javascript",
-								"packages": {},
-								"exec": [
-									""
-								]
-							}
-						},
-						{
-							"listen": "test",
-							"script": {
-								"type": "text/javascript",
-								"packages": {},
-								"exec": [
-									""
-								]
-							}
-						}
-					]
+					}
 				},
 				{
 					"name": "Order (Auth)",
@@ -413,6 +536,24 @@
 									],
 									"path": [
 										"order"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Get Order by ID",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{api}}/order/1",
+									"host": [
+										"{{api}}"
+									],
+									"path": [
+										"order",
+										"1"
 									]
 								}
 							},
@@ -454,56 +595,12 @@
 								"type": "string"
 							}
 						]
-					},
-					"event": [
-						{
-							"listen": "prerequest",
-							"script": {
-								"type": "text/javascript",
-								"packages": {},
-								"exec": [
-									""
-								]
-							}
-						},
-						{
-							"listen": "test",
-							"script": {
-								"type": "text/javascript",
-								"packages": {},
-								"exec": [
-									""
-								]
-							}
-						}
-					]
+					}
 				}
 			],
 			"auth": {
 				"type": "noauth"
-			},
-			"event": [
-				{
-					"listen": "prerequest",
-					"script": {
-						"type": "text/javascript",
-						"packages": {},
-						"exec": [
-							""
-						]
-					}
-				},
-				{
-					"listen": "test",
-					"script": {
-						"type": "text/javascript",
-						"packages": {},
-						"exec": [
-							""
-						]
-					}
-				}
-			]
+			}
 		},
 		{
 			"name": "No Auth",
@@ -585,31 +682,23 @@
 					],
 					"auth": {
 						"type": "noauth"
-					},
-					"event": [
-						{
-							"listen": "prerequest",
-							"script": {
-								"type": "text/javascript",
-								"packages": {},
-								"exec": [
-									""
-								]
-							}
-						},
-						{
-							"listen": "test",
-							"script": {
-								"type": "text/javascript",
-								"packages": {},
-								"exec": [
-									""
-								]
-							}
-						}
-					]
+					}
 				}
 			]
+		}
+	],
+	"auth": {
+		"type": "inherit"
+	},
+	"variable": [
+		{
+			"key": "api",
+			"value": "http://localhost:5000/api",
+			"type": "string"
+		},
+		{
+			"key": "token",
+			"value": ""
 		}
 	]
 }
