@@ -355,6 +355,10 @@ namespace e_commerce_course_api.Data.Migrations
                     b.Property<long>("Price")
                         .HasColumnType("bigint");
 
+                    b.Property<string>("PublicId")
+                        .IsRequired()
+                        .HasColumnType("text");
+
                     b.Property<int>("Stock")
                         .HasColumnType("integer");
 

@@ -12,7 +12,7 @@ using e_commerce_course_api.Data;
 namespace e_commerce_course_api.Data.Migrations
 {
     [DbContext(typeof(DataContext))]
-    [Migration("20240824224155_InitialCreate")]
+    [Migration("20241116235012_InitialCreate")]
     partial class InitialCreate
     {
         /// <inheritdoc />
@@ -357,6 +357,10 @@ namespace e_commerce_course_api.Data.Migrations
 
                     b.Property<long>("Price")
                         .HasColumnType("bigint");
+
+                    b.Property<string>("PublicId")
+                        .IsRequired()
+                        .HasColumnType("text");
 
                     b.Property<int>("Stock")
                         .HasColumnType("integer");
