@@ -41,7 +41,8 @@ namespace e_commerce_course_api.Services
                 using var stream = file.OpenReadStream();
                 var uploadParams = new ImageUploadParams
                 {
-                    File = new FileDescription(file.FileName, stream)
+                    File = new FileDescription(file.FileName, stream),
+                    Folder = "e-commerce-course"
                 };
                 uploadResult = await _cloudinary.UploadAsync(uploadParams);
             }
