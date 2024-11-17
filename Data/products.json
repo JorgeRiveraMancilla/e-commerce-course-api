@@ -3,7 +3,8 @@
         "Name": "Angular Speedster Board 2000",
         "Description": "Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Maecenas porttitor congue massa. Fusce posuere, magna sed pulvinar ultricies, purus lectus malesuada libero, sit amet commodo magna eros quis urna.",
         "Price": 20000,
-        "ImageUrl": "/images/products/sb-ang1.png",
+        "ImageUrl": "https://res.cloudinary.com/di06rv0hj/image/upload/v1731800178/e-commerce-course/sb-ang1_rot47d.png",
+        "PublicId": "v1731800178/e-commerce-course/sb-ang1_rot47d",
         "Brand": "Angular",
         "Type": "Boards",
         "Stock": 100
@@ -12,7 +13,8 @@
         "Name": "Green Angular Board 3000",
         "Description": "Nunc viverra imperdiet enim. Fusce est. Vivamus a tellus.",
         "Price": 15000,
-        "ImageUrl": "/images/products/sb-ang2.png",
+        "ImageUrl": "https://res.cloudinary.com/di06rv0hj/image/upload/v1731800178/e-commerce-course/sb-ang2_geu9cf.png",
+        "PublicId": "v1731800178/e-commerce-course/sb-ang2_geu9cf",
         "Brand": "Angular",
         "Type": "Boards",
         "Stock": 100
@@ -21,7 +23,8 @@
         "Name": "Core Board Speed Rush 3",
         "Description": "Suspendisse dui purus, scelerisque at, vulputate vitae, pretium mattis, nunc. Mauris eget neque at sem venenatis eleifend. Ut nonummy.",
         "Price": 18000,
-        "ImageUrl": "/images/products/sb-core1.png",
+        "ImageUrl": "https://res.cloudinary.com/di06rv0hj/image/upload/v1731800178/e-commerce-course/sb-ang2_geu9cf.png",
+        "PublicId": "v1731800178/e-commerce-course/sb-core1_ogp3op",
         "Brand": "NetCore",
         "Type": "Boards",
         "Stock": 100
@@ -30,7 +33,8 @@
         "Name": "Net Core Super Board",
         "Description": "Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Proin pharetra nonummy pede. Mauris et orci.",
         "Price": 30000,
-        "ImageUrl": "/images/products/sb-core2.png",
+        "ImageUrl": "https://res.cloudinary.com/di06rv0hj/image/upload/v1731800179/e-commerce-course/sb-core2_jxllkq.png",
+        "PublicId": "v1731800179/e-commerce-course/sb-core2_jxllkq",
         "Brand": "NetCore",
         "Type": "Boards",
         "Stock": 100
@@ -39,7 +43,8 @@
         "Name": "React Board Super Whizzy Fast",
         "Description": "Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Maecenas porttitor congue massa. Fusce posuere, magna sed pulvinar ultricies, purus lectus malesuada libero, sit amet commodo magna eros quis urna.",
         "Price": 25000,
-        "ImageUrl": "/images/products/sb-react1.png",
+        "ImageUrl": "https://res.cloudinary.com/di06rv0hj/image/upload/v1731800180/e-commerce-course/sb-react1_ypdxq8.png",
+        "PublicId": "v1731800180/e-commerce-course/sb-react1_ypdxq8",
         "Brand": "React",
         "Type": "Boards",
         "Stock": 100
@@ -48,7 +53,8 @@
         "Name": "Typescript Entry Board",
         "Description": "Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Maecenas porttitor congue massa. Fusce posuere, magna sed pulvinar ultricies, purus lectus malesuada libero, sit amet commodo magna eros quis urna.",
         "Price": 12000,
-        "ImageUrl": "/images/products/sb-ts1.png",
+        "ImageUrl": "https://res.cloudinary.com/di06rv0hj/image/upload/v1731800180/e-commerce-course/sb-ts1_bflcd1.png",
+        "PublicId": "v1731800180/e-commerce-course/sb-ts1_bflcd1",
         "Brand": "TypeScript",
         "Type": "Boards",
         "Stock": 100
@@ -57,7 +63,8 @@
         "Name": "Core Blue Hat",
         "Description": "Fusce posuere, magna sed pulvinar ultricies, purus lectus malesuada libero, sit amet commodo magna eros quis urna.",
         "Price": 1000,
-        "ImageUrl": "/images/products/hat-core1.png",
+        "ImageUrl": "https://res.cloudinary.com/di06rv0hj/image/upload/v1731800177/e-commerce-course/hat-core1_ogp3op.png",
+        "PublicId": "v1731800177/e-commerce-course/hat-core1_ogp3op",
         "Brand": "NetCore",
         "Type": "Hats",
         "Stock": 100
@@ -66,7 +73,8 @@
         "Name": "Green React Woolen Hat",
         "Description": "Fusce posuere, magna sed pulvinar ultricies, purus lectus malesuada libero, sit amet commodo magna eros quis urna.",
         "Price": 8000,
-        "ImageUrl": "/images/products/hat-react1.png",
+        "ImageUrl": "https://res.cloudinary.com/di06rv0hj/image/upload/v1731800177/e-commerce-course/hat-react1_y3mn0n.png",
+        "PublicId": "v1731800177/e-commerce-course/hat-react1_y3mn0n",
         "Brand": "React",
         "Type": "Hats",
         "Stock": 100
@@ -75,7 +83,8 @@
         "Name": "Purple React Woolen Hat",
         "Description": "Fusce posuere, magna sed pulvinar ultricies, purus lectus malesuada libero, sit amet commodo magna eros quis urna.",
         "Price": 1500,
-        "ImageUrl": "/images/products/hat-react2.png",
+        "ImageUrl": "https://res.cloudinary.com/di06rv0hj/image/upload/v1731800178/e-commerce-course/hat-react2_hovj9k.png",
+        "PublicId": "v1731800178/e-commerce-course/hat-react2_hovj9k",
         "Brand": "React",
         "Type": "Hats",
         "Stock": 100
@@ -84,7 +93,8 @@
         "Name": "Blue Code Gloves",
         "Description": "Fusce posuere, magna sed pulvinar ultricies, purus lectus malesuada libero, sit amet commodo magna eros quis urna.",
         "Price": 1800,
-        "ImageUrl": "/images/products/glove-code1.png",
+        "ImageUrl": "https://res.cloudinary.com/di06rv0hj/image/upload/v1731800177/e-commerce-course/glove-code1_xkvga3.png",
+        "PublicId": "v1731800177/e-commerce-course/glove-code1_xkvga3",
         "Brand": "VS Code",
         "Type": "Gloves",
         "Stock": 100
@@ -93,7 +103,8 @@
         "Name": "Green Code Gloves",
         "Description": "Fusce posuere, magna sed pulvinar ultricies, purus lectus malesuada libero, sit amet commodo magna eros quis urna.",
         "Price": 1500,
-        "ImageUrl": "/images/products/glove-code2.png",
+        "ImageUrl": "https://res.cloudinary.com/di06rv0hj/image/upload/v1731800177/e-commerce-course/glove-code2_zco4ly.png",
+        "PublicId": "v1731800177/e-commerce-course/glove-code2_zco4ly",
         "Brand": "VS Code",
         "Type": "Gloves",
         "Stock": 100
@@ -102,7 +113,8 @@
         "Name": "Purple React Gloves",
         "Description": "Fusce posuere, magna sed pulvinar ultricies, purus lectus malesuada libero, sit amet commodo magna eros quis urna.",
         "Price": 1600,
-        "ImageUrl": "/images/products/glove-react1.png",
+        "ImageUrl": "https://res.cloudinary.com/di06rv0hj/image/upload/v1731800177/e-commerce-course/glove-react1_sn0b5m.png",
+        "PublicId": "v1731800177/e-commerce-course/glove-react1_sn0b5m",
         "Brand": "React",
         "Type": "Gloves",
         "Stock": 100
@@ -111,7 +123,8 @@
         "Name": "Green React Gloves",
         "Description": "Fusce posuere, magna sed pulvinar ultricies, purus lectus malesuada libero, sit amet commodo magna eros quis urna.",
         "Price": 1400,
-        "ImageUrl": "/images/products/glove-react2.png",
+        "ImageUrl": "https://res.cloudinary.com/di06rv0hj/image/upload/v1731800177/e-commerce-course/glove-react2_t99kfg.png",
+        "PublicId": "v1731800177/e-commerce-course/glove-react2_t99kfg",
         "Brand": "React",
         "Type": "Gloves",
         "Stock": 100
@@ -120,7 +133,8 @@
         "Name": "Redis Red Boots",
         "Description": "Suspendisse dui purus, scelerisque at, vulputate vitae, pretium mattis, nunc. Mauris eget neque at sem venenatis eleifend. Ut nonummy.",
         "Price": 25000,
-        "ImageUrl": "/images/products/boot-redis1.png",
+        "ImageUrl": "https://res.cloudinary.com/di06rv0hj/image/upload/v1731800177/e-commerce-course/boot-redis1_poy9al.png",
+        "PublicId": "v1731800177/e-commerce-course/boot-redis1_poy9al",
         "Brand": "Redis",
         "Type": "Boots",
         "Stock": 100
@@ -129,7 +143,8 @@
         "Name": "Core Red Boots",
         "Description": "Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Maecenas porttitor congue massa. Fusce posuere, magna sed pulvinar ultricies, purus lectus malesuada libero, sit amet commodo magna eros quis urna.",
         "Price": 18999,
-        "ImageUrl": "/images/products/boot-core2.png",
+        "ImageUrl": "https://res.cloudinary.com/di06rv0hj/image/upload/v1731800177/e-commerce-course/boot-core2_su7bha.png",
+        "PublicId": "v1731800177/e-commerce-course/boot-core2_su7bha",
         "Brand": "Redis",
         "Type": "Boots",
         "Stock": 100
@@ -138,7 +153,8 @@
         "Name": "Core Purple Boots",
         "Description": "Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Proin pharetra nonummy pede. Mauris et orci.",
         "Price": 19999,
-        "ImageUrl": "/images/products/boot-core1.png",
+        "ImageUrl": "https://res.cloudinary.com/di06rv0hj/image/upload/v1731800177/e-commerce-course/boot-core1_sjkyrl.png",
+        "PublicId": "v1731800177/e-commerce-course/boot-core1_sjkyrl",
         "Brand": "NetCore",
         "Type": "Boots",
         "Stock": 100
@@ -147,7 +163,8 @@
         "Name": "Angular Purple Boots",
         "Description": "Aenean nec lorem. In porttitor. Donec laoreet nonummy augue.",
         "Price": 15000,
-        "ImageUrl": "/images/products/boot-ang2.png",
+        "ImageUrl": "https://res.cloudinary.com/di06rv0hj/image/upload/v1731800176/e-commerce-course/boot-ang2_iikh0o.png",
+        "PublicId": "v1731800176/e-commerce-course/boot-ang2_iikh0o",
         "Brand": "Angular",
         "Type": "Boots",
         "Stock": 100
@@ -156,7 +173,8 @@
         "Name": "Angular Blue Boots",
         "Description": "Suspendisse dui purus, scelerisque at, vulputate vitae, pretium mattis, nunc. Mauris eget neque at sem venenatis eleifend. Ut nonummy.",
         "Price": 18000,
-        "ImageUrl": "/images/products/boot-ang1.png",
+        "ImageUrl": "https://res.cloudinary.com/di06rv0hj/image/upload/v1731800169/e-commerce-course/boot-ang1_wjg95o.png",
+        "PublicId": "v1731800169/e-commerce-course/boot-ang1_wjg95o",
         "Brand": "Angular",
         "Type": "Boots",
         "Stock": 100
