@@ -109,9 +109,11 @@ namespace e_commerce_course_api.Data.Repositories
         /// </returns>
         public async Task<OrderDto> GetOrderByIdAsync(int id, int userId)
         {
-            var order = await _dataContext.Orders.FirstOrDefaultAsync(x =>
-                x.Id == id && x.User.Id == userId
-            );
+            var order = await _dataContext
+                .Orders.Include(x => x.Address)
+                .Include(x => x.OrderItems)
+                .Include(x => x.OrderStatus)
+                .FirstOrDefaultAsync(x => x.Id == id && x.User.Id == userId);
             return _mapper.Map<OrderDto>(order);
         }
 
@@ -129,6 +131,7 @@ namespace e_commerce_course_api.Data.Repositories
             var orders = await _dataContext
                 .Orders.Include(x => x.Address)
                 .Include(x => x.OrderItems)
+                .Include(x => x.OrderStatus)
                 .Where(x => x.User.Id == userId)
                 .ToListAsync();
 
