@@ -24,4 +24,6 @@ primary_region = 'scl'
   processes = ['app']
 
 [[vm]]
-  size = 'shared-cpu-1x'
+  memory = '1gb'
+  cpu_kind = 'shared'
+  cpus = 1
