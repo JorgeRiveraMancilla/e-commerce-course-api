@@ -69,7 +69,7 @@ else
 }
 builder.Services.AddDbContext<DataContext>(opt =>
 {
-    opt.UseNpgsql(connection);
+    _ = opt.UseNpgsql(connection);
 });
 builder.Services.AddCors(options =>
 {
@@ -77,7 +77,7 @@ builder.Services.AddCors(options =>
         "AllowFrontend",
         policy =>
         {
-            policy
+            _ = policy
                 .WithOrigins(
                     "http://localhost:5173",
                     "https://e-commerce-course-web-client.vercel.app"
@@ -132,8 +132,8 @@ var app = builder.Build();
 app.UseMiddleware<ExceptionMiddleware>();
 if (app.Environment.IsDevelopment())
 {
-    app.UseSwagger();
-    app.UseSwaggerUI(c =>
+    _ = app.UseSwagger();
+    _ = app.UseSwaggerUI(c =>
     {
         c.ConfigObject.AdditionalItems.Add("persistAuthorization", "true");
     });
@@ -146,11 +146,12 @@ app.MapControllers();
 var scope = app.Services.CreateScope();
 var dataContext = scope.ServiceProvider.GetRequiredService<DataContext>();
 var userManager = scope.ServiceProvider.GetRequiredService<UserManager<User>>();
+var config = scope.ServiceProvider.GetRequiredService<IConfiguration>();
 var logger = scope.ServiceProvider.GetRequiredService<ILogger<Program>>();
 try
 {
     await dataContext.Database.MigrateAsync();
-    await Seeder.SeedAsync(dataContext, userManager);
+    await Seeder.SeedAsync(dataContext, userManager, config);
 }
 catch (Exception exception)
 {

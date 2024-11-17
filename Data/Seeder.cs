@@ -25,13 +25,20 @@ namespace e_commerce_course_api.Data
         /// <param name="userManager">
         /// The user manager.
         /// </param>
+        /// /// <param name="config">
+        /// The configuration.
+        /// </param>
         /// <returns>
         /// A <see cref="Task"/> representing the asynchronous operation.
         /// </returns>
-        public static async Task SeedAsync(DataContext dataContext, UserManager<User> userManager)
+        public static async Task SeedAsync(
+            DataContext dataContext,
+            UserManager<User> userManager,
+            IConfiguration config
+        )
         {
             await SeedProductsAsync(dataContext);
-            await SeedUsersAsync(userManager);
+            await SeedUsersAsync(userManager, config);
             await SeedOrderStatusesAsync(dataContext);
         }
 
@@ -41,6 +48,7 @@ namespace e_commerce_course_api.Data
         /// <param name="dataContext">
         /// The data context.
         /// </param>
+
         /// <returns>
         /// A <see cref="Task"/> representing the asynchronous operation.
         /// </returns>
@@ -56,7 +64,7 @@ namespace e_commerce_course_api.Data
                 return;
 
             await dataContext.AddRangeAsync(products);
-            await dataContext.SaveChangesAsync();
+            _ = await dataContext.SaveChangesAsync();
         }
 
         /// <summary>
@@ -65,23 +73,46 @@ namespace e_commerce_course_api.Data
         /// <param name="userManager">
         /// The user manager.
         /// </param>
+        /// <param name="config">
+        /// The configuration.
+        /// </param>
         /// <returns>
         /// A <see cref="Task"/> representing the asynchronous operation.
         /// </returns>
-        public static async Task SeedUsersAsync(UserManager<User> userManager)
+        /// <exception cref="Exception">
+        /// Thrown when admin name, email, or password is not found in the configuration.
+        /// </exception>
+        public static async Task SeedUsersAsync(
+            UserManager<User> userManager,
+            IConfiguration config
+        )
         {
             if (userManager.Users.Any())
                 return;
 
-            var user = new User { UserName = "bob", Email = "bob@test.com" };
+            string adminName =
+                config["AdminUser:Name"] ?? throw new Exception("Admin name is required");
+            string adminEmail =
+                config["AdminUser:Email"] ?? throw new Exception("Admin email is required");
+            string adminPassword =
+                config["AdminUser:Password"] ?? throw new Exception("Admin password is required");
 
-            await userManager.CreateAsync(user, "Pa$$w0rd");
-            await userManager.AddToRoleAsync(user, "Member");
+            var admin = new User { UserName = adminName, Email = adminEmail };
+            var result = await userManager.CreateAsync(admin, adminPassword);
 
-            var admin = new User { UserName = "admin", Email = "admin@test.com" };
-
-            await userManager.CreateAsync(admin, "Pa$$w0rd");
-            await userManager.AddToRolesAsync(admin, ["Admin", "Member"]);
+            if (result.Succeeded)
+            {
+                var createdAdmin = await userManager.FindByNameAsync(adminName);
+                if (createdAdmin != null)
+                    _ = await userManager.AddToRolesAsync(createdAdmin, ["Admin", "Member"]);
+                else
+                    throw new Exception("Failed to retrieve created admin user.");
+            }
+            else
+            {
+                var errors = string.Join(", ", result.Errors.Select(e => e.Description));
+                throw new Exception($"Failed to create admin user. Errors: {errors}");
+            }
         }
 
         /// <summary>
@@ -106,7 +137,7 @@ namespace e_commerce_course_api.Data
             };
 
             await dataContext.AddRangeAsync(orderStatuses);
-            await dataContext.SaveChangesAsync();
+            _ = await dataContext.SaveChangesAsync();
         }
     }
 }
