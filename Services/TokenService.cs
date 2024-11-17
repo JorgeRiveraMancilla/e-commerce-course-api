@@ -62,7 +62,7 @@ namespace e_commerce_course_api.Services
                 issuer: null,
                 audience: null,
                 claims: claims,
-                expires: DateTime.UtcNow.AddDays(7),
+                expires: DateTime.UtcNow.AddHours(1),
                 signingCredentials: creds
             );
 
