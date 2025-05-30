@@ -99,7 +99,6 @@ namespace e_commerce_course_api.Controllers
         /// <returns>
         /// The order if created, otherwise bad request.
         /// </returns>
-
         [HttpPost]
         public async Task<ActionResult<OrderDto>> CreateOrder(CreateOrderDto createOrderDto)
         {
@@ -152,12 +151,12 @@ namespace e_commerce_course_api.Controllers
                 OrderStatus = new OrderStatusDto { Name = "Pending" },
                 OrderItems = orderItems,
                 Address = createOrderDto.Address,
-                PaymentIntentId = basket.PaymentIntentId
+                PaymentIntentId = basket.PaymentIntentId,
             };
 
             order = await _orderRepository.CreateOrderAsync(order, userId);
 
-            if (!await _productRepository.SaveChangesAsync())
+            if (!await _orderRepository.SaveChangesAsync())
                 return BadRequest(new ProblemDetails { Title = "Error al crear la orden." });
 
             _ = await _basketRepository.RemoveBasketAsync(basket.Id);

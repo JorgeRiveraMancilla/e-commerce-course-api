@@ -192,7 +192,8 @@ namespace e_commerce_course_api.Data.Repositories
                     x.PaymentIntentId == paymentIntentId
                 ) ?? throw new Exception("Orden no encontrada.");
 
-            order.OrderStatus = _mapper.Map<OrderStatus>(orderStatusDto);
+            order.StatusId = orderStatusDto.Id;
+            _dataContext.Entry(order).Property(x => x.StatusId).IsModified = true;
         }
     }
 }

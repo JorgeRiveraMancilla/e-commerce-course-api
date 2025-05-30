@@ -42,7 +42,7 @@ namespace e_commerce_course_api.Services
                 {
                     Amount = subtotal + deliveryFee,
                     Currency = "usd",
-                    PaymentMethodTypes = ["card"]
+                    PaymentMethodTypes = ["card"],
                 };
 
                 intent = await service.CreateAsync(options);
@@ -50,7 +50,7 @@ namespace e_commerce_course_api.Services
             else
             {
                 var options = new PaymentIntentUpdateOptions { Amount = subtotal + deliveryFee };
-                _ = await service.UpdateAsync(basketDto.PaymentIntentId, options);
+                intent = await service.UpdateAsync(basketDto.PaymentIntentId, options); // FIX: Asignar el resultado
             }
 
             return intent;

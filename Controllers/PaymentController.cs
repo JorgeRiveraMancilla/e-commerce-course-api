@@ -64,25 +64,62 @@ namespace e_commerce_course_api.Controllers
                 _config["StripeSettings:WhSecret"]
             );
 
-            var charge = (Charge)stripeEvent.Data.Object;
+            string? paymentIntentId;
+            bool isPaymentSuccessful;
 
-            if (charge.Status == "succeeded")
+            switch (stripeEvent.Type)
+            {
+                case Events.PaymentIntentSucceeded:
+                    var paymentIntent = (PaymentIntent)stripeEvent.Data.Object;
+                    paymentIntentId = paymentIntent.Id;
+                    isPaymentSuccessful = paymentIntent.Status == "succeeded";
+                    break;
+
+                case Events.ChargeSucceeded:
+                    var charge = (Charge)stripeEvent.Data.Object;
+                    paymentIntentId = charge.PaymentIntentId;
+                    isPaymentSuccessful = charge.Status == "succeeded";
+                    break;
+
+                case Events.PaymentIntentCreated:
+                case Events.ChargeUpdated:
+                    return new EmptyResult();
+
+                default:
+                    return new EmptyResult();
+            }
+
+            if (isPaymentSuccessful && !string.IsNullOrEmpty(paymentIntentId))
             {
                 var orderStatus = await _orderRepository.GetOrderStatusByNameAsync(
                     "Payment Received"
                 );
 
                 if (orderStatus is null)
+                {
                     return BadRequest(
                         new ProblemDetails { Title = "Problema al obtener el estado del pedido." }
                     );
+                }
 
-                await _orderRepository.UpdateOrderStatusAsync(charge.PaymentIntentId, orderStatus);
+                try
+                {
+                    await _orderRepository.UpdateOrderStatusAsync(paymentIntentId, orderStatus);
 
-                if (!await _orderRepository.SaveChangesAsync())
-                    return BadRequest(
-                        new ProblemDetails { Title = "Problema al guardar el estado del pedido." }
-                    );
+                    if (!await _orderRepository.SaveChangesAsync())
+                    {
+                        return BadRequest(
+                            new ProblemDetails
+                            {
+                                Title = "Problema al guardar el estado del pedido.",
+                            }
+                        );
+                    }
+                }
+                catch (Exception)
+                {
+                    return new EmptyResult();
+                }
             }
 
             return new EmptyResult();
