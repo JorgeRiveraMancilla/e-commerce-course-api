@@ -4,6 +4,7 @@ This is an E-Commerce API built with ASP.NET Core 8 Web API that integrates with
 
 This project is based on the Udemy course [Learn to build an e-commerce store with .Net, React & Redux](https://www.udemy.com/course/learn-to-build-an-e-commerce-store-with-dotnet-react-redux) by Neil Cummings.
 
+**Note: This setup is designed for local development environment.**
 
 ## Technologies & Features
 
@@ -31,6 +32,7 @@ Before you begin, ensure you have the following installed:
 - [Docker Desktop](https://www.docker.com/products/docker-desktop)
 - [Git](https://git-scm.com/downloads)
 - [Postman](https://www.postman.com/downloads/) (for testing)
+- [Stripe CLI](https://stripe.com/docs/stripe-cli) (for webhook testing)
 - [Visual Studio Code](https://code.visualstudio.com/) or preferred IDE
 
 ## Getting Started
@@ -49,77 +51,81 @@ cd e-commerce-course-api
 
 ### 2. Configure Application Settings
 
-Update the `appsettings.Development.json` file with your Cloudinary credentials. You'll need to:
-1. Create a Cloudinary account at [cloudinary.com](https://cloudinary.com)
-2. Get your credentials from your Cloudinary Dashboard
-3. Replace the CloudinarySettings section with your actual credentials
+**Update the `appsettings.Development.json` file with your configuration:**
 
+Open `appsettings.Development.json` and update the placeholder values with your real credentials:
+
+#### Required Updates:
+
+**1. JWT Settings**: Generate a secure random string for your JWT token (minimum 256 bits)
+
+**To generate a secure JWT token key:**
+- **Windows PowerShell**: `[System.Web.Security.Membership]::GeneratePassword(128, 0)`
+- **macOS/Linux**: `openssl rand -base64 64`
+- **Online Generator**: Use a secure random string generator
+
+Example:
+```bash
+# Run this command and copy the output to your TokenKey
+openssl rand -base64 64
+```
+
+Then replace in `appsettings.Development.json`:
 ```json
-{
-  "Logging": {
-    "LogLevel": {
-      "Default": "Information",
-      "Microsoft.AspNetCore": "Warning"
-    }
-  },
-  "AllowedHosts": "*",
-  "ConnectionStrings": {
-    "DefaultConnection": "User ID=appuser;Password=secret;Host=host.docker.internal;Port=5432;Database=e-commerce-course;"
-  },
-  "JWTSettings": {
-    "TokenKey": "5Kwvp7Vj4Y3^fA^Rn)JzRhjb%%gR&AncyV)%)efFmGB@qwe%M&bsm(4Uj&VeJJHM"
-  },
-  "Cloudinary": {
-    "CloudName": "your-cloud-name",
-    "ApiKey": "your-api-key",
-    "ApiSecret": "your-api-secret"
-  },
-  "AdminUser": {
-    "Name": "Admin",
-    "Email": "jiriveramancilla@gmail.com",
-    "Password": "CopTig221016!"
-  }
+"JWTSettings": {
+  "TokenKey": "YOUR_GENERATED_KEY_HERE"
 }
 ```
 
-### 3. Configure Stripe
+**2. Cloudinary Settings**: Create a Cloudinary account and replace with your credentials
 
-You'll need to set up Stripe for payment processing:
+**To get Cloudinary credentials:**
+1. Create a free account at [cloudinary.com](https://cloudinary.com)
+2. Go to your Dashboard
+3. Copy your Cloud Name, API Key, and API Secret
 
+Then replace in `appsettings.Development.json`:
+```json
+"Cloudinary": {
+  "CloudName": "your-actual-cloud-name",
+  "ApiKey": "your-actual-api-key",
+  "ApiSecret": "your-actual-api-secret"
+}
+```
+
+**3. Stripe Settings**: Create a Stripe account and configure webhooks
+
+**To get Stripe credentials and configure webhooks:**
 1. Create a Stripe account at [stripe.com](https://stripe.com)
-2. Once logged in, go to the Developers section
-3. Get your API keys from the API keys tab:
-   - Get your Secret key (starts with `sk_test_`)
-   - Get your Publishable key (starts with `pk_test_`)
-4. For webhook testing:
-   - Install the [Stripe CLI](https://stripe.com/docs/stripe-cli)
-   - Run `stripe login` to get your webhook signing secret
-   - Start webhook forwarding with `stripe listen --forward-to localhost:5000/api/payments/webhook`
+2. Go to the Developers section and get your API keys:
+   - Secret key (starts with `sk_test_`)
+   - Publishable key (starts with `pk_test_`)
+3. Configure webhooks using Stripe CLI:
+   - Run `stripe login` to authenticate
+   - Start webhook forwarding: `stripe listen --forward-to localhost:5000/api/payment/webhook`
+   - Copy the webhook signing secret from the output (starts with `whsec_`)
 
-Initialize the Secret Manager and configure your Stripe keys:
-
-```bash
-dotnet user-secrets init
-dotnet user-secrets set "StripeSettings:SecretKey" "your-stripe-secret-key"
-dotnet user-secrets set "StripeSettings:PublishableKey" "your-stripe-publishable-key"
-dotnet user-secrets set "StripeSettings:WhSecret" "your-stripe-webhook-secret"
+Then replace in `appsettings.Development.json`:
+```json
+"StripeSettings": {
+  "SecretKey": "sk_test_your_actual_secret_key",
+  "PublishableKey": "pk_test_your_actual_publishable_key",
+  "WhSecret": "whsec_your_actual_webhook_secret_from_stripe_cli"
+}
 ```
 
-You can verify your secrets are properly set by running:
+**Important**: Keep the webhook forwarding running while testing payments in the application.
+
+### 3. Start PostgreSQL Database
+
+Launch PostgreSQL using Docker Compose:
 
 ```bash
-dotnet user-secrets list
+# Start the database
+docker-compose up -d
 ```
 
-### 4. Start PostgreSQL Database
-
-Launch PostgreSQL using Docker:
-
-```bash
-docker run --name dev -e POSTGRES_USER=appuser -e POSTGRES_PASSWORD=secret -p 5432:5432 -d postgres:latest
-```
-
-### 5. Run the Application
+### 4. Run the Application
 
 ```bash
 # Restore dependencies
@@ -137,7 +143,7 @@ Swagger documentation will be available at:
 
 ## Testing the API
 
-A Postman collection file (`Dating Course.postman_collection.json`) is provided in the repository for testing all available endpoints.
+A Postman collection file is provided in the repository for testing all available endpoints. Import it into Postman to get started with API testing.
 
 ## Frontend Requirements
 
