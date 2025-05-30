@@ -72,7 +72,7 @@ namespace e_commerce_course_api.Data.Repositories
                     {
                         Product = product,
                         Quantity = quantity,
-                        Basket = basket
+                        Basket = basket,
                     }
                 );
             }
@@ -102,7 +102,7 @@ namespace e_commerce_course_api.Data.Repositories
                 ClientSecret = "",
             };
 
-            _ = await _dataContext.Baskets.AddAsync(basket);
+            await _dataContext.Baskets.AddAsync(basket);
             return _mapper.Map<BasketDto>(basket);
         }
 
@@ -142,7 +142,7 @@ namespace e_commerce_course_api.Data.Repositories
                 await _dataContext.Baskets.FindAsync(id)
                 ?? throw new Exception("Carrito no encontrado.");
 
-            _ = _dataContext.Baskets.Remove(basket);
+            _dataContext.Baskets.Remove(basket);
 
             return _mapper.Map<BasketDto>(basket);
         }
@@ -185,7 +185,7 @@ namespace e_commerce_course_api.Data.Repositories
             item.Quantity -= quantity;
 
             if (item.Quantity == 0)
-                _ = _dataContext.BasketItems.Remove(item);
+                _dataContext.BasketItems.Remove(item);
 
             return _mapper.Map<BasketDto>(basket);
         }

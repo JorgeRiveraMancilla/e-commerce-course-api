@@ -69,7 +69,7 @@ namespace e_commerce_course_api.Data.Repositories
                 }
             );
 
-            _ = await _dataContext.Products.AddAsync(product);
+            await _dataContext.Products.AddAsync(product);
             return _mapper.Map<ProductDto>(product);
         }
 
@@ -92,9 +92,9 @@ namespace e_commerce_course_api.Data.Repositories
                 ?? throw new Exception("Producto no encontrado.");
 
             if (!string.IsNullOrEmpty(product.PublicId))
-                _ = await _photoService.DeleteImageAsync(product.PublicId);
+                await _photoService.DeleteImageAsync(product.PublicId);
 
-            _ = _dataContext.Products.Remove(product);
+            _dataContext.Products.Remove(product);
         }
 
         /// <summary>
@@ -150,7 +150,7 @@ namespace e_commerce_course_api.Data.Repositories
             {
                 "price-asc" => query.OrderBy(x => x.Price),
                 "price-desc" => query.OrderByDescending(x => x.Price),
-                _ => query.OrderBy(x => x.Name)
+                _ => query.OrderBy(x => x.Name),
             };
 
             if (!string.IsNullOrWhiteSpace(searchTerm))
@@ -231,7 +231,7 @@ namespace e_commerce_course_api.Data.Repositories
                 await _dataContext.Products.FindAsync(updateProductDto.Id)
                 ?? throw new Exception("Producto no encontrado.");
 
-            _ = _mapper.Map(updateProductDto, product);
+            _mapper.Map(updateProductDto, product);
 
             if (updateProductDto is not null)
             {
@@ -241,7 +241,7 @@ namespace e_commerce_course_api.Data.Repositories
                     throw new Exception(imageResult.Error.Message);
 
                 if (!string.IsNullOrEmpty(product.PublicId))
-                    _ = await _photoService.DeleteImageAsync(product.PublicId);
+                    await _photoService.DeleteImageAsync(product.PublicId);
 
                 product.ImageUrl = imageResult.SecureUrl.ToString();
                 product.PublicId = imageResult.PublicId;

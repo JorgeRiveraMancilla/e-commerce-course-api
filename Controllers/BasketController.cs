@@ -66,7 +66,7 @@ namespace e_commerce_course_api.Controllers
                 var cookieOptions = new CookieOptions
                 {
                     IsEssential = true,
-                    Expires = DateTime.UtcNow.AddDays(7)
+                    Expires = DateTime.UtcNow.AddDays(7),
                 };
                 Response.Cookies.Append("buyerId", buyerId, cookieOptions);
             }
@@ -74,7 +74,7 @@ namespace e_commerce_course_api.Controllers
             _ =
                 await _basketRepository.GetBasketByBuyerIdAsync(buyerId)
                 ?? await _basketRepository.CreateBasketAsync(buyerId);
-            _ = await _basketRepository.SaveChangesAsync();
+            await _basketRepository.SaveChangesAsync();
 
             BasketDto? basket;
             try
@@ -124,7 +124,7 @@ namespace e_commerce_course_api.Controllers
 
             try
             {
-                _ = await _basketRepository.RemoveItemFromBasketAsync(basket.Id, productId, quantity);
+                await _basketRepository.RemoveItemFromBasketAsync(basket.Id, productId, quantity);
             }
             catch (Exception e)
             {

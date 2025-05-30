@@ -34,8 +34,8 @@ builder.Services.AddSwaggerGen(c =>
         Reference = new OpenApiReference
         {
             Id = JwtBearerDefaults.AuthenticationScheme,
-            Type = ReferenceType.SecurityScheme
-        }
+            Type = ReferenceType.SecurityScheme,
+        },
     };
 
     c.AddSecurityDefinition(jwtSecurityScheme.Reference.Id, jwtSecurityScheme);
@@ -69,7 +69,7 @@ else
 }
 builder.Services.AddDbContext<DataContext>(opt =>
 {
-    _ = opt.UseNpgsql(connection);
+    opt.UseNpgsql(connection);
 });
 builder.Services.AddCors(options =>
 {
@@ -77,7 +77,7 @@ builder.Services.AddCors(options =>
         "AllowFrontend",
         policy =>
         {
-            _ = policy
+            policy
                 .WithOrigins(
                     "http://localhost:5173",
                     "https://e-commerce-course-client.netlify.app"
@@ -112,7 +112,7 @@ builder
                     builder.Configuration["JWTSettings:TokenKey"]
                         ?? throw new Exception("Token key not found.")
                 )
-            )
+            ),
         };
     });
 builder.Services.AddAuthorization();
@@ -132,8 +132,8 @@ var app = builder.Build();
 app.UseMiddleware<ExceptionMiddleware>();
 if (app.Environment.IsDevelopment())
 {
-    _ = app.UseSwagger();
-    _ = app.UseSwaggerUI(c =>
+    app.UseSwagger();
+    app.UseSwaggerUI(c =>
     {
         c.ConfigObject.AdditionalItems.Add("persistAuthorization", "true");
     });

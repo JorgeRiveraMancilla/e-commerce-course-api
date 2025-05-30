@@ -1,9 +1,7 @@
-﻿using Microsoft.EntityFrameworkCore.Migrations;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
 #nullable disable
-
-#pragma warning disable CA1814 // Prefer jagged arrays over multidimensional
 
 namespace e_commerce_course_api.Data.Migrations
 {
@@ -13,7 +11,7 @@ namespace e_commerce_course_api.Data.Migrations
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
         {
-            _ = migrationBuilder.CreateTable(
+            migrationBuilder.CreateTable(
                 name: "Addresses",
                 columns: table => new
                 {
@@ -29,10 +27,10 @@ namespace e_commerce_course_api.Data.Migrations
                 },
                 constraints: table =>
                 {
-                    _ = table.PrimaryKey("PK_Addresses", x => x.Id);
+                    table.PrimaryKey("PK_Addresses", x => x.Id);
                 });
 
-            _ = migrationBuilder.CreateTable(
+            migrationBuilder.CreateTable(
                 name: "AspNetRoles",
                 columns: table => new
                 {
@@ -44,10 +42,10 @@ namespace e_commerce_course_api.Data.Migrations
                 },
                 constraints: table =>
                 {
-                    _ = table.PrimaryKey("PK_AspNetRoles", x => x.Id);
+                    table.PrimaryKey("PK_AspNetRoles", x => x.Id);
                 });
 
-            _ = migrationBuilder.CreateTable(
+            migrationBuilder.CreateTable(
                 name: "Baskets",
                 columns: table => new
                 {
@@ -59,10 +57,10 @@ namespace e_commerce_course_api.Data.Migrations
                 },
                 constraints: table =>
                 {
-                    _ = table.PrimaryKey("PK_Baskets", x => x.Id);
+                    table.PrimaryKey("PK_Baskets", x => x.Id);
                 });
 
-            _ = migrationBuilder.CreateTable(
+            migrationBuilder.CreateTable(
                 name: "OrderStatuses",
                 columns: table => new
                 {
@@ -72,10 +70,10 @@ namespace e_commerce_course_api.Data.Migrations
                 },
                 constraints: table =>
                 {
-                    _ = table.PrimaryKey("PK_OrderStatuses", x => x.Id);
+                    table.PrimaryKey("PK_OrderStatuses", x => x.Id);
                 });
 
-            _ = migrationBuilder.CreateTable(
+            migrationBuilder.CreateTable(
                 name: "Products",
                 columns: table => new
                 {
@@ -92,10 +90,10 @@ namespace e_commerce_course_api.Data.Migrations
                 },
                 constraints: table =>
                 {
-                    _ = table.PrimaryKey("PK_Products", x => x.Id);
+                    table.PrimaryKey("PK_Products", x => x.Id);
                 });
 
-            _ = migrationBuilder.CreateTable(
+            migrationBuilder.CreateTable(
                 name: "AspNetUsers",
                 columns: table => new
                 {
@@ -119,15 +117,15 @@ namespace e_commerce_course_api.Data.Migrations
                 },
                 constraints: table =>
                 {
-                    _ = table.PrimaryKey("PK_AspNetUsers", x => x.Id);
-                    _ = table.ForeignKey(
+                    table.PrimaryKey("PK_AspNetUsers", x => x.Id);
+                    table.ForeignKey(
                         name: "FK_AspNetUsers_Addresses_AddressId",
                         column: x => x.AddressId,
                         principalTable: "Addresses",
                         principalColumn: "Id");
                 });
 
-            _ = migrationBuilder.CreateTable(
+            migrationBuilder.CreateTable(
                 name: "AspNetRoleClaims",
                 columns: table => new
                 {
@@ -139,8 +137,8 @@ namespace e_commerce_course_api.Data.Migrations
                 },
                 constraints: table =>
                 {
-                    _ = table.PrimaryKey("PK_AspNetRoleClaims", x => x.Id);
-                    _ = table.ForeignKey(
+                    table.PrimaryKey("PK_AspNetRoleClaims", x => x.Id);
+                    table.ForeignKey(
                         name: "FK_AspNetRoleClaims_AspNetRoles_RoleId",
                         column: x => x.RoleId,
                         principalTable: "AspNetRoles",
@@ -148,7 +146,7 @@ namespace e_commerce_course_api.Data.Migrations
                         onDelete: ReferentialAction.Cascade);
                 });
 
-            _ = migrationBuilder.CreateTable(
+            migrationBuilder.CreateTable(
                 name: "BasketItems",
                 columns: table => new
                 {
@@ -160,14 +158,14 @@ namespace e_commerce_course_api.Data.Migrations
                 },
                 constraints: table =>
                 {
-                    _ = table.PrimaryKey("PK_BasketItems", x => x.Id);
-                    _ = table.ForeignKey(
+                    table.PrimaryKey("PK_BasketItems", x => x.Id);
+                    table.ForeignKey(
                         name: "FK_BasketItems_Baskets_BasketId",
                         column: x => x.BasketId,
                         principalTable: "Baskets",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
-                    _ = table.ForeignKey(
+                    table.ForeignKey(
                         name: "FK_BasketItems_Products_ProductId",
                         column: x => x.ProductId,
                         principalTable: "Products",
@@ -175,7 +173,7 @@ namespace e_commerce_course_api.Data.Migrations
                         onDelete: ReferentialAction.Cascade);
                 });
 
-            _ = migrationBuilder.CreateTable(
+            migrationBuilder.CreateTable(
                 name: "AspNetUserClaims",
                 columns: table => new
                 {
@@ -187,8 +185,8 @@ namespace e_commerce_course_api.Data.Migrations
                 },
                 constraints: table =>
                 {
-                    _ = table.PrimaryKey("PK_AspNetUserClaims", x => x.Id);
-                    _ = table.ForeignKey(
+                    table.PrimaryKey("PK_AspNetUserClaims", x => x.Id);
+                    table.ForeignKey(
                         name: "FK_AspNetUserClaims_AspNetUsers_UserId",
                         column: x => x.UserId,
                         principalTable: "AspNetUsers",
@@ -196,7 +194,7 @@ namespace e_commerce_course_api.Data.Migrations
                         onDelete: ReferentialAction.Cascade);
                 });
 
-            _ = migrationBuilder.CreateTable(
+            migrationBuilder.CreateTable(
                 name: "AspNetUserLogins",
                 columns: table => new
                 {
@@ -207,8 +205,8 @@ namespace e_commerce_course_api.Data.Migrations
                 },
                 constraints: table =>
                 {
-                    _ = table.PrimaryKey("PK_AspNetUserLogins", x => new { x.LoginProvider, x.ProviderKey });
-                    _ = table.ForeignKey(
+                    table.PrimaryKey("PK_AspNetUserLogins", x => new { x.LoginProvider, x.ProviderKey });
+                    table.ForeignKey(
                         name: "FK_AspNetUserLogins_AspNetUsers_UserId",
                         column: x => x.UserId,
                         principalTable: "AspNetUsers",
@@ -216,7 +214,7 @@ namespace e_commerce_course_api.Data.Migrations
                         onDelete: ReferentialAction.Cascade);
                 });
 
-            _ = migrationBuilder.CreateTable(
+            migrationBuilder.CreateTable(
                 name: "AspNetUserRoles",
                 columns: table => new
                 {
@@ -225,14 +223,14 @@ namespace e_commerce_course_api.Data.Migrations
                 },
                 constraints: table =>
                 {
-                    _ = table.PrimaryKey("PK_AspNetUserRoles", x => new { x.UserId, x.RoleId });
-                    _ = table.ForeignKey(
+                    table.PrimaryKey("PK_AspNetUserRoles", x => new { x.UserId, x.RoleId });
+                    table.ForeignKey(
                         name: "FK_AspNetUserRoles_AspNetRoles_RoleId",
                         column: x => x.RoleId,
                         principalTable: "AspNetRoles",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
-                    _ = table.ForeignKey(
+                    table.ForeignKey(
                         name: "FK_AspNetUserRoles_AspNetUsers_UserId",
                         column: x => x.UserId,
                         principalTable: "AspNetUsers",
@@ -240,7 +238,7 @@ namespace e_commerce_course_api.Data.Migrations
                         onDelete: ReferentialAction.Cascade);
                 });
 
-            _ = migrationBuilder.CreateTable(
+            migrationBuilder.CreateTable(
                 name: "AspNetUserTokens",
                 columns: table => new
                 {
@@ -251,8 +249,8 @@ namespace e_commerce_course_api.Data.Migrations
                 },
                 constraints: table =>
                 {
-                    _ = table.PrimaryKey("PK_AspNetUserTokens", x => new { x.UserId, x.LoginProvider, x.Name });
-                    _ = table.ForeignKey(
+                    table.PrimaryKey("PK_AspNetUserTokens", x => new { x.UserId, x.LoginProvider, x.Name });
+                    table.ForeignKey(
                         name: "FK_AspNetUserTokens_AspNetUsers_UserId",
                         column: x => x.UserId,
                         principalTable: "AspNetUsers",
@@ -260,7 +258,7 @@ namespace e_commerce_course_api.Data.Migrations
                         onDelete: ReferentialAction.Cascade);
                 });
 
-            _ = migrationBuilder.CreateTable(
+            migrationBuilder.CreateTable(
                 name: "Orders",
                 columns: table => new
                 {
@@ -278,20 +276,20 @@ namespace e_commerce_course_api.Data.Migrations
                 },
                 constraints: table =>
                 {
-                    _ = table.PrimaryKey("PK_Orders", x => x.Id);
-                    _ = table.ForeignKey(
+                    table.PrimaryKey("PK_Orders", x => x.Id);
+                    table.ForeignKey(
                         name: "FK_Orders_Addresses_AddressId",
                         column: x => x.AddressId,
                         principalTable: "Addresses",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
-                    _ = table.ForeignKey(
+                    table.ForeignKey(
                         name: "FK_Orders_AspNetUsers_UserId",
                         column: x => x.UserId,
                         principalTable: "AspNetUsers",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
-                    _ = table.ForeignKey(
+                    table.ForeignKey(
                         name: "FK_Orders_OrderStatuses_OrderStatusId",
                         column: x => x.OrderStatusId,
                         principalTable: "OrderStatuses",
@@ -299,7 +297,7 @@ namespace e_commerce_course_api.Data.Migrations
                         onDelete: ReferentialAction.Cascade);
                 });
 
-            _ = migrationBuilder.CreateTable(
+            migrationBuilder.CreateTable(
                 name: "OrderItems",
                 columns: table => new
                 {
@@ -317,8 +315,8 @@ namespace e_commerce_course_api.Data.Migrations
                 },
                 constraints: table =>
                 {
-                    _ = table.PrimaryKey("PK_OrderItems", x => x.Id);
-                    _ = table.ForeignKey(
+                    table.PrimaryKey("PK_OrderItems", x => x.Id);
+                    table.ForeignKey(
                         name: "FK_OrderItems_Orders_OrderId",
                         column: x => x.OrderId,
                         principalTable: "Orders",
@@ -326,7 +324,7 @@ namespace e_commerce_course_api.Data.Migrations
                         onDelete: ReferentialAction.Cascade);
                 });
 
-            _ = migrationBuilder.InsertData(
+            migrationBuilder.InsertData(
                 table: "AspNetRoles",
                 columns: new[] { "Id", "ConcurrencyStamp", "Name", "NormalizedName" },
                 values: new object[,]
@@ -335,74 +333,74 @@ namespace e_commerce_course_api.Data.Migrations
                     { 2, null, "Member", "MEMBER" }
                 });
 
-            _ = migrationBuilder.CreateIndex(
+            migrationBuilder.CreateIndex(
                 name: "IX_AspNetRoleClaims_RoleId",
                 table: "AspNetRoleClaims",
                 column: "RoleId");
 
-            _ = migrationBuilder.CreateIndex(
+            migrationBuilder.CreateIndex(
                 name: "RoleNameIndex",
                 table: "AspNetRoles",
                 column: "NormalizedName",
                 unique: true);
 
-            _ = migrationBuilder.CreateIndex(
+            migrationBuilder.CreateIndex(
                 name: "IX_AspNetUserClaims_UserId",
                 table: "AspNetUserClaims",
                 column: "UserId");
 
-            _ = migrationBuilder.CreateIndex(
+            migrationBuilder.CreateIndex(
                 name: "IX_AspNetUserLogins_UserId",
                 table: "AspNetUserLogins",
                 column: "UserId");
 
-            _ = migrationBuilder.CreateIndex(
+            migrationBuilder.CreateIndex(
                 name: "IX_AspNetUserRoles_RoleId",
                 table: "AspNetUserRoles",
                 column: "RoleId");
 
-            _ = migrationBuilder.CreateIndex(
+            migrationBuilder.CreateIndex(
                 name: "EmailIndex",
                 table: "AspNetUsers",
                 column: "NormalizedEmail");
 
-            _ = migrationBuilder.CreateIndex(
+            migrationBuilder.CreateIndex(
                 name: "IX_AspNetUsers_AddressId",
                 table: "AspNetUsers",
                 column: "AddressId");
 
-            _ = migrationBuilder.CreateIndex(
+            migrationBuilder.CreateIndex(
                 name: "UserNameIndex",
                 table: "AspNetUsers",
                 column: "NormalizedUserName",
                 unique: true);
 
-            _ = migrationBuilder.CreateIndex(
+            migrationBuilder.CreateIndex(
                 name: "IX_BasketItems_BasketId",
                 table: "BasketItems",
                 column: "BasketId");
 
-            _ = migrationBuilder.CreateIndex(
+            migrationBuilder.CreateIndex(
                 name: "IX_BasketItems_ProductId",
                 table: "BasketItems",
                 column: "ProductId");
 
-            _ = migrationBuilder.CreateIndex(
+            migrationBuilder.CreateIndex(
                 name: "IX_OrderItems_OrderId",
                 table: "OrderItems",
                 column: "OrderId");
 
-            _ = migrationBuilder.CreateIndex(
+            migrationBuilder.CreateIndex(
                 name: "IX_Orders_AddressId",
                 table: "Orders",
                 column: "AddressId");
 
-            _ = migrationBuilder.CreateIndex(
+            migrationBuilder.CreateIndex(
                 name: "IX_Orders_OrderStatusId",
                 table: "Orders",
                 column: "OrderStatusId");
 
-            _ = migrationBuilder.CreateIndex(
+            migrationBuilder.CreateIndex(
                 name: "IX_Orders_UserId",
                 table: "Orders",
                 column: "UserId");
@@ -411,46 +409,46 @@ namespace e_commerce_course_api.Data.Migrations
         /// <inheritdoc />
         protected override void Down(MigrationBuilder migrationBuilder)
         {
-            _ = migrationBuilder.DropTable(
+            migrationBuilder.DropTable(
                 name: "AspNetRoleClaims");
 
-            _ = migrationBuilder.DropTable(
+            migrationBuilder.DropTable(
                 name: "AspNetUserClaims");
 
-            _ = migrationBuilder.DropTable(
+            migrationBuilder.DropTable(
                 name: "AspNetUserLogins");
 
-            _ = migrationBuilder.DropTable(
+            migrationBuilder.DropTable(
                 name: "AspNetUserRoles");
 
-            _ = migrationBuilder.DropTable(
+            migrationBuilder.DropTable(
                 name: "AspNetUserTokens");
 
-            _ = migrationBuilder.DropTable(
+            migrationBuilder.DropTable(
                 name: "BasketItems");
 
-            _ = migrationBuilder.DropTable(
+            migrationBuilder.DropTable(
                 name: "OrderItems");
 
-            _ = migrationBuilder.DropTable(
+            migrationBuilder.DropTable(
                 name: "AspNetRoles");
 
-            _ = migrationBuilder.DropTable(
+            migrationBuilder.DropTable(
                 name: "Baskets");
 
-            _ = migrationBuilder.DropTable(
+            migrationBuilder.DropTable(
                 name: "Products");
 
-            _ = migrationBuilder.DropTable(
+            migrationBuilder.DropTable(
                 name: "Orders");
 
-            _ = migrationBuilder.DropTable(
+            migrationBuilder.DropTable(
                 name: "AspNetUsers");
 
-            _ = migrationBuilder.DropTable(
+            migrationBuilder.DropTable(
                 name: "OrderStatuses");
 
-            _ = migrationBuilder.DropTable(
+            migrationBuilder.DropTable(
                 name: "Addresses");
         }
     }

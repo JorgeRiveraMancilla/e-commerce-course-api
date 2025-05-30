@@ -14,11 +14,11 @@ namespace e_commerce_course_api.Helpers
         public AutoMapperProfiles()
         {
             // Address Repository
-            _ = CreateMap<Address, AddressDto>();
+            CreateMap<Address, AddressDto>();
 
             // Basket Repository
-            _ = CreateMap<Basket, BasketDto>();
-            _ = CreateMap<BasketItem, BasketItemDto>()
+            CreateMap<Basket, BasketDto>();
+            CreateMap<BasketItem, BasketItemDto>()
                 .ForMember(dest => dest.ProductId, opt => opt.MapFrom(src => src.Product.Id))
                 .ForMember(dest => dest.Name, opt => opt.MapFrom(src => src.Product.Name))
                 .ForMember(
@@ -31,28 +31,26 @@ namespace e_commerce_course_api.Helpers
                 .ForMember(dest => dest.Type, opt => opt.MapFrom(src => src.Product.Type));
 
             // Order Repository
-            _ = CreateMap<Order, OrderDto>()
-                .ReverseMap();
-            _ = CreateMap<OrderItem, OrderItemDto>().ReverseMap();
-            _ = CreateMap<ProductDto, OrderItemDto>()
+            CreateMap<Order, OrderDto>().ReverseMap();
+            CreateMap<OrderItem, OrderItemDto>().ReverseMap();
+            CreateMap<ProductDto, OrderItemDto>()
                 .ForMember(dest => dest.ProductId, opt => opt.MapFrom(src => src.Id));
-            _ = CreateMap<OrderStatus, OrderStatusDto>().ReverseMap();
+            CreateMap<OrderStatus, OrderStatusDto>().ReverseMap();
 
             // Product Repository
-            _ = CreateMap<Product, ProductDto>();
-            _ = CreateMap<CreateProductDto, Product>()
+            CreateMap<Product, ProductDto>();
+            CreateMap<CreateProductDto, Product>()
                 .ForMember(dest => dest.ImageUrl, opt => opt.Ignore())
                 .ForMember(dest => dest.PublicId, opt => opt.Ignore());
-            _ = CreateMap<UpdateProductDto, Product>()
+            CreateMap<UpdateProductDto, Product>()
                 .ForMember(dest => dest.ImageUrl, opt => opt.Ignore())
                 .ForMember(dest => dest.PublicId, opt => opt.Ignore());
 
             // User Repository
-            _ = CreateMap<User, UserDto>();
+            CreateMap<User, UserDto>();
 
             // Address Repository
-            _ = CreateMap<Address, AddressDto>()
-                .ReverseMap();
+            CreateMap<Address, AddressDto>().ReverseMap();
         }
     }
 }

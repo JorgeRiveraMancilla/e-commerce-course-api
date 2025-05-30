@@ -1,0 +1,16 @@
+#!/bin/sh
+. "$(dirname -- "$0")/_/husky.sh"
+
+echo "Restaurando paquetes..."
+dotnet husky run --name restore-packages
+
+echo "Ejecutando build..."
+dotnet husky run --name build-release
+
+if [ $? -ne 0 ]; then
+  echo "Error: Build falló"
+  echo "Corrige los errores de compilación antes de hacer push"
+  exit 1
+fi
+
+echo "Build completado exitosamente"

@@ -45,7 +45,7 @@ namespace e_commerce_course_api.Services
             {
                 new(ClaimTypes.NameIdentifier, user.Id.ToString()),
                 new(ClaimTypes.Email, email),
-                new(ClaimTypes.Name, userName)
+                new(ClaimTypes.Name, userName),
             };
 
             var roles = await _userManager.GetRolesAsync(user);

@@ -70,7 +70,7 @@ namespace e_commerce_course_api.Data.Repositories
                     )
             );
 
-            _ = await _dataContext.Orders.AddAsync(order);
+            await _dataContext.Orders.AddAsync(order);
             return _mapper.Map<OrderDto>(order);
         }
 

@@ -1,0 +1,17 @@
+#!/bin/sh
+. "$(dirname -- "$0")/_/husky.sh"
+
+echo "Formateando todo el proyecto..."
+dotnet husky run --name format-all-project
+
+echo "Verificando formato..."
+dotnet husky run --name format-verify
+
+if [ $? -ne 0 ]; then
+  echo "Error: Código no formateado correctamente"
+  echo "El proyecto fue formateado automáticamente"
+  echo "Ejecuta 'git add .' y vuelve a hacer commit"
+  exit 1
+fi
+
+echo "Formato verificado correctamente"

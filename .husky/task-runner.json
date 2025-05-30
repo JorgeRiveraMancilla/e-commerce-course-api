@@ -1,0 +1,55 @@
+{
+   "$schema": "https://alirezanet.github.io/Husky.Net/schema.json",
+   "tasks": [
+      {
+         "name": "format-all-files",
+         "group": "pre-commit-operations",
+         "command": "dotnet",
+         "args": [
+            "format",
+            "e-commerce-course-api.sln"
+         ],
+         "include": [
+            "**/*.cs"
+         ]
+      },
+      {
+         "name": "format-verify",
+         "group": "pre-commit-operations",
+         "command": "dotnet",
+         "args": [
+            "format",
+            "e-commerce-course-api.sln",
+            "--verify-no-changes",
+            "--verbosity",
+            "quiet"
+         ],
+         "include": [
+            "**/*.cs"
+         ]
+      },
+      {
+         "name": "restore-packages",
+         "group": "pre-push-operations",
+         "command": "dotnet",
+         "args": [
+            "restore",
+            "--verbosity",
+            "quiet"
+         ]
+      },
+      {
+         "name": "build-release",
+         "group": "pre-push-operations",
+         "command": "dotnet",
+         "args": [
+            "build",
+            "--configuration",
+            "Release",
+            "--no-restore",
+            "--verbosity",
+            "quiet"
+         ]
+      }
+   ]
+}

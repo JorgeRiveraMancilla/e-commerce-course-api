@@ -56,20 +56,20 @@ namespace e_commerce_course_api.Data
         {
             base.OnModelCreating(modelBuilder);
 
-            _ = modelBuilder
+            modelBuilder
                 .Entity<Role>()
                 .HasData(
                     new Role
                     {
                         Id = 1,
                         Name = "Admin",
-                        NormalizedName = "ADMIN"
+                        NormalizedName = "ADMIN",
                     },
                     new Role
                     {
                         Id = 2,
                         Name = "Member",
-                        NormalizedName = "MEMBER"
+                        NormalizedName = "MEMBER",
                     }
                 );
         }

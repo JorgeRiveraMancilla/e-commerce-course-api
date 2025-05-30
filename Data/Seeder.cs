@@ -13,8 +13,10 @@ namespace e_commerce_course_api.Data
         /// <summary>
         /// The options for the JSON serializer.
         /// </summary>
-        private static readonly JsonSerializerOptions _options =
-            new() { PropertyNameCaseInsensitive = true };
+        private static readonly JsonSerializerOptions _options = new()
+        {
+            PropertyNameCaseInsensitive = true,
+        };
 
         /// <summary>
         /// Seeds the database.
@@ -48,7 +50,6 @@ namespace e_commerce_course_api.Data
         /// <param name="dataContext">
         /// The data context.
         /// </param>
-
         /// <returns>
         /// A <see cref="Task"/> representing the asynchronous operation.
         /// </returns>
@@ -64,7 +65,7 @@ namespace e_commerce_course_api.Data
                 return;
 
             await dataContext.AddRangeAsync(products);
-            _ = await dataContext.SaveChangesAsync();
+            await dataContext.SaveChangesAsync();
         }
 
         /// <summary>
@@ -104,7 +105,7 @@ namespace e_commerce_course_api.Data
             {
                 var createdAdmin = await userManager.FindByNameAsync(adminName);
                 if (createdAdmin != null)
-                    _ = await userManager.AddToRolesAsync(createdAdmin, ["Admin", "Member"]);
+                    await userManager.AddToRolesAsync(createdAdmin, ["Admin", "Member"]);
                 else
                     throw new Exception("Failed to retrieve created admin user.");
             }
@@ -137,7 +138,7 @@ namespace e_commerce_course_api.Data
             };
 
             await dataContext.AddRangeAsync(orderStatuses);
-            _ = await dataContext.SaveChangesAsync();
+            await dataContext.SaveChangesAsync();
         }
     }
 }
