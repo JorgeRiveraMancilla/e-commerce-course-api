@@ -72,51 +72,15 @@ else
 {
     Console.WriteLine("Production environment detected, configuring database connection...");
 
-    // First try the configured connection string from Render
-    connection = builder.Configuration.GetConnectionString("DefaultConnection");
+    // Get connection string from configuration or environment
+    connection =
+        builder.Configuration.GetConnectionString("DefaultConnection")
+        ?? Environment.GetEnvironmentVariable("DATABASE_URL");
+
     Console.WriteLine(
-        $"DefaultConnection from config: {(!string.IsNullOrEmpty(connection) ? "Found" : "Empty")}"
+        $"Connection source: {(!string.IsNullOrEmpty(connection) ? "Found" : "Empty")}"
     );
 
-    // If empty, try DATABASE_URL environment variable
-    if (string.IsNullOrEmpty(connection))
-    {
-        Console.WriteLine("DefaultConnection is empty, trying DATABASE_URL...");
-        var connectionUrl = Environment.GetEnvironmentVariable("DATABASE_URL");
-        Console.WriteLine(
-            $"DATABASE_URL: {(!string.IsNullOrEmpty(connectionUrl) ? "Found" : "Empty")}"
-        );
-
-        if (!string.IsNullOrEmpty(connectionUrl))
-        {
-            Console.WriteLine("Parsing DATABASE_URL...");
-            try
-            {
-                // Parse connection URL to connection string for Npgsql (Render format)
-                connectionUrl = connectionUrl.Replace("postgres://", string.Empty);
-                var pgUserAndPassword = connectionUrl.Split("@")[0];
-                var pgHostPortAndDatabase = connectionUrl.Split("@")[1];
-                var pgHostPort = pgHostPortAndDatabase.Split("/")[0];
-                var pgDatabase = pgHostPortAndDatabase.Split("/")[1];
-                var pgUser = pgUserAndPassword.Split(":")[0];
-                var pgPass = pgUserAndPassword.Split(":")[1];
-                var pgHost = pgHostPort.Split(":")[0];
-                var pgPort = pgHostPort.Split(":")[1];
-                var updatedHost = pgHost.Replace("flycast", "internal");
-
-                connection =
-                    $"Server={updatedHost};Port={pgPort};User Id={pgUser};Password={pgPass};Database={pgDatabase};Ssl Mode=Require;Trust Server Certificate=true;";
-                Console.WriteLine("Successfully parsed DATABASE_URL");
-            }
-            catch (Exception ex)
-            {
-                Console.WriteLine($"Error parsing DATABASE_URL: {ex.Message}");
-                throw new InvalidOperationException("Failed to parse DATABASE_URL", ex);
-            }
-        }
-    }
-
-    // Final validation
     if (string.IsNullOrEmpty(connection))
     {
         Console.WriteLine("ERROR: No database connection string found");
@@ -125,7 +89,66 @@ else
         );
     }
 
-    // Log connection info (without sensitive data)
+    Console.WriteLine($"Raw connection string: {connection}");
+
+    // Check if connection string is in PostgreSQL URL format and needs parsing
+    if (connection.StartsWith("postgresql://") || connection.StartsWith("postgres://"))
+    {
+        Console.WriteLine("PostgreSQL URL format detected, converting to Npgsql format...");
+        try
+        {
+            // Parse connection URL to connection string for Npgsql
+            var connectionUrl = connection.Replace("postgresql://", "").Replace("postgres://", "");
+            var parts = connectionUrl.Split("@");
+            if (parts.Length != 2)
+            {
+                throw new FormatException("Invalid PostgreSQL URL format");
+            }
+
+            var userAndPassword = parts[0];
+            var hostPortAndDatabase = parts[1];
+
+            var userPasswordParts = userAndPassword.Split(":");
+            if (userPasswordParts.Length != 2)
+            {
+                throw new FormatException("Invalid user:password format");
+            }
+
+            var pgUser = userPasswordParts[0];
+            var pgPass = userPasswordParts[1];
+
+            var hostDbParts = hostPortAndDatabase.Split("/");
+            if (hostDbParts.Length != 2)
+            {
+                throw new FormatException("Invalid host/database format");
+            }
+
+            var hostPort = hostDbParts[0];
+            var pgDatabase = hostDbParts[1];
+
+            var hostPortParts = hostPort.Split(":");
+            var pgHost = hostPortParts[0];
+            var pgPort = hostPortParts.Length > 1 ? hostPortParts[1] : "5432";
+
+            // Convert internal hostname if needed
+            var updatedHost = pgHost.Replace("flycast", "internal");
+
+            connection =
+                $"Server={updatedHost};Port={pgPort};Database={pgDatabase};Username={pgUser};Password={pgPass};Ssl Mode=Require;Trust Server Certificate=true;";
+            Console.WriteLine("Successfully converted PostgreSQL URL to Npgsql format");
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine($"Error parsing PostgreSQL URL: {ex.Message}");
+            throw new InvalidOperationException("Failed to parse PostgreSQL URL", ex);
+        }
+    }
+    else
+    {
+        Console.WriteLine("Connection string is already in Npgsql format");
+    }
+
+    // Log final connection info (masked)
     var maskedConnection = connection.Contains("Password=")
         ? connection.Split("Password=")[0]
             + "Password=***"
@@ -144,7 +167,7 @@ else
                     : ""
             )
         : connection;
-    Console.WriteLine($"Final connection string: {maskedConnection}");
+    Console.WriteLine($"Final Npgsql connection string: {maskedConnection}");
 }
 
 builder.Services.AddDbContext<DataContext>(opt =>
