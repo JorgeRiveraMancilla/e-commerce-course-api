@@ -58,39 +58,95 @@ builder.Services.AddSwaggerGen(c =>
     );
 });
 
-// Database configuration
+// Database configuration with improved error handling
 string connection;
+
 if (builder.Environment.IsDevelopment())
 {
-    connection = builder.Configuration.GetConnectionString("DefaultConnection")!;
+    connection =
+        builder.Configuration.GetConnectionString("DefaultConnection")
+        ?? throw new InvalidOperationException("DefaultConnection not found in development");
+    Console.WriteLine("Using development connection string");
 }
 else
 {
-    // Use connection string provided at runtime by hosting service
-    var connectionUrl = Environment.GetEnvironmentVariable("DATABASE_URL");
+    Console.WriteLine("Production environment detected, configuring database connection...");
 
-    if (!string.IsNullOrEmpty(connectionUrl))
-    {
-        // Parse connection URL to connection string for Npgsql (Render format)
-        connectionUrl = connectionUrl.Replace("postgres://", string.Empty);
-        var pgUserAndPassword = connectionUrl.Split("@")[0];
-        var pgHostPortAndDatabase = connectionUrl.Split("@")[1];
-        var pgHostPort = pgHostPortAndDatabase.Split("/")[0];
-        var pgDatabase = pgHostPortAndDatabase.Split("/")[1];
-        var pgUser = pgUserAndPassword.Split(":")[0];
-        var pgPass = pgUserAndPassword.Split(":")[1];
-        var pgHost = pgHostPort.Split(":")[0];
-        var pgPort = pgHostPort.Split(":")[1];
-        var updatedHost = pgHost.Replace("flycast", "internal");
+    // First try the configured connection string from Render
+    connection =
+        builder.Configuration.GetConnectionString("DefaultConnection")
+        ?? throw new InvalidOperationException("DefaultConnection not found in production");
+    Console.WriteLine(
+        $"DefaultConnection from config: {(!string.IsNullOrEmpty(connection) ? "Found" : "Empty")}"
+    );
 
-        connection =
-            $"Server={updatedHost};Port={pgPort};User Id={pgUser};Password={pgPass};Database={pgDatabase};Ssl Mode=Require;Trust Server Certificate=true;";
-    }
-    else
+    // If empty, try DATABASE_URL environment variable
+    if (string.IsNullOrEmpty(connection))
     {
-        // Fallback to connection string from configuration
-        connection = builder.Configuration.GetConnectionString("DefaultConnection")!;
+        Console.WriteLine("DefaultConnection is empty, trying DATABASE_URL...");
+        var connectionUrl = Environment.GetEnvironmentVariable("DATABASE_URL");
+        Console.WriteLine(
+            $"DATABASE_URL: {(!string.IsNullOrEmpty(connectionUrl) ? "Found" : "Empty")}"
+        );
+
+        if (!string.IsNullOrEmpty(connectionUrl))
+        {
+            Console.WriteLine("Parsing DATABASE_URL...");
+            try
+            {
+                // Parse connection URL to connection string for Npgsql (Render format)
+                connectionUrl = connectionUrl.Replace("postgres://", string.Empty);
+                var pgUserAndPassword = connectionUrl.Split("@")[0];
+                var pgHostPortAndDatabase = connectionUrl.Split("@")[1];
+                var pgHostPort = pgHostPortAndDatabase.Split("/")[0];
+                var pgDatabase = pgHostPortAndDatabase.Split("/")[1];
+                var pgUser = pgUserAndPassword.Split(":")[0];
+                var pgPass = pgUserAndPassword.Split(":")[1];
+                var pgHost = pgHostPort.Split(":")[0];
+                var pgPort = pgHostPort.Split(":")[1];
+                var updatedHost = pgHost.Replace("flycast", "internal");
+
+                connection =
+                    $"Server={updatedHost};Port={pgPort};User Id={pgUser};Password={pgPass};Database={pgDatabase};Ssl Mode=Require;Trust Server Certificate=true;";
+                Console.WriteLine("Successfully parsed DATABASE_URL");
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Error parsing DATABASE_URL: {ex.Message}");
+                throw new InvalidOperationException("Failed to parse DATABASE_URL", ex);
+            }
+        }
     }
+
+    // Final validation
+    if (string.IsNullOrEmpty(connection))
+    {
+        Console.WriteLine("ERROR: No database connection string found");
+        throw new InvalidOperationException(
+            "No database connection string found. Please check your environment variables."
+        );
+    }
+
+    // Log connection info (without sensitive data)
+    var maskedConnection = connection.Contains("Password=")
+        ? connection.Split("Password=")[0]
+            + "Password=***"
+            + (
+                connection.Contains(";")
+                    ? ";"
+                        + string.Join(
+                            ";",
+                            connection
+                                .Split(";")
+                                .Skip(1)
+                                .Where(p =>
+                                    !p.StartsWith("Password=", StringComparison.OrdinalIgnoreCase)
+                                )
+                        )
+                    : ""
+            )
+        : connection;
+    Console.WriteLine($"Final connection string: {maskedConnection}");
 }
 
 builder.Services.AddDbContext<DataContext>(opt =>
@@ -274,9 +330,5 @@ catch (Exception exception)
 // Log application startup
 logger.LogInformation("E-Commerce Course API is starting...");
 logger.LogInformation("Environment: {Environment}", app.Environment.EnvironmentName);
-logger.LogInformation(
-    "Connection String: {ConnectionString}",
-    connection.Replace(connection.Split("Password=")[1].Split(";")[0], "***")
-);
 
 app.Run();
