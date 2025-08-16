@@ -214,7 +214,34 @@ else
 }
 
 // Health check endpoint
-app.MapHealthChecks("/health");
+app.MapHealthChecks(
+    "/health",
+    new Microsoft.AspNetCore.Diagnostics.HealthChecks.HealthCheckOptions
+    {
+        ResponseWriter = async (context, report) =>
+        {
+            context.Response.ContentType = "application/json";
+
+            var result = new
+            {
+                Status = report.Status.ToString(),
+                Timestamp = DateTime.UtcNow,
+                Service = "E-Commerce Course API",
+                Version = "1.0.0",
+                Environment = app.Environment.EnvironmentName,
+                Checks = report.Entries.Select(e => new
+                {
+                    Name = e.Key,
+                    Status = e.Value.Status.ToString(),
+                    e.Value.Description,
+                    Duration = e.Value.Duration.TotalMilliseconds,
+                }),
+            };
+
+            await context.Response.WriteAsJsonAsync(result);
+        },
+    }
+);
 
 app.UseCors("AllowFrontend");
 app.UseAuthentication();
