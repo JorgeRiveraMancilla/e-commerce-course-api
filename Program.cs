@@ -59,7 +59,7 @@ builder.Services.AddSwaggerGen(c =>
 });
 
 // Database configuration with improved error handling
-string connection;
+string? connection;
 
 if (builder.Environment.IsDevelopment())
 {
@@ -73,9 +73,7 @@ else
     Console.WriteLine("Production environment detected, configuring database connection...");
 
     // First try the configured connection string from Render
-    connection =
-        builder.Configuration.GetConnectionString("DefaultConnection")
-        ?? throw new InvalidOperationException("DefaultConnection not found in production");
+    connection = builder.Configuration.GetConnectionString("DefaultConnection");
     Console.WriteLine(
         $"DefaultConnection from config: {(!string.IsNullOrEmpty(connection) ? "Found" : "Empty")}"
     );
