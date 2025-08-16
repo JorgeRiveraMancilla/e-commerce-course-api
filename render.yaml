@@ -37,3 +37,5 @@ services:
 
 databases:
   - name: e-commerce-course-db
+    plan: free
+    region: oregon
