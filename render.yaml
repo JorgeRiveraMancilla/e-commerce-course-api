@@ -1,7 +1,7 @@
 services:
   - type: web
     name: e-commerce-course-api
-    env: dotnet
+    runtime: dotnet
     plan: free
     buildCommand: dotnet build -c Release
     startCommand: dotnet run --no-build
