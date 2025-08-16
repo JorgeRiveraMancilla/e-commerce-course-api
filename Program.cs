@@ -198,10 +198,7 @@ builder.Services.AddCors(options =>
             else
             {
                 policy
-                    .WithOrigins(
-                        "https://e-commerce-course-client.netlify.app",
-                        "https://your-production-frontend.com"
-                    )
+                    .WithOrigins("https://e-commerce-course-web-client.vercel.app")
                     .AllowAnyHeader()
                     .AllowAnyMethod()
                     .AllowCredentials();
