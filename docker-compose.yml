@@ -1,16 +1,75 @@
+version: '3.8'
+
 services:
+  # PostgreSQL Database for Development
   postgres:
-    image: postgres:latest
+    image: postgres:16-alpine
     container_name: e-commerce-postgres
     environment:
       POSTGRES_USER: appuser
       POSTGRES_PASSWORD: secret
       POSTGRES_DB: e-commerce-course
+      POSTGRES_INITDB_ARGS: "--encoding=UTF-8"
     ports:
       - "5432:5432"
     volumes:
       - postgres_data:/var/lib/postgresql/data
+      - ./scripts/init.sql:/docker-entrypoint-initdb.d/init.sql:ro
     restart: unless-stopped
+    healthcheck:
+      test: [ "CMD-SHELL", "pg_isready -U appuser -d e-commerce-course" ]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    networks:
+      - ecommerce-network
+
+  # API Application (optional, for full containerized development)
+  api:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: e-commerce-api
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+      - ConnectionStrings__DefaultConnection=Host=postgres;Port=5432;Database=e-commerce-course;Username=appuser;Password=secret
+    ports:
+      - "5000:8080"
+    depends_on:
+      postgres:
+        condition: service_healthy
+    restart: unless-stopped
+    networks:
+      - ecommerce-network
+    profiles:
+      - full-stack
+
+  # pgAdmin for database management (optional)
+  pgadmin:
+    image: dpage/pgadmin4:latest
+    container_name: e-commerce-pgadmin
+    environment:
+      PGADMIN_DEFAULT_EMAIL: admin@admin.com
+      PGADMIN_DEFAULT_PASSWORD: admin
+      PGADMIN_CONFIG_SERVER_MODE: 'False'
+    ports:
+      - "8080:80"
+    volumes:
+      - pgadmin_data:/var/lib/pgadmin
+    depends_on:
+      - postgres
+    restart: unless-stopped
+    networks:
+      - ecommerce-network
+    profiles:
+      - admin
 
 volumes:
   postgres_data:
+    driver: local
+  pgadmin_data:
+    driver: local
+
+networks:
+  ecommerce-network:
+    driver: bridge

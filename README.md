@@ -4,12 +4,14 @@ This is an E-Commerce API built with ASP.NET Core 8 Web API that integrates with
 
 This project is based on the Udemy course [Learn to build an e-commerce store with .Net, React & Redux](https://www.udemy.com/course/learn-to-build-an-e-commerce-store-with-dotnet-react-redux) by Neil Cummings.
 
-**Note: This setup is designed for local development environment.**
+**⚠️ IMPORTANT: This README is for LOCAL DEVELOPMENT ONLY. For production deployment, see the deployment section below.**
+
+**🔒 SECURITY NOTE: Never commit real credentials to version control. The appsettings files contain placeholder values that must be replaced with your actual credentials for local development.**
 
 ## Technologies & Features
 
 - **Framework**: ASP.NET Core 8.0
-- **Database**: 
+- **Database**:
   - PostgreSQL
   - Entity Framework Core 8.0
   - Identity Framework Core 8.0
@@ -19,7 +21,7 @@ This project is based on the Udemy course [Learn to build an e-commerce store wi
 - **Payment Processing**:
   - Stripe integration
   - Payment intent management
-- **Image Storage**: 
+- **Image Storage**:
   - Cloudinary integration
   - Photo moderation capabilities
 - **Other Tools & Libraries**:
@@ -114,7 +116,20 @@ Then replace in `appsettings.Development.json`:
 }
 ```
 
-**Important**: Keep the webhook forwarding running while testing payments in the application.
+**4. Admin User Settings**: Configure your admin user credentials
+
+Then replace in `appsettings.Development.json`:
+```json
+"AdminUser": {
+  "Name": "your-admin-name",
+  "Email": "your-admin-email@example.com",
+  "Password": "your-secure-admin-password"
+}
+```
+
+**Important**:
+- Keep the webhook forwarding running while testing payments in the application
+- Use a strong password that meets ASP.NET Core Identity requirements (at least 6 characters, with uppercase, lowercase, number, and special character)
 
 ### 3. Start PostgreSQL Database
 
@@ -148,3 +163,59 @@ A Postman collection file is provided in the repository for testing all availabl
 ## Frontend Requirements
 
 To use this API with the frontend application, you will need to set up the E-Commerce Course Web Client. You can find the frontend repository here: [E-Commerce Course Web Client](https://github.com/JorgeRiveraMancilla/e-commerce-course-web-client)
+
+---
+
+## 🚀 Production Deployment
+
+This project is configured for deployment on **Render** with automatic CI/CD.
+
+### Deploy to Render
+
+1. **Fork or push this repository to GitHub**
+
+2. **Connect to Render**:
+   - Go to [render.com](https://render.com)
+   - Sign up/Login with your GitHub account
+   - Click "New +" → "Blueprint"
+   - Connect your GitHub repository
+
+3. **Configure Environment Variables**:
+   After the initial deployment, go to your service dashboard and add these environment variables:
+
+   **Required Variables:**
+   - `JWTSettings__TokenKey`: Your JWT secret key (generate with: `openssl rand -base64 64`)
+   - `Cloudinary__CloudName`: Your Cloudinary cloud name
+   - `Cloudinary__ApiKey`: Your Cloudinary API key
+   - `Cloudinary__ApiSecret`: Your Cloudinary API secret
+   - `StripeSettings__SecretKey`: Your Stripe secret key
+   - `StripeSettings__PublishableKey`: Your Stripe publishable key
+   - `StripeSettings__WhSecret`: Your Stripe webhook secret
+   - `AdminUser__Name`: Admin user name (e.g., "Admin")
+   - `AdminUser__Email`: Admin user email (e.g., "admin@yourdomain.com")
+   - `AdminUser__Password`: Admin user password (must meet password requirements)
+
+4. **Database**: The PostgreSQL database will be automatically provisioned by Render
+
+5. **Automatic Deployments**: Every push to the main branch will trigger a new deployment
+
+### Deployment Features
+
+- ✅ **Free Tier Compatible**: Configured for Render's free tier
+- ✅ **Automatic CI/CD**: Deploys on every push to main branch
+- ✅ **Database Integration**: PostgreSQL database automatically provisioned
+- ✅ **Environment Variables**: Secure configuration management
+- ✅ **Health Checks**: Built-in health monitoring
+
+### Production URL
+
+Once deployed, your API will be available at:
+`https://your-app-name.onrender.com`
+
+### Webhook Configuration
+
+For Stripe webhooks in production:
+1. Go to your Stripe Dashboard → Webhooks
+2. Add endpoint: `https://your-app-name.onrender.com/api/payment/webhook`
+3. Select events: `payment_intent.succeeded`, `payment_intent.payment_failed`
+4. Copy the webhook signing secret to your environment variables
