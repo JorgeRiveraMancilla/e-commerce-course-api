@@ -37,11 +37,3 @@ services:
 
 databases:
   - name: e-commerce-course-db
-    databaseName: ecommerce_course
-    user: ecommerce_user
-    plan: free
-    region: oregon
-
-    envVars:
-      - key: POSTGRES_VERSION
-        value: "16"
