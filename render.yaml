@@ -5,41 +5,29 @@ services:
     plan: free
     region: oregon
     healthCheckPath: /health
-
-    # Environment variables
     envVars:
       - key: ASPNETCORE_ENVIRONMENT
         value: Production
-
       - key: ASPNETCORE_URLS
         value: http://+:8080
-
       - key: ConnectionStrings__DefaultConnection
         fromDatabase:
           name: e-commerce-course-db
           property: connectionString
-
-      # JWT Settings
       - key: JWTSettings__TokenKey
         sync: false
-
-      # Cloudinary Settings
       - key: Cloudinary__CloudName
         sync: false
       - key: Cloudinary__ApiKey
         sync: false
       - key: Cloudinary__ApiSecret
         sync: false
-
-      # Stripe Settings
       - key: StripeSettings__SecretKey
         sync: false
       - key: StripeSettings__PublishableKey
         sync: false
       - key: StripeSettings__WhSecret
         sync: false
-
-      # Admin User Settings
       - key: AdminUser__Name
         sync: false
       - key: AdminUser__Email
@@ -59,9 +47,8 @@ databases:
     databaseName: ecommerce_course
     user: ecommerce_user
     plan: free
-    region: oregon # match with web service region
+    region: oregon
 
-    # Database-specific environment variables
     envVars:
       - key: POSTGRES_VERSION
         value: "16"
