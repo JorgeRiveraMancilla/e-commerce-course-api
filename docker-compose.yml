@@ -3,11 +3,11 @@ version: '3.8'
 services:
   # PostgreSQL Database for Development
   postgres:
-    image: postgres:16-alpine
-    container_name: e-commerce-postgres
+    image: postgres:latest
+    container_name: db-postgres
     environment:
-      POSTGRES_USER: appuser
-      POSTGRES_PASSWORD: secret
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: Pass1234
       POSTGRES_DB: e-commerce-course
       POSTGRES_INITDB_ARGS: "--encoding=UTF-8"
     ports:
@@ -17,7 +17,7 @@ services:
       - ./scripts/init.sql:/docker-entrypoint-initdb.d/init.sql:ro
     restart: unless-stopped
     healthcheck:
-      test: [ "CMD-SHELL", "pg_isready -U appuser -d e-commerce-course" ]
+      test: [ "CMD-SHELL", "pg_isready -U postgres -d e-commerce-course" ]
       interval: 10s
       timeout: 5s
       retries: 5
@@ -32,7 +32,7 @@ services:
     container_name: e-commerce-api
     environment:
       - ASPNETCORE_ENVIRONMENT=Development
-      - ConnectionStrings__DefaultConnection=Host=postgres;Port=5432;Database=e-commerce-course;Username=appuser;Password=secret
+      - ConnectionStrings__DefaultConnection=Host=postgres;Port=5432;Database=e-commerce-course;Username=postgres;Password=Pass1234
     ports:
       - "5000:8080"
     depends_on:
