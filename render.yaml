@@ -3,15 +3,7 @@ services:
     name: e-commerce-course-api
     runtime: docker
     plan: free
-    region: oregon # or your preferred region
-    dockerfilePath: ./Dockerfile
-    dockerContext: .
-
-    # Auto-deploy from DockerHub image (alternative to building on Render)
-    # image:
-    #   url: docker.io/yourusername/e-commerce-course-api:latest
-
-    # Health check endpoint
+    region: oregon
     healthCheckPath: /health
 
     # Environment variables
@@ -55,21 +47,12 @@ services:
       - key: AdminUser__Password
         sync: false
 
-    # Scaling configuration
-    scaling:
-      minInstances: 1
-      maxInstances: 3
-      targetMemoryPercent: 80
-      targetCPUPercent: 80
-
-    # Build settings
-    buildFilter:
-      paths:
-      - "**/*"
-      ignoredPaths:
-      - "*.md"
-      - ".github/**"
-      - "docs/**"
+databases:
+  - name: e-commerce-course-db
+    databaseName: ecommerce_course
+    user: ecommerce_user
+    plan: free
+    region: oregon
 
 databases:
   - name: e-commerce-course-db
