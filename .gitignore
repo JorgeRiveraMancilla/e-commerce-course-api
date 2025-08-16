@@ -482,7 +482,18 @@ $RECYCLE.BIN/
 
 # Vim temporary swap files
 *.swp
+
+# Application settings
 appsettings.json
+appsettings.Production.json
+appsettings.Staging.json
+
+# Database files
 *.db
 *.db-shm
 *.db-wal
+
+# Environment files
+.env
+.env.local
+.env.production

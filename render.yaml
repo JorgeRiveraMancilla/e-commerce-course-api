@@ -1,0 +1,40 @@
+services:
+  - type: web
+    name: e-commerce-course-api
+    env: dotnet
+    plan: free
+    buildCommand: dotnet build -c Release
+    startCommand: dotnet run --no-build
+    envVars:
+      - key: ASPNETCORE_ENVIRONMENT
+        value: Production
+      - key: ConnectionStrings__DefaultConnection
+        fromDatabase:
+          name: e-commerce-course-db
+          property: connectionString
+      - key: JWTSettings__TokenKey
+        sync: false
+      - key: Cloudinary__CloudName
+        sync: false
+      - key: Cloudinary__ApiKey
+        sync: false
+      - key: Cloudinary__ApiSecret
+        sync: false
+      - key: StripeSettings__SecretKey
+        sync: false
+      - key: StripeSettings__PublishableKey
+        sync: false
+      - key: StripeSettings__WhSecret
+        sync: false
+      - key: AdminUser__Name
+        sync: false
+      - key: AdminUser__Email
+        sync: false
+      - key: AdminUser__Password
+        sync: false
+
+databases:
+  - name: e-commerce-course-db
+    databaseName: ecommerce_course
+    user: ecommerce_user
+    plan: free
