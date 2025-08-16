@@ -19,7 +19,9 @@ namespace e_commerce_course_api.Data.Repositories
             var user = await _userRepository.GetUserByIdAsync(userId);
 
             if (user is null || user.AddressId is null)
+            {
                 return null;
+            }
 
             var address = await _dataContext.Addresses.FindAsync(user.AddressId);
 

@@ -55,7 +55,9 @@ namespace e_commerce_course_api.Controllers
             var product = await _productRepository.GetProductByIdAsync(id);
 
             if (product is null)
+            {
                 return NotFound();
+            }
 
             return product;
         }
@@ -95,7 +97,9 @@ namespace e_commerce_course_api.Controllers
                 var product = await _productRepository.CreateProductAsync(createProductDto);
 
                 if (await _productRepository.SaveChangesAsync())
+                {
                     return CreatedAtRoute("GetProduct", new { id = product.Id }, product);
+                }
             }
             catch (Exception e)
             {
@@ -123,14 +127,18 @@ namespace e_commerce_course_api.Controllers
             var exists = await _productRepository.ProductExistsByIdAsync(productDto.Id);
 
             if (!exists)
+            {
                 return NotFound();
+            }
 
             try
             {
                 var product = await _productRepository.UpdateProductAsync(productDto);
 
                 if (await _productRepository.SaveChangesAsync())
+                {
                     return Ok(product);
+                }
             }
             catch (Exception e)
             {
@@ -147,7 +155,9 @@ namespace e_commerce_course_api.Controllers
             await _productRepository.DeleteProductByIdAsync(id);
 
             if (await _productRepository.SaveChangesAsync())
+            {
                 return Ok();
+            }
 
             return BadRequest(new ProblemDetails { Title = "Error al eliminar el producto" });
         }

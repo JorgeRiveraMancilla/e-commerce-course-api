@@ -46,7 +46,9 @@ builder.Services.AddSwaggerGen(c =>
 });
 string connection;
 if (builder.Environment.IsDevelopment())
+{
     connection = builder.Configuration.GetConnectionString("DefaultConnection")!;
+}
 else
 {
     // Use connection string provided at runtime by FlyIO.

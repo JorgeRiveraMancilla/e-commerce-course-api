@@ -55,7 +55,9 @@ namespace e_commerce_course_api.Data.Repositories
             var result = await _userManager.CreateAsync(user, registerDto.Password);
 
             if (!result.Succeeded)
+            {
                 return result;
+            }
 
             return await _userManager.AddToRoleAsync(user, "Member");
         }
@@ -147,10 +149,14 @@ namespace e_commerce_course_api.Data.Repositories
             var user = await _userManager.FindByEmailAsync(loginDto.Email);
 
             if (user is null)
+            {
                 return null;
+            }
 
             if (!await _userManager.CheckPasswordAsync(user, loginDto.Password))
+            {
                 return null;
+            }
 
             return _mapper.Map<UserDto>(user);
         }

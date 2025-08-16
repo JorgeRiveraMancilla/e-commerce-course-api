@@ -56,7 +56,10 @@ namespace e_commerce_course_api.Controllers
             if (!result.Succeeded)
             {
                 foreach (var error in result.Errors)
+                {
                     ModelState.AddModelError(error.Code, error.Description);
+                }
+
                 return ValidationProblem();
             }
 
@@ -78,7 +81,9 @@ namespace e_commerce_course_api.Controllers
             var user = await _userRepository.LoginAsync(loginDto);
 
             if (user is null)
+            {
                 return Unauthorized();
+            }
 
             var buyerId = Request.Cookies["buyerId"];
 
@@ -93,7 +98,9 @@ namespace e_commerce_course_api.Controllers
                     userBasket = await _basketRepository.CreateBasketAsync(user.Id.ToString());
 
                     if (!await _basketRepository.SaveChangesAsync())
+                    {
                         return BadRequest("Intente de nuevo.");
+                    }
 
                     break;
                 case (null, not null):
@@ -101,7 +108,9 @@ namespace e_commerce_course_api.Controllers
                     await _basketRepository.UpdateBasketAsync(anonymousBasket);
 
                     if (!await _basketRepository.SaveChangesAsync())
+                    {
                         return BadRequest("Intente de nuevo.");
+                    }
 
                     userBasket = anonymousBasket;
                     break;
@@ -111,7 +120,9 @@ namespace e_commerce_course_api.Controllers
                     await _basketRepository.RemoveBasketAsync(anonymousBasket.Id);
 
                     if (!await _basketRepository.SaveChangesAsync())
+                    {
                         return BadRequest("Intente de nuevo.");
+                    }
 
                     break;
             }
@@ -155,7 +166,9 @@ namespace e_commerce_course_api.Controllers
             var address = await _addressRepository.GetAddressByUserIdAsync(userId);
 
             if (address is not null)
+            {
                 address.Id = 0;
+            }
 
             return Ok(address);
         }

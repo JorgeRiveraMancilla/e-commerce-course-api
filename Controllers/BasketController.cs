@@ -87,9 +87,11 @@ namespace e_commerce_course_api.Controllers
             }
 
             if (!await _basketRepository.SaveChangesAsync())
+            {
                 return BadRequest(
                     new ProblemDetails { Title = "Error al añadir el producto al carrito." }
                 );
+            }
 
             return CreatedAtRoute("GetBasket", basket);
         }
@@ -120,7 +122,9 @@ namespace e_commerce_course_api.Controllers
             var basket = await _basketRepository.GetBasketByBuyerIdAsync(buyerId);
 
             if (basket is null)
+            {
                 return NotFound();
+            }
 
             try
             {
@@ -132,9 +136,11 @@ namespace e_commerce_course_api.Controllers
             }
 
             if (!await _basketRepository.SaveChangesAsync())
+            {
                 return BadRequest(
                     new ProblemDetails { Title = "Error al eliminar el producto del carrito." }
                 );
+            }
 
             return Ok();
         }

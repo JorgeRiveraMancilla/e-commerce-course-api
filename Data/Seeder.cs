@@ -56,13 +56,17 @@ namespace e_commerce_course_api.Data
         public static async Task SeedProductsAsync(DataContext dataContext)
         {
             if (dataContext.Products.Any())
+            {
                 return;
+            }
 
             var jsonData = await File.ReadAllTextAsync("Data/products.json");
             var products = JsonSerializer.Deserialize<List<Product>>(jsonData, _options);
 
             if (products == null)
+            {
                 return;
+            }
 
             await dataContext.AddRangeAsync(products);
             await dataContext.SaveChangesAsync();
@@ -89,7 +93,9 @@ namespace e_commerce_course_api.Data
         )
         {
             if (userManager.Users.Any())
+            {
                 return;
+            }
 
             string adminName =
                 config["AdminUser:Name"] ?? throw new Exception("Admin name is required");
@@ -105,9 +111,13 @@ namespace e_commerce_course_api.Data
             {
                 var createdAdmin = await userManager.FindByNameAsync(adminName);
                 if (createdAdmin != null)
+                {
                     await userManager.AddToRolesAsync(createdAdmin, ["Admin", "Member"]);
+                }
                 else
+                {
                     throw new Exception("Failed to retrieve created admin user.");
+                }
             }
             else
             {
@@ -128,7 +138,9 @@ namespace e_commerce_course_api.Data
         public static async Task SeedOrderStatusesAsync(DataContext dataContext)
         {
             if (dataContext.OrderStatuses.Any())
+            {
                 return;
+            }
 
             var orderStatuses = new List<OrderStatus>
             {

@@ -58,7 +58,9 @@ namespace e_commerce_course_api.Data.Repositories
             var imageResult = await _photoService.AddImageAsync(createProductDto.File);
 
             if (imageResult.Error is not null)
+            {
                 throw new Exception(imageResult.Error.Message);
+            }
 
             var product = _mapper.Map<Product>(
                 createProductDto,
@@ -92,7 +94,9 @@ namespace e_commerce_course_api.Data.Repositories
                 ?? throw new Exception("Producto no encontrado.");
 
             if (!string.IsNullOrEmpty(product.PublicId))
+            {
                 await _photoService.DeleteImageAsync(product.PublicId);
+            }
 
             _dataContext.Products.Remove(product);
         }
@@ -154,8 +158,10 @@ namespace e_commerce_course_api.Data.Repositories
             };
 
             if (!string.IsNullOrWhiteSpace(searchTerm))
+            {
 #pragma warning disable CA1862 // Use the 'StringComparison' method overloads to perform case-insensitive string comparisons
                 query = query.Where(p => p.Name.ToLower().Contains(searchTerm));
+            }
 #pragma warning restore CA1862 // Use the 'StringComparison' method overloads to perform case-insensitive string comparisons
 
             if (!string.IsNullOrWhiteSpace(brands))
@@ -238,10 +244,14 @@ namespace e_commerce_course_api.Data.Repositories
                 var imageResult = await _photoService.AddImageAsync(updateProductDto.File);
 
                 if (imageResult.Error is not null)
+                {
                     throw new Exception(imageResult.Error.Message);
+                }
 
                 if (!string.IsNullOrEmpty(product.PublicId))
+                {
                     await _photoService.DeleteImageAsync(product.PublicId);
+                }
 
                 product.ImageUrl = imageResult.SecureUrl.ToString();
                 product.PublicId = imageResult.PublicId;

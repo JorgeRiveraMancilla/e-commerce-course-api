@@ -107,7 +107,9 @@ namespace e_commerce_course_api.Controllers
             var basket = await _basketRepository.GetBasketByBuyerIdAsync(userId.ToString());
 
             if (basket is null)
+            {
                 return BadRequest(new ProblemDetails { Title = "Carrito no encontrado." });
+            }
 
             var orderItems = new List<OrderItemDto>();
 
@@ -116,7 +118,9 @@ namespace e_commerce_course_api.Controllers
                 var product = await _productRepository.GetProductByIdAsync(item.ProductId);
 
                 if (product is null)
+                {
                     return BadRequest(new ProblemDetails { Title = "Producto no encontrado." });
+                }
 
                 var orderItem = _mapper.Map<OrderItemDto>(
                     product,
@@ -134,9 +138,11 @@ namespace e_commerce_course_api.Controllers
                 await _productRepository.UpdateStockAsync(product.Id, -item.Quantity);
 
                 if (!await _productRepository.SaveChangesAsync())
+                {
                     return BadRequest(
                         new ProblemDetails { Title = "Error al actualizar el stock." }
                     );
+                }
             }
 
             var subtotal = orderItems.Sum(item => item.Price * item.Quantity);
@@ -157,12 +163,16 @@ namespace e_commerce_course_api.Controllers
             order = await _orderRepository.CreateOrderAsync(order, userId);
 
             if (!await _orderRepository.SaveChangesAsync())
+            {
                 return BadRequest(new ProblemDetails { Title = "Error al crear la orden." });
+            }
 
             await _basketRepository.RemoveBasketAsync(basket.Id);
 
             if (!await _basketRepository.SaveChangesAsync())
+            {
                 return BadRequest(new ProblemDetails { Title = "Error al eliminar el carrito." });
+            }
 
             if (createOrderDto.SaveAddress)
             {
@@ -171,9 +181,11 @@ namespace e_commerce_course_api.Controllers
                 var result = await _userRepository.UpdateAddressAsync(address, userId);
 
                 if (!result.Succeeded)
+                {
                     return BadRequest(
                         new ProblemDetails { Title = "Error al guardar la dirección." }
                     );
+                }
             }
 
             order = await _orderRepository.GetLastOrderAsync(userId);

@@ -28,14 +28,18 @@ namespace e_commerce_course_api.Controllers
             var basket = await _basketRepository.GetBasketByBuyerIdAsync(userId.ToString());
 
             if (basket is null)
+            {
                 return NotFound();
+            }
 
             var intent = await _paymentService.CreateOrUpdatePaymentIntent(basket);
 
             if (intent is null)
+            {
                 return BadRequest(
                     new ProblemDetails { Title = "Problema al crear el intento de pago." }
                 );
+            }
 
             if (intent.Id is not null && intent.ClientSecret is not null)
             {
@@ -44,9 +48,11 @@ namespace e_commerce_course_api.Controllers
                 await _basketRepository.UpdateBasketAsync(basket);
 
                 if (!await _basketRepository.SaveChangesAsync())
+                {
                     return BadRequest(
                         new ProblemDetails { Title = "Problema al guardar el intento de pago." }
                     );
+                }
             }
 
             return Ok(basket);

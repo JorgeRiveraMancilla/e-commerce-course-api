@@ -185,7 +185,9 @@ namespace e_commerce_course_api.Data.Repositories
             item.Quantity -= quantity;
 
             if (item.Quantity == 0)
+            {
                 _dataContext.BasketItems.Remove(item);
+            }
 
             return _mapper.Map<BasketDto>(basket);
         }
